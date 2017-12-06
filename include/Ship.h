@@ -13,15 +13,15 @@ class Ship : public Movable
 {
     public:
         Ship(const Player& player);
-        std::shared_ptr<Army> getArmyOnBoard() const;
-        void setArmyOnBoard(const std::shared_ptr<Army>&);
+        const Army* getArmyOnBoard() const;
+        void setArmyOnBoard(const Army*);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
         virtual ~Ship();
 
     protected:
 
     private:
-        std::shared_ptr<Army> armyOnBoard;
+        const Army* armyOnBoard;
 
 };
 

@@ -20,8 +20,8 @@ class GridPoint
     public:
         GridSquare(GridSquareType,int,int);
         virtual ~GridSquare();
-        std::shared_ptr<Player> getEdgeOwner(Direction) const;
-        void setEdgeOwner(Direction,const std::shared_ptr<Player>&);
+        const Player* getEdgeOwner(Direction) const;
+        void setEdgeOwner(Direction,const Player*);
         GridSquareType getType() const;
         sf::Vector2i getCoordinates() const;
         static sf::Texture& getTexture(GridSquareType);
@@ -36,16 +36,16 @@ class GridPoint
         static sf::Texture createTexture(std::string);
 
         const GridSquareType type;
-        std::vector<std::shared_ptr<Player>> edgeOwners;
+        std::vector<const Player*> edgeOwners;
         const sf::Vector2i coordinates;
 
 };
 
         GridPoint(GridSquareType,int,int);
         ~GridPoint();
-        std::shared_ptr<Movable> getMovable() const;
-        void setMovable(std::shared_ptr<Movable>);
-        bool isOwner(const Map&,const std::shared_ptr<Player>&) const;
+        Movable* getMovable() const;
+        void setMovable(Movable*);
+        bool isOwner(const Map&,const Player*) const;
         GridSquare& getGridSquare();
         const GridSquare& getGridSquare() const;
 
@@ -53,11 +53,11 @@ class GridPoint
 
     private:
 
-        std::shared_ptr<Movable> movable;
+        Movable* movable;
         GridSquare gridSquare;
 
-        bool isOwnerHelper(const GridPoint*,std::vector<const GridPoint*>&,const Map&,const std::shared_ptr<Player>&) const;
-        bool isOwnerHelper2(const GridPoint*,std::vector<const GridPoint*>&,const Map&,const std::shared_ptr<Player>&, Direction) const;
+        bool isOwnerHelper(const GridPoint*,std::vector<const GridPoint*>&,const Map&,const Player*) const;
+        bool isOwnerHelper2(const GridPoint*,std::vector<const GridPoint*>&,const Map&,const Player*, Direction) const;
 };
 
 #endif // GRIDPOINT_H

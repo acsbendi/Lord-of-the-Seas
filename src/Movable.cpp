@@ -10,12 +10,12 @@ Movable::~Movable()
 
 }
 
-std::shared_ptr<GridPoint> Movable::getCurrentLocation()
+GridPoint* Movable::getCurrentLocation() const
 {
     return currentLocation;
 }
 
-void Movable::setCurrentLocation(std::shared_ptr<GridPoint>& cl)
+void Movable::setCurrentLocation(GridPoint* cl)
 {
     currentLocation = cl;
 }

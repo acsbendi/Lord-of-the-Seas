@@ -13,12 +13,12 @@ class Movable : public sf::Drawable
     public:
         Movable(const Player&);
         virtual ~Movable();
-        std::shared_ptr<GridPoint> getCurrentLocation();
-        void setCurrentLocation(std::shared_ptr<GridPoint>&);
+        GridPoint* getCurrentLocation() const;
+        void setCurrentLocation(GridPoint*);
         const Player& getOwner() const;
 
     protected:
-        std::shared_ptr<GridPoint> currentLocation;
+        GridPoint* currentLocation;
         const Player& owner;
 
     private:

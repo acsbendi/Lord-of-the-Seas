@@ -1,13 +1,13 @@
 #include "Ship.h"
 #include "Map.h"
 
-std::shared_ptr<Army> Ship::getArmyOnBoard() const
+const Army* Ship::getArmyOnBoard() const
 {
     return armyOnBoard;
 }
 
 
-void Ship::setArmyOnBoard(const std::shared_ptr<Army>& army)
+void Ship::setArmyOnBoard(const Army* army)
 {
     armyOnBoard = army;
 }
@@ -24,7 +24,7 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 Ship::Ship(const Player& player) : Movable(player)
 {
-    armyOnBoard = std::make_shared<Army>(player);
+
 }
 
 Ship::~Ship()

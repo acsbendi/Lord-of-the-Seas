@@ -16,10 +16,10 @@ class Player
         Player(const sf::Color);
         virtual ~Player();
         void move(Map&);
-        std::shared_ptr<Ship> getShip() const;
-        void setShip(std::shared_ptr<Ship>&);
-        std::shared_ptr<Army> getArmy() const;
-        void setArmy(const std::shared_ptr<Army>&);
+        Ship* getShip() const;
+        void setShip(std::unique_ptr<Ship>);
+        Army* getArmy() const;
+        void setArmy(std::unique_ptr<Army>);
         sf::Color getColor() const;
 
     protected:
@@ -27,8 +27,8 @@ class Player
     private:
         static int MAX_NUMBER_OF_MOVES;
 
-        std::shared_ptr<Ship> ship;
-        std::shared_ptr<Army> army;
+        std::unique_ptr<Ship> ship;
+        std::unique_ptr<Army> army;
         const sf::Color color;
 
 };

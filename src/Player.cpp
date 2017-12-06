@@ -2,8 +2,9 @@
 
 Player::Player(const sf::Color color) : color{color}
 {
-    ship = std::make_shared<Ship>(*this);
-    army = nullptr;
+    ship = std::unique_ptr<Ship>{new Ship{*this}};
+    army = std::unique_ptr<Army>{new Army{*this}};
+    ship->setArmyOnBoard(army.get());
 }
 
 Player::~Player()
@@ -11,24 +12,24 @@ Player::~Player()
     //dtor
 }
 
-std::shared_ptr<Ship> Player::getShip() const
+Ship* Player::getShip() const
 {
-    return ship;
+    return ship.get();
 }
 
-void Player::setShip(std::shared_ptr<Ship>& ship)
+void Player::setShip(std::unique_ptr<Ship> ship)
 {
-    this->ship = ship;
+    this->ship = std::move(ship);
 }
 
-std::shared_ptr<Army> Player::getArmy() const
+Army* Player::getArmy() const
 {
-    return army;
+    return army.get();
 }
 
-void Player::setArmy(const std::shared_ptr<Army>& army)
+void Player::setArmy(std::unique_ptr<Army> army)
 {
-    this->army = army;
+    this->army = std::move(army);
 }
 
 sf::Color Player::getColor() const

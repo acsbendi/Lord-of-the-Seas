@@ -13,7 +13,6 @@ class Army : public Movable
 {
     public:
         Army(const Player&);
-        Army(std::shared_ptr<GridPoint>&);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
         virtual ~Army();
 

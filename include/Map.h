@@ -6,7 +6,6 @@
 #include <SFML/Graphics.hpp>
 #include "GridPoint.h"
 #include "Player.h"
-#include "GridSquare.h"
 #include "Enums.h"
 
 class Player;
@@ -19,15 +18,16 @@ class Map
 
         Map();
         virtual ~Map();
-        std::shared_ptr<GridPoint> getGridPoint(int x, int y);
+        GridPoint* getGridPoint(int x, int y);
         sf::RenderWindow& getWindow();
-        int countGridSquares(GridSquareType,const std::shared_ptr<Player>& = nullptr) const;
-        std::shared_ptr<GridPoint> getNeighbor(const GridPoint* gridPoint, Direction direction) const;
-        void setEdgeOwner(const std::shared_ptr<GridPoint>& gridPoint1,const std::shared_ptr<GridPoint>& gridPoint2,const std::shared_ptr<Player>& player);
+        int countGridSquares(GridSquareType,const Player* = nullptr) const;
+        GridPoint* getNeighbor(const GridPoint* gridPoint, Direction direction) const;
+        void setEdgeOwner(GridPoint* gridPoint1,GridPoint* gridPoint2,const Player* player);
+        std::vector<GridPoint*> getEdgeNeighbors(GridPoint* gridPoint1, GridPoint* gridPoint2) const;
         void refresh();
-        void initializeGrid(std::shared_ptr<Player>&, std::shared_ptr<Player>&);
+        void initializeGrid(Player*,Player*);
         sf::Keyboard::Key getPressedKey();
-        bool isLand(const std::shared_ptr<GridPoint>&) const;
+        bool isLand(const GridPoint*) const;
 
     protected:
 
@@ -36,7 +36,7 @@ class Map
     static int WIDTH;
     static int HEIGHT;
 
-    std::vector<std::vector<std::shared_ptr<GridPoint>>> gridPoints;
+    std::vector<std::vector<std::unique_ptr<GridPoint>>> gridPoints;
 
     sf::RenderWindow window;
 

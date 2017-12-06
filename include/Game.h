@@ -18,12 +18,12 @@ class Game
         static int NUMBER_OF_MOVES;
 
         Map map;
-        std::shared_ptr<Player> player1;
-        std::shared_ptr<Player> player2;
+        std::unique_ptr<Player> player1;
+        std::unique_ptr<Player> player2;
 
-        void move(const std::shared_ptr<Player>&);
+        void move(const std::unique_ptr<Player>&);
         bool hasEnded() const;
-        void landArmy(const std::shared_ptr<Player>&);
+        void landArmy(const std::unique_ptr<Player>&);
         Direction getSelectedDirection();
 };
 

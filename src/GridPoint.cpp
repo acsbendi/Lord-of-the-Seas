@@ -1,24 +1,22 @@
 #include "GridPoint.h"
 #include "Map.h"
-#include <iostream>
 
-GridPoint::GridPoint(GridSquareType gridSquareType,int x, int y) : gridSquare{gridSquareType,x,y}
+GridPoint::GridPoint(GridSquareType gridSquareType,int x, int y) : movable{nullptr}, gridSquare{gridSquareType,x,y}
 {
 
 }
 
 GridPoint::~GridPoint()
 {
-    std::cout << "NEEEEE " <<std::endl;
     //dtor
 }
 
-std::shared_ptr<Movable> GridPoint::getMovable() const
+Movable* GridPoint::getMovable() const
 {
     return movable;
 }
 
-void GridPoint::setMovable(std::shared_ptr<Movable> m)
+void GridPoint::setMovable(Movable* m)
 {
     movable = m;
 }
@@ -52,7 +50,7 @@ GridPoint::GridSquare::~GridSquare()
 }
 
 bool GridPoint::isOwnerHelper(const GridPoint* current,
-                              std::vector<const GridPoint*>& checked, const Map& map,const std::shared_ptr<Player>& player) const
+                              std::vector<const GridPoint*>& checked, const Map& map,const Player* player) const
 {
     checked.push_back(current);
     return isOwnerHelper2(current,checked,map,player,up) && isOwnerHelper2(current,checked,map,player,down) &&
@@ -60,9 +58,9 @@ bool GridPoint::isOwnerHelper(const GridPoint* current,
 }
 
 bool GridPoint::isOwnerHelper2(const GridPoint* current, std::vector<const GridPoint*>& checked,
-                               const Map& map,const std::shared_ptr<Player>& player,Direction direction) const
+                               const Map& map,const Player* player,Direction direction) const
 {
-    const std::shared_ptr<Player>& player2 = current->getGridSquare().getEdgeOwner(direction);
+    const Player* player2 = current->getGridSquare().getEdgeOwner(direction);
 
     if(player2 != player && player2)
         return false;
@@ -70,7 +68,7 @@ bool GridPoint::isOwnerHelper2(const GridPoint* current, std::vector<const GridP
     {
         try
         {
-            const GridPoint* next = map.getNeighbor(current,direction).get();
+            const GridPoint* next = map.getNeighbor(current,direction);
             if(std::find(checked.begin(), checked.end(), next) == checked.end())
                 return isOwnerHelper(next,checked,map,player);
         }
@@ -83,7 +81,7 @@ bool GridPoint::isOwnerHelper2(const GridPoint* current, std::vector<const GridP
 }
 
 
-bool GridPoint::isOwner(const Map& map,const std::shared_ptr<Player>& player) const
+bool GridPoint::isOwner(const Map& map,const Player* player) const
 {
     std::vector<const GridPoint*> checked;
     return isOwnerHelper(this,checked,map,player);
@@ -117,7 +115,7 @@ sf::Texture GridPoint::GridSquare::createTexture(std::string name)
     return texture;
 }
 
-void GridPoint::GridSquare::setEdgeOwner(Direction direction,const std::shared_ptr<Player>& player)
+void GridPoint::GridSquare::setEdgeOwner(Direction direction,const Player* player)
 {
     edgeOwners[direction] = player;
 }
@@ -178,7 +176,7 @@ sf::Vector2i GridPoint::GridSquare::getCoordinates() const
     return coordinates;
 }
 
-std::shared_ptr<Player> GridPoint::GridSquare::getEdgeOwner(Direction direction) const
+const Player* GridPoint::GridSquare::getEdgeOwner(Direction direction) const
 {
     return edgeOwners[direction];
 }

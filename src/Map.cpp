@@ -1,4 +1,6 @@
 #include "Map.h"
+#include <iostream>
+
 
 int Map::WIDTH = 40;
 int Map::HEIGHT = 30;
@@ -21,33 +23,33 @@ sf::RenderWindow& Map::getWindow()
     return window;
 }
 
-void Map::initializeGrid(std::shared_ptr<Player>& player1, std::shared_ptr<Player>& player2)
+void Map::initializeGrid(Player* player1, Player* player2)
 {
     std::vector<sf::Vector2i> lands = {{19,20},{21,20},{20,21},{20,22},{20,19},{19,19},{19,18},
                                         {5,9},{6,8},{7,8},{6,9},{7,9},{5,7},{4,10},{4,9}};
     std::vector<sf::Vector2i> treasures = {{20,20},{5,8}};
 
     for(int i = 0; i < HEIGHT; i++){
-        gridPoints.push_back(std::vector<std::shared_ptr<GridPoint>>{(unsigned)WIDTH});
+        gridPoints.push_back(std::vector<std::unique_ptr<GridPoint>>{(unsigned)WIDTH});
     }
 
     for(int i = 0; i < HEIGHT; i++){
         for(int j = 0; j < WIDTH; j++)
             if (std::find(lands.begin(),lands.end(),sf::Vector2i{i,j}) != lands.end())
-                gridPoints[i][j] = std::make_shared<GridPoint>(GridSquareType::land,j,i);
+                gridPoints[i][j] = std::unique_ptr<GridPoint>{new GridPoint{GridSquareType::land,j,i}};
             else if(std::find(treasures.begin(),treasures.end(),sf::Vector2i{i,j}) != treasures.end())
-                gridPoints[i][j] = std::make_shared<GridPoint>(GridSquareType::treasure,j,i);
+                gridPoints[i][j] = std::unique_ptr<GridPoint>{new GridPoint{GridSquareType::treasure,j,i}};
             else
-                gridPoints[i][j] = std::make_shared<GridPoint>(GridSquareType::water,j,i);
+                gridPoints[i][j] = std::unique_ptr<GridPoint>{new GridPoint{GridSquareType::water,j,i}};
      }
 
     gridPoints[0][0]->setMovable(player1->getShip());
-    player1->getShip()->setCurrentLocation(gridPoints[0][0]);
+    player1->getShip()->setCurrentLocation(gridPoints[0][0].get());
     gridPoints[HEIGHT-2][WIDTH-2]->setMovable(player2->getShip());
-    player2->getShip()->setCurrentLocation(gridPoints[HEIGHT-2][WIDTH-2]);
+    player2->getShip()->setCurrentLocation(gridPoints[HEIGHT-2][WIDTH-2].get());
 }
 
-int Map::countGridSquares(GridSquareType type, const std::shared_ptr<Player>& player) const
+int Map::countGridSquares(GridSquareType type, const Player* player) const
 {
     int result = 0;
     for(int i = 0; i < HEIGHT-1; ++i)
@@ -64,7 +66,7 @@ int Map::countGridSquares(GridSquareType type, const std::shared_ptr<Player>& pl
     return result;
 }
 
-std::shared_ptr<GridPoint> Map::getNeighbor(const GridPoint* gridPoint, Direction direction) const
+GridPoint* Map::getNeighbor(const GridPoint* gridPoint, Direction direction) const
 {
     int x,y;
     findIndexOf(gridPoint,x,y);
@@ -85,7 +87,7 @@ std::shared_ptr<GridPoint> Map::getNeighbor(const GridPoint* gridPoint, Directio
     }
 
     if(y < 0 || x < 0 || y >= HEIGHT || x >= WIDTH) throw std::out_of_range{"There is no neighbor in the specified direction"};
-    else return gridPoints[y][x];
+    else return gridPoints[y][x].get();
 }
 
 void Map::findIndexOf(const GridPoint* gridPoint, int& x, int& y) const
@@ -95,30 +97,34 @@ void Map::findIndexOf(const GridPoint* gridPoint, int& x, int& y) const
             if(gridPoint == gridPoints[y][x].get()) return;
 }
 
-void Map::setEdgeOwner(const std::shared_ptr<GridPoint>& gridPoint1,const std::shared_ptr<GridPoint>& gridPoint2,const std::shared_ptr<Player>& player)
+void Map::setEdgeOwner(GridPoint* gridPoint1,GridPoint* gridPoint2,const Player* player)
 {
     int x1,y1,x2,y2;
-    findIndexOf(gridPoint1.get(),x1,y1);
-    findIndexOf(gridPoint2.get(),x2,y2);
+    findIndexOf(gridPoint1,x1,y1);
+    findIndexOf(gridPoint2,x2,y2);
 
+    //going down
     if(y1 == y2 - 1)
     {
         gridPoint1->getGridSquare().setEdgeOwner(left, player);
         if(x1 != 0) gridPoints[y1][x1-1]->getGridSquare().setEdgeOwner(right, player);
     }
 
+    //going up
     if(y1 == y2 + 1)
     {
         gridPoint2->getGridSquare().setEdgeOwner(left, player);
         if(x1 != 0) gridPoints[y2][x2-1]->getGridSquare().setEdgeOwner(right, player);
     }
 
+    //going right
     if(x1 == x2 - 1)
     {
         gridPoint1->getGridSquare().setEdgeOwner(up, player);
         if(y1 != 0) gridPoints[y1-1][x1]->getGridSquare().setEdgeOwner(down, player);
     }
 
+    //going left
     if(x1 == x2 + 1)
     {
         gridPoint2->getGridSquare().setEdgeOwner(up, player);
@@ -126,13 +132,55 @@ void Map::setEdgeOwner(const std::shared_ptr<GridPoint>& gridPoint1,const std::s
     }
 }
 
-bool Map::isLand(const std::shared_ptr<GridPoint>& gridPoint) const
+std::vector<GridPoint*> Map::getEdgeNeighbors(GridPoint* gridPoint1, GridPoint* gridPoint2) const
+{
+    int x1,y1,x2,y2;
+    findIndexOf(gridPoint1,x1,y1);
+    findIndexOf(gridPoint2,x2,y2);
+    std::vector<GridPoint*> edgeNeighbors;
+
+    //going down
+    if(y1 == y2 - 1)
+    {
+        edgeNeighbors.push_back(gridPoint1);
+        if(x1 != 0) edgeNeighbors.push_back(gridPoints[y1][x1-1].get());
+        else edgeNeighbors.push_back(nullptr);
+    }
+
+    //going up
+    if(y1 == y2 + 1)
+    {
+        edgeNeighbors.push_back(gridPoint2);
+        if(x1 != 0) edgeNeighbors.push_back(gridPoints[y2][x2-1].get());
+        else edgeNeighbors.push_back(nullptr);
+    }
+
+    //going right
+    if(x1 == x2 - 1)
+    {
+        edgeNeighbors.push_back(gridPoint1);
+        if(y1 != 0) edgeNeighbors.push_back(gridPoints[y1-1][x1].get());
+        else edgeNeighbors.push_back(nullptr);
+    }
+
+    //going left
+    if(x1 == x2 + 1)
+    {
+        edgeNeighbors.push_back(gridPoint2);
+        if(y2 != 0) edgeNeighbors.push_back(gridPoints[y2-1][x2].get());
+        else edgeNeighbors.push_back(nullptr);
+    }
+
+    return edgeNeighbors;
+}
+
+bool Map::isLand(const GridPoint* gridPoint) const
 {
     if(gridPoint->getGridSquare().getType() != water)
             return true;
     try
     {
-        if(getNeighbor(gridPoint.get(),up)->getGridSquare().getType() != water)
+        if(getNeighbor(gridPoint,up)->getGridSquare().getType() != water)
             return true;
     }
     catch(std::out_of_range& e)
@@ -141,7 +189,7 @@ bool Map::isLand(const std::shared_ptr<GridPoint>& gridPoint) const
     }
     try
     {
-        if(getNeighbor(gridPoint.get(),left)->getGridSquare().getType() != water)
+        if(getNeighbor(gridPoint,left)->getGridSquare().getType() != water)
             return true;
     }
     catch(std::out_of_range& e)
@@ -161,7 +209,7 @@ void Map::refresh()
     for(int i = 0; i < HEIGHT; ++i)
         for(int j = 0; j < WIDTH; ++j)
             if(gridPoints[i][j]->getMovable())
-                window.draw(*gridPoints[i][j]->getMovable().get());
+                window.draw(*gridPoints[i][j]->getMovable());
 
     window.display();
 }
