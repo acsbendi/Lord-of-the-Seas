@@ -28,6 +28,8 @@ class Map
         void initializeGrid(Player*,Player*);
         sf::Keyboard::Key getPressedKey();
         bool isLand(const GridPoint*) const;
+        void countScore(Player* player1,Player* player2) const;
+        bool isOwner(const GridPoint*,const Player*) const;
 
     protected:
 
@@ -41,6 +43,9 @@ class Map
     sf::RenderWindow window;
 
     void findIndexOf(const GridPoint*, int&, int&) const;
+    bool isOwnerHelper(const GridPoint*,std::vector<const GridPoint*>&,const Player*) const;
+    bool isOwnerHelper2(const GridPoint*,std::vector<const GridPoint*>&,const Player*, Direction) const;
+    void addPoints(std::vector<const GridPoint*>,Player*) const;
 };
 
 #endif // MAP_H

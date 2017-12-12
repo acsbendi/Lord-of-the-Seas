@@ -15,7 +15,8 @@ class Game
     protected:
 
     private:
-        static int NUMBER_OF_MOVES;
+        static int NUMBER_OF_SHIP_MOVES;
+        static int NUMBER_OF_ARMY_MOVES;
 
         Map map;
         std::unique_ptr<Player> player1;

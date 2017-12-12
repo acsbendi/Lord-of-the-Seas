@@ -57,10 +57,10 @@ int Map::countGridSquares(GridSquareType type, const Player* player) const
         for(int j = 0; j < WIDTH-1; ++j)
         {
             if(type == GridSquareType::any && !player) ++result;
-            else if(type == GridSquareType::any && (gridPoints[i][j])->isOwner(*this,player)) ++result;
+            else if(type == GridSquareType::any && isOwner(gridPoints[i][j].get(),player)) ++result;
             else if(!player && (gridPoints[i][j])->getGridSquare().getType() == type) ++result;
             else if((gridPoints[i][j])->getGridSquare().getType() == type &&
-            (gridPoints[i][j])->isOwner(*this,player)) ++result;
+                isOwner(gridPoints[i][j].get(),player)) ++result;
         }
     }
     return result;
@@ -226,3 +226,87 @@ sf::Keyboard::Key Map::getPressedKey()
         }
     }
 }
+
+bool Map::isOwnerHelper(const GridPoint* current,
+                              std::vector<const GridPoint*>& checked, const Player* player) const
+{
+    checked.push_back(current);
+    return isOwnerHelper2(current,checked,player,up) && isOwnerHelper2(current,checked,player,down) &&
+           isOwnerHelper2(current,checked,player,right) && isOwnerHelper2(current,checked,player,left);
+}
+
+bool Map::isOwnerHelper2(const GridPoint* current, std::vector<const GridPoint*>& checked,
+                               const Player* player,Direction direction) const
+{
+    const Player* player2 = current->getGridSquare().getEdgeOwner(direction);
+
+    if(player2 != player && player2)
+        return false;
+    else if(!current->getGridSquare().getEdgeOwner(direction))
+    {
+        try
+        {
+            const GridPoint* next = getNeighbor(current,direction);
+            if(std::find(checked.begin(), checked.end(), next) == checked.end())
+                return isOwnerHelper(next,checked,player);
+        }
+        catch(std::out_of_range& e)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+bool Map::isOwner(const GridPoint* gridPoint,const Player* player) const
+{
+    std::vector<const GridPoint*> checked;
+    return isOwnerHelper(gridPoint,checked,player);
+}
+
+void Map::addPoints(std::vector<const GridPoint*> ownedPoints, Player* owner) const
+{
+    for(auto gridPoint : ownedPoints)
+        switch(gridPoint->getGridSquare().getType())
+        {
+        case water:
+            owner->setScore(owner->getScore() + 1);
+            break;
+        case land:
+            owner->setScore(owner->getScore() + 5);
+            break;
+        case treasure:
+            owner->setScore(owner->getScore() + 20);
+            break;
+        default:
+            break;
+        }
+}
+
+
+void Map::countScore(Player* player1,Player* player2) const
+{
+    std::vector<const GridPoint*> checked;
+    for(int i = 0; i < HEIGHT-1; ++i)
+        for(int j = 0; j < WIDTH-1; ++j)
+        {
+            if(std::find(checked.begin(), checked.end(), gridPoints[i][j].get()) == checked.end())
+            {
+                std::vector<const GridPoint*> cheched2;
+                std::vector<const GridPoint*> cheched3;
+                if(isOwnerHelper(gridPoints[i][j].get(),cheched2,player1))
+                {
+                    addPoints(cheched2,player1);
+                    checked.insert(checked.end(),cheched2.begin(),cheched2.end());
+                }
+                else if(isOwnerHelper(gridPoints[i][j].get(),cheched3,player2))
+                {
+                    addPoints(cheched3,player2);
+                    checked.insert(checked.end(),cheched3.begin(),cheched3.end());
+                }
+            }
+        }
+}
+
+

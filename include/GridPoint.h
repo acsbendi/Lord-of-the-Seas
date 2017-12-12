@@ -45,7 +45,6 @@ class GridPoint
         ~GridPoint();
         Movable* getMovable() const;
         void setMovable(Movable*);
-        bool isOwner(const Map&,const Player*) const;
         GridSquare& getGridSquare();
         const GridSquare& getGridSquare() const;
 
@@ -55,9 +54,6 @@ class GridPoint
 
         Movable* movable;
         GridSquare gridSquare;
-
-        bool isOwnerHelper(const GridPoint*,std::vector<const GridPoint*>&,const Map&,const Player*) const;
-        bool isOwnerHelper2(const GridPoint*,std::vector<const GridPoint*>&,const Map&,const Player*, Direction) const;
 };
 
 #endif // GRIDPOINT_H

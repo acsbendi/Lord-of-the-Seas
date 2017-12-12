@@ -49,44 +49,6 @@ GridPoint::GridSquare::~GridSquare()
     //dtor
 }
 
-bool GridPoint::isOwnerHelper(const GridPoint* current,
-                              std::vector<const GridPoint*>& checked, const Map& map,const Player* player) const
-{
-    checked.push_back(current);
-    return isOwnerHelper2(current,checked,map,player,up) && isOwnerHelper2(current,checked,map,player,down) &&
-           isOwnerHelper2(current,checked,map,player,right) && isOwnerHelper2(current,checked,map,player,left);
-}
-
-bool GridPoint::isOwnerHelper2(const GridPoint* current, std::vector<const GridPoint*>& checked,
-                               const Map& map,const Player* player,Direction direction) const
-{
-    const Player* player2 = current->getGridSquare().getEdgeOwner(direction);
-
-    if(player2 != player && player2)
-        return false;
-    else if(!current->getGridSquare().getEdgeOwner(direction))
-    {
-        try
-        {
-            const GridPoint* next = map.getNeighbor(current,direction);
-            if(std::find(checked.begin(), checked.end(), next) == checked.end())
-                return isOwnerHelper(next,checked,map,player);
-        }
-        catch(std::out_of_range& e)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-
-bool GridPoint::isOwner(const Map& map,const Player* player) const
-{
-    std::vector<const GridPoint*> checked;
-    return isOwnerHelper(this,checked,map,player);
-}
-
 GridSquareType GridPoint::GridSquare::getType() const
 {
     return type;

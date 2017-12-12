@@ -1,6 +1,8 @@
+#include <iostream>
 #include "Game.h"
 
-int Game::NUMBER_OF_MOVES = 3;
+int Game::NUMBER_OF_SHIP_MOVES = 3;
+int Game::NUMBER_OF_ARMY_MOVES = 1;
 
 Game::Game() : map{}
 {
@@ -46,13 +48,14 @@ bool Game::hasEnded() const
 void Game::move(const std::unique_ptr<Player>& player)
 {
     int countOfValidatedMoves = 0;
-    while(countOfValidatedMoves < NUMBER_OF_MOVES)
+    while(countOfValidatedMoves < NUMBER_OF_SHIP_MOVES)
     {
         Direction direction = getSelectedDirection();
         GridPoint* destination;
         try
         {
             destination = map.getNeighbor(player->getShip()->getCurrentLocation(),direction);
+            if(destination->getMovable()) continue; //the destination square is occupied
             std::vector<GridPoint*> edgeNeighbors = map.getEdgeNeighbors(player->getShip()->getCurrentLocation(),destination);
             if(edgeNeighbors[0]->getGridSquare().getType() != water &&
                (!edgeNeighbors[1] || edgeNeighbors[1]->getGridSquare().getType() != water)) continue; //ships cannot move on land
@@ -74,13 +77,14 @@ void Game::move(const std::unique_ptr<Player>& player)
     if(player->getArmy()->getCurrentLocation())
     {
         countOfValidatedMoves = 0;
-        while(countOfValidatedMoves < NUMBER_OF_MOVES)
+        while(countOfValidatedMoves < NUMBER_OF_ARMY_MOVES)
         {
             Direction direction = getSelectedDirection();
             GridPoint* destination;
             try
             {
                 destination = map.getNeighbor(player->getArmy()->getCurrentLocation(),direction);
+                if(destination->getMovable()) continue; //the destination square is occupied
                 std::vector<GridPoint*> edgeNeighbors = map.getEdgeNeighbors(player->getArmy()->getCurrentLocation(),destination);
                 if(edgeNeighbors[0]->getGridSquare().getType() == water  &&
                    (!edgeNeighbors[1] || edgeNeighbors[1]->getGridSquare().getType() == water)) continue; //armies can only move on land
@@ -130,9 +134,17 @@ void Game::landArmy(const std::unique_ptr<Player>& player)
 
 void Game::playGame()
 {
+    std::cout << "For movement, use the arrow keys." << std::endl;
+    std::cout << "When a ship is next to a land square, press Enter to land your army," << std::endl;
+    std::cout << "then choose the landing square by the arrow keys." << std::endl;
+    std::cout << "If you choose not to disembark your army, press any key other than Enter." << std::endl;
     while(!hasEnded())
     {
         move(player1);
         move(player2);
     }
+
+    map.countScore(player1.get(),player2.get());
+    std::cout << "First player's score: " << player1->getScore() << std::endl;
+    std::cout << "Second player's score: " << player2->getScore() << std::endl;
 }

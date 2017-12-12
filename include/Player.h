@@ -21,6 +21,8 @@ class Player
         Army* getArmy() const;
         void setArmy(std::unique_ptr<Army>);
         sf::Color getColor() const;
+        int getScore() const;
+        void setScore(int);
 
     protected:
 
@@ -30,6 +32,7 @@ class Player
         std::unique_ptr<Ship> ship;
         std::unique_ptr<Army> army;
         const sf::Color color;
+        int score;
 
 };
 
