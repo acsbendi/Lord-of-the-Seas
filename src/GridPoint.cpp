@@ -6,11 +6,6 @@ GridPoint::GridPoint(GridSquareType gridSquareType,int x, int y) : movable{nullp
 
 }
 
-GridPoint::~GridPoint()
-{
-    //dtor
-}
-
 Movable* GridPoint::getMovable() const
 {
     return movable;
@@ -42,11 +37,6 @@ GridPoint::GridSquare::GridSquare(GridSquareType type,int x, int y) : type{type}
 {
     for(int i = 0; i < 4; ++i)
         edgeOwners.push_back(nullptr);
-}
-
-GridPoint::GridSquare::~GridSquare()
-{
-    //dtor
 }
 
 GridSquareType GridPoint::GridSquare::getType() const

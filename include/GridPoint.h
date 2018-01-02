@@ -19,7 +19,7 @@ class GridPoint
 {
     public:
         GridSquare(GridSquareType,int,int);
-        virtual ~GridSquare();
+        virtual ~GridSquare() = default;
         const Player* getEdgeOwner(Direction) const;
         void setEdgeOwner(Direction,const Player*);
         GridSquareType getType() const;
@@ -42,7 +42,7 @@ class GridPoint
 };
 
         GridPoint(GridSquareType,int,int);
-        ~GridPoint();
+        virtual ~GridPoint() = default;
         Movable* getMovable() const;
         void setMovable(Movable*);
         GridSquare& getGridSquare();

@@ -7,11 +7,6 @@ Player::Player(const sf::Color color) : color{color}, score{0}
     ship->setArmyOnBoard(army.get());
 }
 
-Player::~Player()
-{
-    //dtor
-}
-
 Ship* Player::getShip() const
 {
     return ship.get();

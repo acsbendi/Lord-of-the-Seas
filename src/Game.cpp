@@ -4,17 +4,10 @@
 int Game::NUMBER_OF_SHIP_MOVES = 3;
 int Game::NUMBER_OF_ARMY_MOVES = 1;
 
-Game::Game() : map{}
+Game::Game() : map{}, end{false}, player1{std::make_unique<Player>(sf::Color::Red)}, player2{std::make_unique<Player>(sf::Color::Magenta)}
 {
-    player1 = std::unique_ptr<Player> {new Player{sf::Color::Red}};
-    player2 = std::unique_ptr<Player> {new Player{sf::Color::Magenta}};
     map.initializeGrid(player1.get(), player2.get());
     map.refresh();
-}
-
-Game::~Game()
-{
-    //dtor
 }
 
 Direction Game::getSelectedDirection()
@@ -24,31 +17,34 @@ Direction Game::getSelectedDirection()
         sf::Keyboard::Key pressedKey = map.getPressedKey();
         switch(pressedKey)
         {
-        case sf::Keyboard::Up:
-            return up;
-        case sf::Keyboard::Down:
-            return down;
-        case sf::Keyboard::Right:
-            return right;
-        case sf::Keyboard::Left:
-            return left;
-        default:
-            continue;
+            case sf::Keyboard::Up:
+                return up;
+            case sf::Keyboard::Down:
+                return down;
+            case sf::Keyboard::Right:
+                return right;
+            case sf::Keyboard::Left:
+                return left;
+            case sf::Keyboard::Escape:
+                end = true;
+                return left;
+            default:
+                continue;
         }
     }
 }
 
-bool Game::hasEnded() const
+void Game::checkEnd()
 {
-    return map.countGridSquares(GridSquareType::treasure) ==
+    end = end || (map.countGridSquares(GridSquareType::treasure) ==
            map.countGridSquares(GridSquareType::treasure, player1.get()) +
-           map.countGridSquares(GridSquareType::treasure, player2.get());
+           map.countGridSquares(GridSquareType::treasure, player2.get()));
 }
 
 void Game::move(const std::unique_ptr<Player>& player)
 {
     int countOfValidatedMoves = 0;
-    while(countOfValidatedMoves < NUMBER_OF_SHIP_MOVES)
+    while(countOfValidatedMoves < NUMBER_OF_SHIP_MOVES && !end)
     {
         Direction direction = getSelectedDirection();
         GridPoint* destination;
@@ -77,7 +73,7 @@ void Game::move(const std::unique_ptr<Player>& player)
     if(player->getArmy()->getCurrentLocation())
     {
         countOfValidatedMoves = 0;
-        while(countOfValidatedMoves < NUMBER_OF_ARMY_MOVES)
+        while(countOfValidatedMoves < NUMBER_OF_ARMY_MOVES && !end)
         {
             Direction direction = getSelectedDirection();
             GridPoint* destination;
@@ -109,7 +105,7 @@ void Game::landArmy(const std::unique_ptr<Player>& player)
     if(pressedKey == sf::Keyboard::Return)
     {
         player->getShip()->setArmyOnBoard(nullptr);
-        while(true)
+        while(!end)
         {
             Direction direction = getSelectedDirection();
             GridPoint* destination;
@@ -138,10 +134,11 @@ void Game::playGame()
     std::cout << "When a ship is next to a land square, press Enter to land your army," << std::endl;
     std::cout << "then choose the landing square by the arrow keys." << std::endl;
     std::cout << "If you choose not to disembark your army, press any key other than Enter." << std::endl;
-    while(!hasEnded())
+    while(!end)
     {
         move(player1);
         move(player2);
+        checkEnd();
     }
 
     map.countScore(player1.get(),player2.get());

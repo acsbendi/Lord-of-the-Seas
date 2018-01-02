@@ -13,9 +13,8 @@ class Map;
 class Player
 {
     public:
-        Player(const sf::Color);
-        virtual ~Player();
-        void move(Map&);
+        explicit Player(const sf::Color);
+        virtual ~Player() = default;
         Ship* getShip() const;
         void setShip(std::unique_ptr<Ship>);
         Army* getArmy() const;

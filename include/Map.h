@@ -17,7 +17,7 @@ class Map
         static int MARGIN;
 
         Map();
-        virtual ~Map();
+        virtual ~Map() = default;
         GridPoint* getGridPoint(int x, int y);
         sf::RenderWindow& getWindow();
         int countGridSquares(GridSquareType,const Player* = nullptr) const;

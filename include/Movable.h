@@ -11,8 +11,8 @@ class Player;
 class Movable : public sf::Drawable
 {
     public:
-        Movable(const Player&);
-        virtual ~Movable();
+        explicit Movable(const Player&);
+        virtual ~Movable() = default;
         GridPoint* getCurrentLocation() const;
         void setCurrentLocation(GridPoint*);
         const Player& getOwner() const;

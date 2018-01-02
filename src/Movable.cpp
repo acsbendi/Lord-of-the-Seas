@@ -5,11 +5,6 @@ Movable::Movable(const Player& player) : currentLocation{nullptr}, owner{player}
 
 }
 
-Movable::~Movable()
-{
-
-}
-
 GridPoint* Movable::getCurrentLocation() const
 {
     return currentLocation;

@@ -26,8 +26,3 @@ Ship::Ship(const Player& player) : Movable(player)
 {
 
 }
-
-Ship::~Ship()
-{
-    //dtor
-}

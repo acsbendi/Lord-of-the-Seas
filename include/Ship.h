@@ -16,7 +16,7 @@ class Ship : public Movable
         const Army* getArmyOnBoard() const;
         void setArmyOnBoard(const Army*);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
-        virtual ~Ship();
+        virtual ~Ship() = default;
 
     protected:
 

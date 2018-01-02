@@ -8,14 +8,9 @@ int Map::GRID_SIDE = 15;
 int Map::MARGIN = 15;
 
 
-Map::Map() : window{sf::VideoMode(Map::GRID_SIDE*(Map::WIDTH-1) + 2*MARGIN, Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN),"Lord of the Seas"}
+Map::Map() : window{sf::VideoMode(static_cast<unsigned>(Map::GRID_SIDE*(Map::WIDTH-1) + 2*MARGIN), Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN),"Lord of the Seas"}
 {
 
-}
-
-Map::~Map()
-{
-    //dtor
 }
 
 sf::RenderWindow& Map::getWindow()
@@ -30,17 +25,17 @@ void Map::initializeGrid(Player* player1, Player* player2)
     std::vector<sf::Vector2i> treasures = {{20,20},{5,8}};
 
     for(int i = 0; i < HEIGHT; i++){
-        gridPoints.push_back(std::vector<std::unique_ptr<GridPoint>>{(unsigned)WIDTH});
+        gridPoints.emplace_back(static_cast<unsigned>(WIDTH));
     }
 
     for(int i = 0; i < HEIGHT; i++){
         for(int j = 0; j < WIDTH; j++)
             if (std::find(lands.begin(),lands.end(),sf::Vector2i{i,j}) != lands.end())
-                gridPoints[i][j] = std::unique_ptr<GridPoint>{new GridPoint{GridSquareType::land,j,i}};
+                gridPoints[i][j] = std::make_unique<GridPoint>(GridSquareType::land,j,i);
             else if(std::find(treasures.begin(),treasures.end(),sf::Vector2i{i,j}) != treasures.end())
-                gridPoints[i][j] = std::unique_ptr<GridPoint>{new GridPoint{GridSquareType::treasure,j,i}};
+                gridPoints[i][j] = std::make_unique<GridPoint>(GridSquareType::treasure,j,i);
             else
-                gridPoints[i][j] = std::unique_ptr<GridPoint>{new GridPoint{GridSquareType::water,j,i}};
+                gridPoints[i][j] = std::make_unique<GridPoint>(GridSquareType::water,j,i);
      }
 
     gridPoints[0][0]->setMovable(player1->getShip());
@@ -221,8 +216,10 @@ sf::Keyboard::Key Map::getPressedKey()
         while (window.pollEvent(event)){
             if(event.type == sf::Event::KeyPressed)
                 return event.key.code;
-            else if (event.type == sf::Event::Closed)
+            else if (event.type == sf::Event::Closed) {
                 window.close();
+                return sf::Keyboard::Escape;
+            }
         }
     }
 }
@@ -293,17 +290,17 @@ void Map::countScore(Player* player1,Player* player2) const
         {
             if(std::find(checked.begin(), checked.end(), gridPoints[i][j].get()) == checked.end())
             {
-                std::vector<const GridPoint*> cheched2;
-                std::vector<const GridPoint*> cheched3;
-                if(isOwnerHelper(gridPoints[i][j].get(),cheched2,player1))
+                std::vector<const GridPoint*> checked2;
+                std::vector<const GridPoint*> checked3;
+                if(isOwnerHelper(gridPoints[i][j].get(),checked2,player1))
                 {
-                    addPoints(cheched2,player1);
-                    checked.insert(checked.end(),cheched2.begin(),cheched2.end());
+                    addPoints(checked2,player1);
+                    checked.insert(checked.end(),checked2.begin(),checked2.end());
                 }
-                else if(isOwnerHelper(gridPoints[i][j].get(),cheched3,player2))
+                else if(isOwnerHelper(gridPoints[i][j].get(),checked3,player2))
                 {
-                    addPoints(cheched3,player2);
-                    checked.insert(checked.end(),cheched3.begin(),cheched3.end());
+                    addPoints(checked3,player2);
+                    checked.insert(checked.end(),checked3.begin(),checked3.end());
                 }
             }
         }

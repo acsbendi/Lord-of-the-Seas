@@ -9,7 +9,7 @@ class Game
 {
     public:
         Game();
-        virtual ~Game();
+        virtual ~Game() = default;
         void playGame();
 
     protected:
@@ -21,9 +21,10 @@ class Game
         Map map;
         std::unique_ptr<Player> player1;
         std::unique_ptr<Player> player2;
+        bool end;
 
         void move(const std::unique_ptr<Player>&);
-        bool hasEnded() const;
+        void checkEnd();
         void landArmy(const std::unique_ptr<Player>&);
         Direction getSelectedDirection();
 };
