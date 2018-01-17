@@ -8,7 +8,8 @@ int Map::GRID_SIDE = 15;
 int Map::MARGIN = 15;
 
 
-Map::Map() : window{sf::VideoMode(static_cast<unsigned>(Map::GRID_SIDE*(Map::WIDTH-1) + 2*MARGIN), Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN),"Lord of the Seas"}
+Map::Map() : window{sf::VideoMode(static_cast<unsigned>(Map::GRID_SIDE*(Map::WIDTH-1) + 2*MARGIN),
+                                  static_cast<unsigned>(Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN)),"Lord of the Seas"}
 {
 
 }

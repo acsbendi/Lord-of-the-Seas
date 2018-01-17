@@ -26,8 +26,6 @@ class Player
     protected:
 
     private:
-        static int MAX_NUMBER_OF_MOVES;
-
         std::unique_ptr<Ship> ship;
         std::unique_ptr<Army> army;
         const sf::Color color;

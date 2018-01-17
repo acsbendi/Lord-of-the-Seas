@@ -2,7 +2,7 @@
 #include "Game.h"
 
 int Game::NUMBER_OF_SHIP_MOVES = 3;
-int Game::NUMBER_OF_ARMY_MOVES = 1;
+int Game::NUMBER_OF_ARMY_MOVES = 2;
 
 Game::Game() : map{}, end{false}, player1{std::make_unique<Player>(sf::Color::Red)}, player2{std::make_unique<Player>(sf::Color::Magenta)}
 {
