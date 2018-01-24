@@ -12,9 +12,9 @@ class Player;
 class Army : public Movable
 {
     public:
-        explicit Army(const Player&);
+        explicit Army(Player&);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
-        virtual ~Army() = default;
+        bool move(Direction) override ;
 
     protected:
 

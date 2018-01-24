@@ -1,7 +1,8 @@
 #include "GridPoint.h"
-#include "Map.h"
+#include "GridSquare.h"
+#include <iostream>
 
-GridPoint::GridPoint(GridSquareType gridSquareType,int x, int y) : movable{nullptr}, gridSquare{gridSquareType,x,y}
+GridPoint::GridPoint(int x, int y) : movable{nullptr}, coordinates{x,y}
 {
 
 }
@@ -16,121 +17,64 @@ void GridPoint::setMovable(Movable* m)
     movable = m;
 }
 
-GridPoint::GridSquare& GridPoint::getGridSquare()
-{
-    return gridSquare;
+GridPoint* GridPoint::getPointNeighbor(Direction direction) const{
+    return pointNeighbors.at(direction);
 }
 
-const GridPoint::GridSquare& GridPoint::getGridSquare() const
-{
-    return gridSquare;
+GridSquare* GridPoint::getSquareNeighbor(IntermediateDirection intermediateDirection) const {
+    return squareNeighbors.at(intermediateDirection);
 }
 
+bool GridPoint::enter(Army* coming) {
+    if(movable) return false; //this point is occupied
 
-sf::Texture GridPoint::GridSquare::waterTexture = GridSquare::createTexture("water.png");
-sf::Texture GridPoint::GridSquare::landTexture = GridSquare::createTexture("land.png");
-sf::Texture GridPoint::GridSquare::treasureTexture = GridSquare::createTexture("treasure.png");
+    if(!isLandBool)
+        return false; //armies can only move on land
 
-
-
-GridPoint::GridSquare::GridSquare(GridSquareType type,int x, int y) : type{type}, coordinates{x,y}
-{
-    for(int i = 0; i < 4; ++i)
-        edgeOwners.push_back(nullptr);
+    movable = coming;
+    return true;
 }
 
-GridSquareType GridPoint::GridSquare::getType() const
-{
-    return type;
+bool GridPoint::enter(Ship* coming) {
+    if(movable) return false; //this point is occupied
+
+    if(!isSeaBool)
+        return false; //ships can only move on sea
+
+    movable = coming;
+    return true;
 }
 
-
-sf::Texture& GridPoint::GridSquare::getTexture(GridSquareType type)
-{
-    switch(type)
-    {
-    case water:
-        return GridSquare::waterTexture;
-    case land:
-        return GridSquare::landTexture;
-    case treasure:
-        return GridSquare::treasureTexture;
-    default:
-        return GridSquare::waterTexture;
-    }
+void GridPoint::exit(Movable* leaving) {
+    if(leaving == movable)
+        movable= nullptr;
 }
 
-sf::Texture GridPoint::GridSquare::createTexture(std::string name)
-{
-    sf::Texture texture;
-    texture.loadFromFile(name);
-    return texture;
+void GridPoint::setPointNeighbor(Direction direction, GridPoint* gridPoint) {
+    pointNeighbors.insert(std::pair<Direction,GridPoint* const>(direction,gridPoint));
 }
 
-void GridPoint::GridSquare::setEdgeOwner(Direction direction,const Player* player)
-{
-    edgeOwners[direction] = player;
+void GridPoint::setSquareNeighbor(IntermediateDirection intermediateDirection, GridSquare *gridSquare) {
+    squareNeighbors.insert(std::pair<IntermediateDirection,GridSquare* const>(intermediateDirection,gridSquare));
 }
 
-void GridPoint::GridSquare::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    /*drawing the texture*/
-    sf::Sprite sprite;
-    sprite.setTexture(GridPoint::GridSquare::getTexture(type));
-    sprite.setPosition(Map::MARGIN + coordinates.x*Map::GRID_SIDE,Map::MARGIN + coordinates.y*Map::GRID_SIDE);
-    target.draw(sprite);
-
-    /*drawing the edges*/
-    sf::Vertex line[2];
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + coordinates.x*Map::GRID_SIDE, Map::MARGIN + coordinates.y*Map::GRID_SIDE));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + (coordinates.y)*Map::GRID_SIDE));
-
-    if(edgeOwners[up])
-    {
-        line[0].color = edgeOwners[up]->getColor();
-        line[1].color = edgeOwners[up]->getColor();
-    }
-    target.draw(line, 2, sf::Lines);
-
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + coordinates.x*Map::GRID_SIDE+1, Map::MARGIN + coordinates.y*Map::GRID_SIDE));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x)*Map::GRID_SIDE+1, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE));
-
-    if(edgeOwners[left])
-    {
-        line[0].color = edgeOwners[left]->getColor();
-        line[1].color = edgeOwners[left]->getColor();
-    }
-    target.draw(line, 2, sf::Lines);
-
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + coordinates.y*Map::GRID_SIDE));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE));
-
-    if(edgeOwners[right])
-    {
-        line[0].color = edgeOwners[right]->getColor();
-        line[1].color = edgeOwners[right]->getColor();
-    }
-    target.draw(line, 2, sf::Lines);
-
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + coordinates.x*Map::GRID_SIDE, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE-1));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE-1));
-
-    if(edgeOwners[down])
-    {
-        line[0].color = edgeOwners[down]->getColor();
-        line[1].color = edgeOwners[down]->getColor();
-    }
-    target.draw(line, 2, sf::Lines);
+void GridPoint::finishInitialization() {
+    isLandBool =(squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->isLand()) ||
+                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->isLand()) ||
+                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->isLand()) ||
+                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->isLand());
+    isSeaBool = (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->isSea()) ||
+                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->isSea()) ||
+                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->isSea()) ||
+                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->isSea());
 }
 
-sf::Vector2i GridPoint::GridSquare::getCoordinates() const
+sf::Vector2i GridPoint::getCoordinates() const
 {
     return coordinates;
 }
 
-const Player* GridPoint::GridSquare::getEdgeOwner(Direction direction) const
-{
-    return edgeOwners[direction];
+bool GridPoint::isLand() const{
+    return isLandBool;
 }
-
 

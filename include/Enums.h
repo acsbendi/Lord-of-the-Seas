@@ -2,7 +2,6 @@
 #define DIRECTION_H
 
 enum Direction { left, right, up, down };
-enum GridSquareType {water, land, treasure, any};
-
+enum IntermediateDirection {northwest, northeast, southeast, southwest};
 
 #endif //DIRECTION_H

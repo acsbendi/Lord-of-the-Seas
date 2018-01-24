@@ -5,31 +5,33 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include "GridPoint.h"
+#include "GridSquare.h"
 #include "Player.h"
 #include "Enums.h"
+#include "IInputHandler.h"
+#include "IPlayerObserver.h"
+#include "IInputHandlerObserver.h"
 
-class Player;
+class GridSquare;
 
-class Map
+class Map : public IInputHandler, public IPlayerObserver
 {
     public:
         static int GRID_SIDE;
         static int MARGIN;
 
         Map();
-        virtual ~Map() = default;
-        GridPoint* getGridPoint(int x, int y);
-        sf::RenderWindow& getWindow();
-        int countGridSquares(GridSquareType,const Player* = nullptr) const;
-        GridPoint* getNeighbor(const GridPoint* gridPoint, Direction direction) const;
-        void setEdgeOwner(GridPoint* gridPoint1,GridPoint* gridPoint2,const Player* player);
-        std::vector<GridPoint*> getEdgeNeighbors(GridPoint* gridPoint1, GridPoint* gridPoint2) const;
-        void refresh();
+        //int countGridSquares(Type,const Player* = nullptr) const;
         void initializeGrid(Player*,Player*);
-        sf::Keyboard::Key getPressedKey();
-        bool isLand(const GridPoint*) const;
-        void countScore(Player* player1,Player* player2) const;
-        bool isOwner(const GridPoint*,const Player*) const;
+        void setNeighbors();
+        void countScore() const;
+        /*bool isOwner(const GridPoint*,const Player*) const;*/
+        void onMove() override;
+        void attach(IInputHandlerObserver*) override;
+        void detach(IInputHandlerObserver*) override;
+        bool checkEnd();
+        void getInput();
+        void onTurnEnd() override;
 
     protected:
 
@@ -39,13 +41,19 @@ class Map
     static int HEIGHT;
 
     std::vector<std::vector<std::unique_ptr<GridPoint>>> gridPoints;
+    std::vector<std::vector<std::unique_ptr<GridSquare>>> gridSquares;
+    std::unordered_set<IInputHandlerObserver*> observers;
 
     sf::RenderWindow window;
 
-    void findIndexOf(const GridPoint*, int&, int&) const;
+    /*void findIndexOf(const GridPoint*, int&, int&) const;
     bool isOwnerHelper(const GridPoint*,std::vector<const GridPoint*>&,const Player*) const;
-    bool isOwnerHelper2(const GridPoint*,std::vector<const GridPoint*>&,const Player*, Direction) const;
-    void addPoints(std::vector<const GridPoint*>,Player*) const;
+    bool isOwnerHelper2(const GridPoint*,std::vector<const GridPoint*>&,const Player*, Direction) const;*/
+    void addPoints(std::unordered_set<const GridSquare*> ownedSquares, Player* owner) const;
+    void refresh();
+    void notifyOnExit() const;
+    void notifyOnDirectionSelected(Direction) const;
+    void notifyOnConfirmation(bool) const;
 };
 
 #endif // MAP_H

@@ -19,7 +19,7 @@ add_executable(Lord_of_the_Seas
         src/Movable.cpp
         src/Player.cpp
         src/Ship.cpp
-        src/main.cpp)
+        src/main.cpp include/IInputHandler.h include/IPlayerObserver.h src/GridSquare.cpp include/GridSquare.h include/IInputHandlerObserver.h)
 
 include_directories(include)
 

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "Enums.h"
 
 class GridPoint;
 
@@ -11,15 +12,16 @@ class Player;
 class Movable : public sf::Drawable
 {
     public:
-        explicit Movable(const Player&);
+        explicit Movable(Player&);
         ~Movable() override = default;
         GridPoint* getCurrentLocation() const;
         void setCurrentLocation(GridPoint*);
-        const Player& getOwner() const;
+        bool setEdgeOwners(Direction);
+        virtual bool move(Direction) = 0;
 
     protected:
         GridPoint* currentLocation;
-        const Player& owner;
+        Player& owner;
 
     private:
 

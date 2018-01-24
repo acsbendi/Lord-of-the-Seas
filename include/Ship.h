@@ -12,17 +12,21 @@ class GridPoint;
 class Ship : public Movable
 {
     public:
-        Ship(const Player& player);
+        explicit Ship(Player& player);
         const Army* getArmyOnBoard() const;
         void setArmyOnBoard(const Army*);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
-        virtual ~Ship() = default;
+    /*!
+     * Makes the ship move in a specified direction
+     * @return Returns whether the movement was successful.
+     */
+        bool move(Direction) override;
+        bool isAtCoast() const;
 
     protected:
 
     private:
         const Army* armyOnBoard;
-
 };
 
 #endif // SHIP_H

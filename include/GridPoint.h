@@ -6,54 +6,40 @@
 #include "Movable.h"
 #include "Enums.h"
 
-class Movable;
+class Ship;
 
-class Player;
+class GridSquare;
 
-class Map;
+class Army;
 
 class GridPoint
 {
     public:
-        class GridSquare : public sf::Drawable
-{
-    public:
-        GridSquare(GridSquareType,int,int);
-        virtual ~GridSquare() = default;
-        const Player* getEdgeOwner(Direction) const;
-        void setEdgeOwner(Direction,const Player*);
-        GridSquareType getType() const;
-        sf::Vector2i getCoordinates() const;
-        static sf::Texture& getTexture(GridSquareType);
-        void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+    GridPoint(int, int);
+    virtual ~GridPoint() = default;
+    Movable* getMovable() const;
+    void setMovable(Movable*);
+    GridPoint* getPointNeighbor(Direction) const;
+    GridSquare* getSquareNeighbor(IntermediateDirection) const;
+    void setPointNeighbor(Direction, GridPoint*);
+    void setSquareNeighbor(IntermediateDirection, GridSquare*);
+    bool enter(Army*);
+    bool enter(Ship*);
+    void exit(Movable*);
+    void finishInitialization();
+    sf::Vector2i getCoordinates() const;
+    bool isLand() const;
 
     protected:
 
     private:
-        static sf::Texture waterTexture;
-        static sf::Texture landTexture;
-        static sf::Texture treasureTexture;
-        static sf::Texture createTexture(std::string);
-
-        const GridSquareType type;
-        std::vector<const Player*> edgeOwners;
         const sf::Vector2i coordinates;
-
-};
-
-        GridPoint(GridSquareType,int,int);
-        virtual ~GridPoint() = default;
-        Movable* getMovable() const;
-        void setMovable(Movable*);
-        GridSquare& getGridSquare();
-        const GridSquare& getGridSquare() const;
-
-    protected:
-
-    private:
-
         Movable* movable;
-        GridSquare gridSquare;
+        std::map<Direction, GridPoint* const> pointNeighbors;
+        std::map<IntermediateDirection, GridSquare* const> squareNeighbors;
+        bool isLandBool;
+        bool isSeaBool;
 };
 
 #endif // GRIDPOINT_H
