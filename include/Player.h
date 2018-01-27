@@ -8,20 +8,19 @@
 #include "Army.h"
 #include "Enums.h"
 #include "Map.h"
-#include "IInputHandler.h"
 #include "IPlayerObserver.h"
+#include "IUserEventObserver.h"
 
-class Player : public IInputHandlerObserver
+class Player : public IUserEventObserver
 {
     public:
-        explicit Player(sf::Color,IInputHandler&);
+        explicit Player(sf::Color);
         Ship* getShip() const;
         sf::Color getColor() const;
         void addScore(int);
         int getScore() const;
         void attach(IPlayerObserver*);
         void detach(IPlayerObserver*);
-        void onExit() override;
         void onDirectionSelected(Direction) override;
         void onConfirmation(bool) override;
         void yourTurn();
@@ -35,7 +34,7 @@ class Player : public IInputHandlerObserver
 
         std::unique_ptr<Ship> ship;
         std::unique_ptr<Army> army;
-        std::unordered_set<IPlayerObserver*> observers;
+        std::vector<IPlayerObserver*> observers;
         const sf::Color color;
         int score;
         int successfulMoves;

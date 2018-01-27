@@ -121,7 +121,6 @@ std::vector<std::vector<std::unique_ptr<GridSquare>>> GridSquare::createGridSqua
                 gridSquares[i][j] = std::make_unique<GridSquare>(water,j,i);
     }
 
-
     return gridSquares;
 }
 
@@ -162,28 +161,7 @@ Player* GridSquare::getOwner(std::unordered_set<const GridSquare*>& previous) co
         return possibleOwner;
     else
         return nullptr;
-
-    /*addPossibleOwners(up,previous,possibleOwners);
-    addPossibleOwners(down,previous,possibleOwners);
-    addPossibleOwners(left,previous,possibleOwners);
-    addPossibleOwners(right,previous,possibleOwners);
-
-    if(possibleOwners.empty())
-        return nullptr;
-    else if(possibleOwners.size() == 1)
-        return *possibleOwners.begin();
-    else{
-        for(auto i = possibleOwners.begin(); i != possibleOwners.end(); ++i)
-            if(*i != *possibleOwners.begin()) return nullptr;
-        return *possibleOwners.begin();*/
 }
-
-/*void GridSquare::addPossibleOwners(Direction direction, std::unordered_set<const GridSquare *>& previous, std::unordered_set<const Player*> possibleOwners) const{
-    if(edgeOwners.at(direction))
-        possibleOwners.insert(edgeOwners.at(up));
-    else if(neighbors.at(direction) && previous.find(neighbors.at(direction)) == previous.end() && neighbors.at(direction)->getOwner(previous))
-        possibleOwners.insert(neighbors.at(direction)->getOwner(previous));
-}*/
 
 bool GridSquare::canEnd() const {
     std::unordered_set<const GridSquare*> unordered_set;

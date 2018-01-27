@@ -4,7 +4,7 @@
 int Player::NUMBER_OF_SHIP_MOVES = 3;
 int Player::NUMBER_OF_ARMY_MOVES = 2;
 
-Player::Player(const sf::Color color,IInputHandler& inputHandler) : color{color}, state{waitingForTurn}, score{0}, successfulMoves{0}
+Player::Player(const sf::Color color) : color{color}, state{waitingForTurn}, score{0}, successfulMoves{0}
 {
     ship = std::make_unique<Ship>(*this);
     army = std::make_unique<Army>(*this);
@@ -64,7 +64,13 @@ void Player::move(Direction direction)
             return;
         case armyLanding:
             if(army->move(direction)){
-                state = shipMoving;
+                if(successfulMoves != NUMBER_OF_SHIP_MOVES)
+                    state = shipMoving;
+                else{
+                    state = armyMoving;
+                    successfulMoves = 0;
+                }
+
                 notifyOnMove();
             }
             return;
@@ -80,11 +86,11 @@ void Player::landArmy(){
 }
 
 void Player::attach(IPlayerObserver* observer){
-    observers.insert(observer);
+    observers.push_back(observer);
 }
 
 void Player::detach(IPlayerObserver* observer){
-    observers.erase(observer);
+    observers.erase(std::remove(observers.begin(),observers.end(),observer),observers.end());
 }
 
 void Player::notifyOnMove() const{
@@ -95,10 +101,6 @@ void Player::notifyOnMove() const{
 void Player::notifyOnTurnEnd() const{
     for(IPlayerObserver* observer : observers)
         observer->onTurnEnd();
-}
-
-void Player::onExit(){
-
 }
 
 void Player::onDirectionSelected(Direction direction) {
