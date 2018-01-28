@@ -4,25 +4,9 @@
 
 #include "GridSquare.h"
 #include <iostream>
-
-sf::Texture GridSquare::waterTexture = GridSquare::createTexture("water.png");
-sf::Texture GridSquare::landTexture = GridSquare::createTexture("land.png");
-sf::Texture GridSquare::treasureTexture = GridSquare::createTexture("treasure.png");
-
-sf::Texture& GridSquare::getTexture(Type type)
-{
-    switch(type)
-    {
-        case water:
-            return GridSquare::waterTexture;
-        case land:
-            return GridSquare::landTexture;
-        case treasure:
-            return GridSquare::treasureTexture;
-        default:
-            return GridSquare::waterTexture;
-    }
-}
+#include "Land.h"
+#include "Treasure.h"
+#include "Water.h"
 
 sf::Texture GridSquare::createTexture(std::string name)
 {
@@ -31,7 +15,7 @@ sf::Texture GridSquare::createTexture(std::string name)
     return texture;
 }
 
-GridSquare::GridSquare(Type type,int x,int y) : type{type}, coordinates{x,y}
+GridSquare::GridSquare(int x,int y) : coordinates{x,y}
 {
     edgeOwners[up] = nullptr;
     edgeOwners[down] = nullptr;
@@ -39,13 +23,8 @@ GridSquare::GridSquare(Type type,int x,int y) : type{type}, coordinates{x,y}
     edgeOwners[right] = nullptr;
 }
 
-void GridSquare::draw(sf::RenderTarget& target, sf::RenderStates) const
+void GridSquare::drawGridSquare(sf::RenderTarget& target) const
 {
-    /*drawing the texture*/
-    sf::Sprite sprite;
-    sprite.setTexture(GridSquare::getTexture(type));
-    sprite.setPosition(Map::MARGIN + coordinates.x*Map::GRID_SIDE,Map::MARGIN + coordinates.y*Map::GRID_SIDE);
-    target.draw(sprite);
 
     /*drawing the edges*/
     sf::Vertex line[2];
@@ -114,28 +93,14 @@ std::vector<std::vector<std::unique_ptr<GridSquare>>> GridSquare::createGridSqua
     for(int i = 0; i < height-1; i++){
         for(int j = 0; j < width-1; j++)
             if (std::find(lands.begin(),lands.end(),sf::Vector2i{i,j}) != lands.end())
-                gridSquares[i][j] = std::make_unique<GridSquare>(land,j,i);
+                gridSquares[i][j] = std::make_unique<Land>(j,i);
             else if(std::find(treasures.begin(),treasures.end(),sf::Vector2i{i,j}) != treasures.end())
-                gridSquares[i][j] = std::make_unique<GridSquare>(treasure,j,i);
+                gridSquares[i][j] = std::make_unique<Treasure>(j,i);
             else
-                gridSquares[i][j] = std::make_unique<GridSquare>(water,j,i);
+                gridSquares[i][j] = std::make_unique<Water>(j,i);
     }
 
     return gridSquares;
-}
-
-int GridSquare::getValue() const {
-    switch(type)
-    {
-        case water:
-            return 1;
-        case land:
-            return 5;
-        case treasure:
-           return 20;
-        default:
-            return 0;
-    }
 }
 
 void GridSquare::setNeighbor(Direction direction, GridSquare* gridSquare){
@@ -146,14 +111,6 @@ GridSquare* GridSquare::getNeighbor(Direction direction) const {
     return neighbors.at(direction);
 }
 
-bool GridSquare::isSea() const {
-    return type == water;
-}
-
-bool GridSquare::isLand() const {
-    return type != water;
-}
-
 Player* GridSquare::getOwner(std::unordered_set<const GridSquare*>& previous) const {
     Player* possibleOwner = getPossibleOwner(up);
 
@@ -161,16 +118,6 @@ Player* GridSquare::getOwner(std::unordered_set<const GridSquare*>& previous) co
         return possibleOwner;
     else
         return nullptr;
-}
-
-bool GridSquare::canEnd() const {
-    std::unordered_set<const GridSquare*> unordered_set;
-    switch (type){
-        case treasure:
-            return getOwner(unordered_set) != nullptr;
-        default:
-            return true;
-    }
 }
 
 bool GridSquare::isOwnedBy(const Player* player, std::unordered_set<const GridSquare *>& previous) const{

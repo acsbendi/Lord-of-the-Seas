@@ -12,33 +12,21 @@
 class GridSquare : public sf::Drawable
 {
 private:
-    enum Type {water, land, treasure};
-
-    static sf::Texture waterTexture;
-    static sf::Texture landTexture;
-    static sf::Texture treasureTexture;
-    static sf::Texture createTexture(std::string);
-
-    const Type type;
     std::map<Direction, GridSquare* const> neighbors;
     std::map<Direction,Player*> edgeOwners;
-    const sf::Vector2i coordinates;
 
-    static sf::Texture& getTexture(Type);
     bool isEdgeOwnedBy(Direction, const Player*, std::unordered_set<const GridSquare *>&) const;
 
 public:
-    GridSquare(Type,int,int);
     const Player* getEdgeOwner(Direction) const;
     void setEdgeOwner(Direction,Player*);
-    void draw(sf::RenderTarget&, sf::RenderStates) const override;
     GridSquare* getNeighbor(Direction) const;
     void setNeighbor(Direction, GridSquare*);
-    bool isLand() const;
-    bool isSea() const;
+    virtual bool isLand() const = 0;
+    virtual bool isSea() const = 0;
     static std::vector<std::vector<std::unique_ptr<GridSquare>>> createGridSquares(int,int);
 
-    int getValue() const;
+    virtual int getValue() const = 0;
 
     /**
      * @brief Finds the owner of this GridSquare, if there is one.
@@ -58,7 +46,7 @@ public:
      * @brief Checks whether this GridSquare stops the game from ending.
      * @return True, if this GridSquare doesn't stop the game from ending, false if it does.
      */
-    bool canEnd() const;
+    virtual bool canEnd() const = 0;
 
     /**
      * @brief Checks whether this GridSquare is owned by the specified Player,
@@ -68,7 +56,11 @@ public:
     bool isOwnedBy(const Player* player, std::unordered_set<const GridSquare *>& previous) const;
 
 protected:
+    static sf::Texture createTexture(std::string);
+    void drawGridSquare(sf::RenderTarget& target) const;
+    GridSquare(int,int);
 
+    const sf::Vector2i coordinates;
 };
 
 
