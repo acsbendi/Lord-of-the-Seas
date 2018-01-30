@@ -20,11 +20,14 @@ private:
     static const sf::Texture background;
     sf::Text text1;
     sf::Text text2;
+    const int scoreOfPlayer1;
+    const int scoreOfPlayer2;
 
     void exit();
 public:
     ScoreDisplay(int scoreOfPlayer1,int scoreOfPlayer2);
     void show();
+    void refresh();
 };
 
 

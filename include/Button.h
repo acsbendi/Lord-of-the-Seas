@@ -15,11 +15,13 @@ private:
     const sf::IntRect rect; ///< The coordinates and dimensions of the button's rectangle's top-left corner.
     static const sf::Font font;
     static const sf::Texture texture;
+    bool selected;
 public:
     Button(int x, int y, int width, int height, std::string text, std::function<void()> action);
 
     void draw(sf::RenderTarget &target, sf::RenderStates) const override;
     void onClick(int x, int y) const;
+    bool onMouseMove(int x, int y);
 };
 
 

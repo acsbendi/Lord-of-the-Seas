@@ -54,6 +54,10 @@ void Application::start() {
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 for (const Button& button : buttons)
                     button.onClick(event.mouseButton.x, event.mouseButton.y);
+            } else if(event.type == sf::Event::MouseMoved){
+                for (Button& button : buttons)
+                    button.onMouseMove(event.mouseMove.x, event.mouseMove.y);
+                refresh();
             } else if (event.type == sf::Event::Closed) {
                 end = true;
                 window.close();
