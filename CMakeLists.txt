@@ -19,7 +19,7 @@ add_executable(Lord_of_the_Seas
         src/Movable.cpp
         src/Player.cpp
         src/Ship.cpp
-        src/main.cpp include/IPlayerObserver.h src/GridSquare.cpp include/GridSquare.h include/IUserEventObserver.h include/IWindowEventObserver.h src/Land.cpp include/Land.h src/Treasure.cpp include/Treasure.h src/Water.cpp include/Water.h)
+        src/main.cpp include/IPlayerObserver.h src/GridSquare.cpp include/GridSquare.h include/IUserEventObserver.h include/IWindowEventObserver.h src/Land.cpp include/Land.h src/Treasure.cpp include/Treasure.h src/Water.cpp include/Water.h src/Application.cpp include/Application.h)
 
 include_directories(include)
 

@@ -22,7 +22,7 @@ void Game::checkEnd()
         onExit();
 }
 
-void Game::playGame()
+void Game::playGame(int& scoreOfPlayer1, int& scoreOfPlayer2)
 {
     std::cout << "For movement, use the arrow keys." << std::endl;
     std::cout << "When a ship is next to a land square, press Enter to land your army," << std::endl;
@@ -38,8 +38,8 @@ void Game::playGame()
         }
     }
 
-    std::cout << "First player's score: " << player1->getScore() << std::endl;
-    std::cout << "Second player's score: " << player2->getScore() << std::endl;
+   scoreOfPlayer1 = player1->getScore();
+   scoreOfPlayer2 = player2->getScore();
 }
 
 void Game::onMove(){

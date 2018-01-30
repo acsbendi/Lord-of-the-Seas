@@ -9,7 +9,7 @@
 
 class Treasure : public GridSquare{
 private:
-    static sf::Texture texture;
+    static const sf::Texture texture;
 
 public:
     Treasure(int x,int y);

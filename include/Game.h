@@ -30,10 +30,13 @@ public:
     void onExit() override;
 
     /**
-     * @brief This method has to be called to start the game.
-     * Asks for user input until the game is over, or the user exits the application.
-     */
-    void playGame();
+    * @brief This method has to be called to start the game.
+    * Asks for user input until the game is over, or the user exits the application.
+    * @param scoreOfPlayer1 The final score of the first player.
+    * @param scoreOfPlayer2 The final score of the second player.
+    */
+    void playGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
+
 
 protected:
 

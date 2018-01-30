@@ -96,6 +96,7 @@ class Map : public IPlayerObserver
     std::vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
 
     sf::RenderWindow window; ///< The window on which the map is displayed.
+
 /**
  * @brief Adds the points earned by owning the specified set of squares to the spcified owner.
  * @param ownedSquares The owned squares.
