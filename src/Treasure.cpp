@@ -3,9 +3,9 @@
 //
 
 #include "Treasure.h"
+#include "Graphics.h"
 
-
-const sf::Texture Treasure::texture = GridSquare::createTexture("treasure.png");
+const sf::Texture Treasure::texture = Graphics::createTexture("treasure.png");
 
 Treasure::Treasure(int x, int y) : GridSquare{x,y} { }
 

@@ -4,47 +4,37 @@
 
 #include "Application.h"
 #include "Game.h"
-#include <iostream>
+#include "Graphics.h"
+#include "ScoreDisplay.h"
 
-const sf::Font Application::Button::font = Application::Button::createFont("Garamond Classico SC.ttf");
-const sf::Texture Application::Button::texture = Application::createTexture("button2.png");
-const sf::Texture Application::background = Application::createTexture("menu-background.png");
-
-const sf::Font Application::Button::createFont(std::string fileName){
-    sf::Font font;
-    font.loadFromFile(fileName);
-    return font;
-}
-
-const sf::Texture Application::createTexture(const std::string& fileName)
-{
-    sf::Texture texture;
-    texture.loadFromFile(fileName);
-    return texture;
-}
+const sf::Texture Application::background = Graphics::createTexture("menu-background.png");
 
 Application::Application() : window{sf::VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}, end{false} {
     buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){this->startNewLocalGame();});
     buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){this->startNewOnlineGame();});
-    buttons.emplace_back(100,200,200,50,"          EXIT",[=](){this->exit();});
+    buttons.emplace_back(100,200,200,50,"          EXIT",[&](){this->exit();});
     refresh();
 }
 
-void Application::startNewLocalGame() const {
+void Application::startNewLocalGame(){
+    window.setVisible(false);
     int scoreOfPlayer1 = 0;
     int scoreOfPlayer2 = 0;
     Game game;
     game.playGame(scoreOfPlayer1,scoreOfPlayer2);
-    showScores(scoreOfPlayer1,scoreOfPlayer2);
+    if(scoreOfPlayer1 != 0 || scoreOfPlayer2 != 0)
+        showScores(scoreOfPlayer1,scoreOfPlayer2);
+    window.setVisible(true);
+    refresh();
 }
 
-void Application::startNewOnlineGame() const {
+void Application::startNewOnlineGame(){
 
 }
 
-void Application::showScores(int scoreOfPlayer1, int scoreOfPlayer2) const {
-    std::cout << "First player's score: " << scoreOfPlayer1 << std::endl;
-    std::cout << "Second player's score: " << scoreOfPlayer2 << std::endl;
+void Application::showScores(int scoreOfPlayer1, int scoreOfPlayer2){
+    ScoreDisplay scoreDisplay(scoreOfPlayer1,scoreOfPlayer2);
+    scoreDisplay.show();
 }
 
 void Application::start() {
@@ -71,44 +61,6 @@ void Application::start() {
             }
         }
     }
-}
-
-void Application::Button::draw(sf::RenderTarget &target, sf::RenderStates) const {
-    /*sf::RectangleShape rectangle;
-    rectangle.setSize({width,height});
-    rectangle.setPosition(coordinates);
-    rectangle.setOutlineColor(sf::Color::Red);
-    rectangle.setOutlineThickness(5);
-    target.draw(rectangle);*/
-
-    //showing texture
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.setPosition({static_cast<float >(rect.left), static_cast<float >(rect.top)});
-    sprite.setScale({rect.width / sprite.getLocalBounds().width ,rect.height / sprite.getLocalBounds().height });
-    target.draw(sprite);
-
-    //showing text
-    sf::Text text1{text,font};
-    text1.setPosition({static_cast<float >(rect.left + 29), static_cast<float >(rect.top + 13)});
-    text1.setCharacterSize(19);
-    text1.setStyle(sf::Text::Bold);
-    text1.setFillColor(sf::Color::Black);
-    target.draw(text1);
-}
-
-Application::Button::Button(int x, int y, int width, int height, std::string text, std::function<void()> action)
-        : rect{x,y,width,height}, text{std::move(text)}, action{std::move(action)} {
-
-}
-
-void Application::Button::onClick(int x, int y) const {
-    //transforming x and y into local coordinates (inside the button's rect area)
-    x = x - rect.left;
-    y = y - rect.top;
-    if(x > 0 && y > 0 && x < rect.width && y < rect.height &&
-       (x+y) > 8 && (y + rect.width - x) > 8 && (x + rect.height - y) > 8 && (rect.width - x + rect.height - y) > 10)
-        action();
 }
 
 void Application::exit() {

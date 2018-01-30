@@ -3,9 +3,9 @@
 //
 
 #include "Water.h"
+#include "Graphics.h"
 
-
-sf::Texture Water::texture = GridSquare::createTexture("water.png");
+sf::Texture Water::texture = Graphics::createTexture("water.png");
 
 Water::Water(int x, int y) : GridSquare{x,y} { }
 

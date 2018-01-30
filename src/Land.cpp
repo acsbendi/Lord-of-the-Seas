@@ -3,8 +3,9 @@
 //
 
 #include "Land.h"
+#include "Graphics.h"
 
-sf::Texture Land::texture = GridSquare::createTexture("land.png");
+sf::Texture Land::texture = Graphics::createTexture("land.png");
 
 Land::Land(int x, int y) : GridSquare{x,y} { }
 

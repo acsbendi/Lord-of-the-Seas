@@ -24,10 +24,11 @@ void Game::checkEnd()
 
 void Game::playGame(int& scoreOfPlayer1, int& scoreOfPlayer2)
 {
-    std::cout << "For movement, use the arrow keys." << std::endl;
+    /*std::cout << "For movement, use the arrow keys." << std::endl;
     std::cout << "When a ship is next to a land square, press Enter to land your army," << std::endl;
     std::cout << "then choose the landing square by the arrow keys." << std::endl;
-    std::cout << "If you choose not to disembark your army, press any key other than Enter." << std::endl;
+    std::cout << "If you choose not to disembark your army, press any key other than Enter." << std::endl;*/
+
 
     while(!gameEnd) {
         map.getInput();

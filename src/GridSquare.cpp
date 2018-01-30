@@ -8,12 +8,6 @@
 #include "Treasure.h"
 #include "Water.h"
 
-sf::Texture GridSquare::createTexture(std::string name)
-{
-    sf::Texture texture;
-    texture.loadFromFile(name);
-    return texture;
-}
 
 GridSquare::GridSquare(int x,int y) : coordinates{x,y}
 {
