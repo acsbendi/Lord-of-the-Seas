@@ -149,7 +149,12 @@ void Map::notifyOnDirectionSelected(Direction direction) const {
 }
 
 void Map::getInput(){
-    sf::Event event;
+    std::cout << "getInput" << std::endl;
+
+    sf::Event event{};
+
+    while (window.pollEvent(event));
+
     while(true){
         while (window.pollEvent(event)){
             if(event.type == sf::Event::KeyPressed)

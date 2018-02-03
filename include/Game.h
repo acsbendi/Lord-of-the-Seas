@@ -35,24 +35,26 @@ public:
     * @param scoreOfPlayer1 The final score of the first player.
     * @param scoreOfPlayer2 The final score of the second player.
     */
-    void playGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
+    virtual void playGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
 
 
 protected:
+    Game(std::unique_ptr<Player> player1, std::unique_ptr<Player> player2);
 
-    private:
+/**
+ * @brief Checks if the game has already ended, if so, calls the exit handler function.
+ */
+    void checkEnd();
 
-        Map map; ///< Map object belonging to this Game.
-        std::unique_ptr<Player> player1; ///< The first player playing this game.
-        std::unique_ptr<Player> player2; ///< The second player playing this game.
-        Player* currentPlayer; ///< The player who currently gets to move its pieces.
-        bool gameEnd; ///< Has the game ended?
-        bool turnEnd; ///< Has the turn of the currentPlayer ended?
+    Map map; ///< Map object belonging to this Game.
+    std::unique_ptr<Player> player1; ///< The first player playing this game.
+    std::unique_ptr<Player> player2; ///< The second player playing this game.
+    Player* currentPlayer; ///< The player who currently gets to move its pieces.
+    bool gameEnd; ///< Has the game ended?
+    bool turnEnd; ///< Has the turn of the currentPlayer ended?
 
-    /**
-     * @brief Checks if the game has already ended, if so, calls the exit handler function.
-     */
-        void checkEnd();
+
+private:
 };
 
 #endif // GAME_H

@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Graphics.h"
 #include "ScoreDisplay.h"
+#include "OnlineGame.h"
 
 const sf::Texture Application::background = Graphics::createTexture("menu-background.png");
 
@@ -29,7 +30,15 @@ void Application::startNewLocalGame(){
 }
 
 void Application::startNewOnlineGame(){
-
+    window.setVisible(false);
+    int scoreOfPlayer1 = 0;
+    int scoreOfPlayer2 = 0;
+    OnlineGame onlineGame;
+    onlineGame.playGame(scoreOfPlayer1,scoreOfPlayer2);
+    if(scoreOfPlayer1 != 0 || scoreOfPlayer2 != 0)
+        showScores(scoreOfPlayer1,scoreOfPlayer2);
+    window.setVisible(true);
+    refresh();
 }
 
 void Application::showScores(int scoreOfPlayer1, int scoreOfPlayer2){

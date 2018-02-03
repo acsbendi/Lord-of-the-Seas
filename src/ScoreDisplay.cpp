@@ -56,6 +56,7 @@ void ScoreDisplay::refresh(){
     window.draw(sprite);
     window.draw(okButton);
 
+    //
     if(scoreOfPlayer1 >= scoreOfPlayer2) {
         text1.setPosition(TEXT_X,50);
         text2.setPosition(TEXT_X,100);

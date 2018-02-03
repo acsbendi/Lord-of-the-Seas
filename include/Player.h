@@ -11,42 +11,66 @@
 #include "IPlayerObserver.h"
 #include "IUserEventObserver.h"
 
-class Player : public IUserEventObserver
-{
-    public:
-        explicit Player(sf::Color);
-        Ship* getShip() const;
-        sf::Color getColor() const;
-        void addScore(int);
-        int getScore() const;
-        void attach(IPlayerObserver*);
-        void detach(IPlayerObserver*);
-        void onDirectionSelected(Direction) override;
-        void onConfirmation(bool) override;
-        void yourTurn();
+class Player : public IUserEventObserver {
+public:
+    Player(sf::Color color, const std::string &name);
 
-    protected:
+    Ship *getShip() const;
 
-    private:
-        static int NUMBER_OF_SHIP_MOVES;
-        static int NUMBER_OF_ARMY_MOVES;
+    sf::Color getColor() const;
+
+    void addScore(int scoreToAdd);
+
+    int getScore() const;
+
+    void attach(IPlayerObserver * observer);
+
+    void detach(IPlayerObserver * observer);
+
+    void onDirectionSelected(Direction direction) override;
+
+    void onConfirmation(bool confirmed) override;
+
+    void yourTurn();
+
+protected:
+    std::vector<IPlayerObserver *> observers;
+
+    virtual void confirmed();
+
+    virtual void unconfirmed();
+
+    void landingAccepted();
+
+    void landingDeclined();
 
 
-        std::unique_ptr<Ship> ship;
-        std::unique_ptr<Army> army;
-        std::vector<IPlayerObserver*> observers;
-        const sf::Color color;
-        int score;
-        int successfulMoves;
+private:
+    static int NUMBER_OF_SHIP_MOVES;
+    static int NUMBER_OF_ARMY_MOVES;
 
-        enum State { waitingForTurn, shipMoving, armyMoving, waitingForConfirmation, armyLanding};
-        State state;
 
-        void landArmy();
-        void notifyOnMove() const;
-        void notifyOnTurnEnd() const;
-        void move(Direction);
+    std::unique_ptr<Ship> ship;
+    std::unique_ptr<Army> army;
+    const sf::Color color;
+    const std::string name;
+    int score;
+    int successfulMoves;
 
+    enum State {
+        waitingForTurn, shipMoving, armyMoving, waitingForConfirmation, armyLanding
+    };
+    State state;
+
+    virtual void notifyOnMove(Direction direction) const;
+
+    void notifyOnTurnEnd() const;
+
+    void move(Direction direction);
+
+    void moveShip(Direction direction);
+    void moveArmy(Direction direction);
+    void landArmy(Direction direction);
 };
 
 #endif // PLAYER_H
