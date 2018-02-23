@@ -7,21 +7,27 @@
 
 Server::Server() {
     sf::TcpListener listener;
-    listener.listen(55001);
+    listener.listen(55003);
 
     listener.accept(socket1);
     std::cout << "New client connected: " << socket1.getRemoteAddress() << std::endl;
 
-    std::string message = "first";
+    std::string message = "10";
     socket1.send(message.c_str(), message.size() + 1);
     std::cout << message << " sent" << std::endl;
 
     listener.accept(socket2);
     std::cout << "New client connected: " << socket2.getRemoteAddress() << std::endl;
 
-    message = "second";
+    message = "20";
     socket2.send(message.c_str(), message.size() + 1);
     std::cout << message << " sent" << std::endl;
+
+    socket1.send("s",2);
+    socket2.send("s",2);
+
+    socket1.setBlocking(false);
+    socket1.setBlocking(false);
 }
 
 void Server::start() {
@@ -54,11 +60,15 @@ void Server::start() {
 std::string Server::receiveText(sf::TcpSocket& socket) {
     char buffer[1024];
     std::size_t received = 0;
-    socket.receive(buffer, sizeof(buffer), received);
+    while(socket.receive(buffer, sizeof(buffer), received) == sf::Socket::NotReady)
+        ;
     std::string text{buffer};
     return text;
 }
 
 void Server::sendText(const std::string& message, sf::TcpSocket& socket){
-    socket.send(message.c_str(),message.size() + 1);
+    size_t s = 0;
+    while(socket.send(message.c_str(),message.size() + 1,s) == sf::Socket::NotReady)
+        std::cout << "t";
+    std::cout << s << " sent: " << message << std::endl << std::endl;
 }

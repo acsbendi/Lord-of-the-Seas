@@ -21,7 +21,7 @@ class Map : public IPlayerObserver
         static int MARGIN;  ///< The margin around the grid structure of the map.
 
     /**
-     * @brief Constructs a Map object, also creating the window.
+     * @brief Constructs a Map object, also creating the window. By default the Map is active.
      */
         Map();
 
@@ -83,6 +83,12 @@ class Map : public IPlayerObserver
      */
         void onTurnEnd() override;
 
+    /**
+     * @brief Sets whether the map should create its events or not.
+     * @param active Should the window create events?
+     */
+        void setActive(bool active);
+
     protected:
 
     private:
@@ -96,6 +102,8 @@ class Map : public IPlayerObserver
     std::vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
 
     sf::RenderWindow window; ///< The window on which the map is displayed.
+
+    bool active; ///< Should the window create events?
 
 /**
  * @brief Adds the points earned by owning the specified set of squares to the spcified owner.

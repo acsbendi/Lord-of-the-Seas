@@ -6,6 +6,9 @@
 #include <iostream>
 #include "OnlineGame.h"
 #include "LocalPlayer.h"
+#include <thread>
+#include <cstring>
+
 
 OnlineGame::OnlineGame() : Game(std::make_unique<LocalPlayer>(sf::Color::Red,"Player 1"), std::make_unique<Player>(sf::Color::Magenta, "Player 2")) {
     createConnection();
@@ -13,7 +16,7 @@ OnlineGame::OnlineGame() : Game(std::make_unique<LocalPlayer>(sf::Color::Red,"Pl
 }
 
 void OnlineGame::createConnection(){
-    sf::Socket::Status status = socket.connect("localhost", 55001);
+    sf::Socket::Status status = socket.connect("localhost", 55003);
     if (status != sf::Socket::Done)
     {
         throw std::runtime_error{"Connection to the server could not be established"};
@@ -21,23 +24,30 @@ void OnlineGame::createConnection(){
 }
 
 void OnlineGame::playGame(int &scoreOfPlayer1, int &scoreOfPlayer2) {
-
-    bool firstLocal = receiveText() == "first";
+    bool firstLocal = receiveMessages()[0] == 10;
     if(firstLocal){
         map.initializeGrid(player1.get(), player2.get());
-        currentPlayer = player1.get(); std::cout << "first";}
+        currentPlayer = player1.get();
+    }
     else {
         map.initializeGrid(player2.get(), player1.get());
-        currentPlayer = player2.get(); std::cout << " second ";}
+        map.setActive(false);
+        currentPlayer = player2.get();
+    }
+
+    socket.setBlocking(false);
+
+    //wait for signal to start game
+    while(receiveMessages().empty())
+        map.getInput();
 
     currentPlayer->yourTurn();
 
     while(!gameEnd) {
-        if(player1.get() == currentPlayer)
-            map.getInput();
-        else
-            getRemoteMove();
+        map.getInput();
+        getRemoteMove();
         if(turnEnd){
+            std::cout << "player notifed" << std::endl;
             currentPlayer->yourTurn(); //the notification can only take place after the previous move was entirely completed,
             //so that the current move will only be handled by one player, who is finishing their turn
             turnEnd = false;
@@ -48,13 +58,17 @@ void OnlineGame::playGame(int &scoreOfPlayer1, int &scoreOfPlayer2) {
     scoreOfPlayer2 = player2->getScore();
 }
 
-std::string OnlineGame::receiveText() {
+vector<int> OnlineGame::receiveMessages() {
+    vector<int> res;
+
     char buffer[1024];
     std::size_t received = 0;
-    socket.receive(buffer, sizeof(buffer), received);
-    std::string text{buffer};
-    std::cout << "received : " << text << std::endl;
-    return text;
+    if (socket.receive(buffer, sizeof(buffer), received) == sf::Socket::NotReady)
+        return res;
+    for(int i = 0; i < received;i++)
+        if(buffer[i] != '\0')
+            res.push_back(strtol(&buffer[i], nullptr,10));
+    return res;
 }
 
 void OnlineGame::sendText(std::string message){
@@ -62,19 +76,21 @@ void OnlineGame::sendText(std::string message){
 }
 
 void OnlineGame::getRemoteMove() {
-    std::cout << "getRemote" << std::endl;
-    int received = strtol(receiveText().c_str(), nullptr,10);
-    switch(received){
-        case 4:
-            player2->onConfirmation(true);
-            break;
-        case 5:
-            player2->onConfirmation(false);
-            break;
-        default:
-            player2->onDirectionSelected(static_cast<Direction>(received));
-            break;
-    }
+    vector<int> receivedVector = receiveMessages();
+    for (int received : receivedVector)
+        switch (received) {
+            case 4:
+                player2->onConfirmation(true);
+                break;
+            case 5:
+                player2->onConfirmation(false);
+                break;
+            case -1:
+                return;
+            default:
+                player2->onDirectionSelected(static_cast<Direction>(received));
+                break;
+        }
 }
 
 void OnlineGame::onMove(Direction direction){
@@ -86,9 +102,13 @@ void OnlineGame::onTurnEnd() {
     if(currentPlayer == player1.get()) {
         currentPlayer = player2.get();
         sendText(std::to_string(6));
+        map.setActive(false);
+        //std::thread t{[&](){this->handleRemoteInput();}};
     }
-    else
+    else{
         currentPlayer = player1.get();
+        map.setActive(true);
+    }
     turnEnd = true;
 }
 

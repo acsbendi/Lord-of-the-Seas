@@ -60,3 +60,4 @@ if(SFML_FOUND)
     target_link_libraries(Lord_of_the_Seas_server ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
     target_link_libraries(Lord_of_the_Seas ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 endif()
+

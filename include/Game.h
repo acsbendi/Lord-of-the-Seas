@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "IWindowEventObserver.h"
 
+using std::unique_ptr;
 
 class Game : public IPlayerObserver, public IWindowEventObserver {
 public:
@@ -39,7 +40,7 @@ public:
 
 
 protected:
-    Game(std::unique_ptr<Player> player1, std::unique_ptr<Player> player2);
+    Game(unique_ptr<Player> player1, unique_ptr<Player> player2);
 
 /**
  * @brief Checks if the game has already ended, if so, calls the exit handler function.
@@ -47,8 +48,8 @@ protected:
     void checkEnd();
 
     Map map; ///< Map object belonging to this Game.
-    std::unique_ptr<Player> player1; ///< The first player playing this game.
-    std::unique_ptr<Player> player2; ///< The second player playing this game.
+    unique_ptr<Player> player1; ///< The first player playing this game.
+    unique_ptr<Player> player2; ///< The second player playing this game.
     Player* currentPlayer; ///< The player who currently gets to move its pieces.
     bool gameEnd; ///< Has the game ended?
     bool turnEnd; ///< Has the turn of the currentPlayer ended?

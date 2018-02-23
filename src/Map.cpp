@@ -1,7 +1,6 @@
 #include "Map.h"
 #include <iostream>
 
-
 int Map::WIDTH = 40;
 int Map::HEIGHT = 30;
 int Map::GRID_SIDE = 15;
@@ -9,7 +8,7 @@ int Map::MARGIN = 15;
 
 
 Map::Map() : window{sf::VideoMode(static_cast<unsigned>(Map::GRID_SIDE*(Map::WIDTH-1) + 2*MARGIN),
-                                  static_cast<unsigned>(Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN)),"Lord of the Seas"}
+                                  static_cast<unsigned>(Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN)),"Lord of the Seas"}, active{true}
 {
 
 }
@@ -148,17 +147,23 @@ void Map::notifyOnDirectionSelected(Direction direction) const {
         observer->onDirectionSelected(direction);
 }
 
-void Map::getInput(){
+void Map::getInput() {
     std::cout << "getInput" << std::endl;
 
     sf::Event event{};
+    sf::Context context;
 
+
+    //clearing event queue
     while (window.pollEvent(event));
 
-    while(true){
-        while (window.pollEvent(event)){
-            if(event.type == sf::Event::KeyPressed)
-                switch(event.key.code) {
+    std::cout << "cleared";
+
+    while (true) {
+        while (window.pollEvent(event)) {
+            std::cout << "event";
+            if (active && event.type == sf::Event::KeyPressed){ std::cout << " active" << std::endl;
+                switch (event.key.code) {
                     case sf::Keyboard::Up:
                         notifyOnDirectionSelected(up);
                         return;
@@ -180,16 +185,21 @@ void Map::getInput(){
                     default:
                         notifyOnConfirmation(false);
                         return;
-                }
+                }}
             else if (event.type == sf::Event::Closed) {
                 notifyOnExit();
                 window.close();
                 return;
-            }
+            } else if (!active)
+                return;
         }
     }
 }
 
 void Map::onTurnEnd() {
 
+}
+
+void Map::setActive(bool active) {
+    this->active = active;
 }
