@@ -4,6 +4,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <unordered_set>
+#include <string>
 #include "Ship.h"
 #include "Army.h"
 #include "Enums.h"
@@ -11,38 +12,42 @@
 #include "IPlayerObserver.h"
 #include "IUserEventObserver.h"
 
+using std::string;
+using std::unique_ptr;
+using sf::Color;
+
 class Player : public IUserEventObserver {
 public:
     Player(sf::Color color, const std::string &name);
 
-    Ship *getShip() const;
+    Ship *GetShip() const;
 
-    sf::Color getColor() const;
+    sf::Color GetColor() const;
 
-    void addScore(int scoreToAdd);
+    void AddScore(int scoreToAdd);
 
-    int getScore() const;
+    int GetScore() const;
 
-    void attach(IPlayerObserver * observer);
+    void Attach(IPlayerObserver *observer);
 
-    void detach(IPlayerObserver * observer);
+    void Detach(IPlayerObserver *observer);
 
-    void onDirectionSelected(Direction direction) override;
+    void OnDirectionSelected(Direction direction) override;
 
-    void onConfirmation(bool confirmed) override;
+    void OnConfirmation(bool confirmed) override;
 
-    void yourTurn();
+    void YourTurn();
 
 protected:
     std::vector<IPlayerObserver *> observers;
 
-    virtual void confirmed();
+    virtual void Confirmed();
 
-    virtual void unconfirmed();
+    virtual void Unconfirmed();
 
-    void landingAccepted();
+    void LandingAccepted();
 
-    void landingDeclined();
+    void LandingDeclined();
 
 
 private:
@@ -50,10 +55,10 @@ private:
     static int NUMBER_OF_ARMY_MOVES;
 
 
-    std::unique_ptr<Ship> ship;
-    std::unique_ptr<Army> army;
-    const sf::Color color;
-    const std::string name;
+    unique_ptr<Ship> ship;
+    unique_ptr<Army> army;
+    const Color color;
+    const string name;
     int score;
     int successfulMoves;
 
@@ -62,15 +67,15 @@ private:
     };
     State state;
 
-    virtual void notifyOnMove(Direction direction) const;
+    virtual void NotifyOnMove(Direction direction) const;
 
-    void notifyOnTurnEnd() const;
+    void NotifyOnTurnEnd() const;
 
-    void move(Direction direction);
+    void Move(Direction direction);
 
-    void moveShip(Direction direction);
-    void moveArmy(Direction direction);
-    void landArmy(Direction direction);
+    void MoveShip(Direction direction);
+    void MoveArmy(Direction direction);
+    void LandArmy(Direction direction);
 };
 
 #endif // PLAYER_H

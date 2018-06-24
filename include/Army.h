@@ -14,7 +14,7 @@ class Army : public Movable
     public:
         explicit Army(Player&);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
-        bool move(Direction) override ;
+        bool Move(Direction) override ;
 
     protected:
 

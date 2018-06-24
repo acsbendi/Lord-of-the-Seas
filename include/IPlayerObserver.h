@@ -8,8 +8,8 @@
 
 class IPlayerObserver {
 public:
-    virtual void onTurnEnd() = 0;
-    virtual void onMove() = 0;
+    virtual void OnTurnEnd() = 0;
+    virtual void OnMove() = 0;
     virtual ~IPlayerObserver() = default;
 };
 

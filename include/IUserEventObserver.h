@@ -9,8 +9,8 @@
 
 class IUserEventObserver {
 public:
-    virtual void onConfirmation(bool) = 0;
-    virtual void onDirectionSelected(Direction) = 0;
+    virtual void OnConfirmation(bool) = 0;
+    virtual void OnDirectionSelected(Direction) = 0;
     virtual ~IUserEventObserver() = default;
 };
 

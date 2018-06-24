@@ -20,7 +20,7 @@ class Ship : public Movable
      * Makes the ship move in a specified direction
      * @return Returns whether the movement was successful.
      */
-        bool move(Direction) override;
+        bool Move(Direction) override;
         bool isAtCoast() const;
 
     protected:

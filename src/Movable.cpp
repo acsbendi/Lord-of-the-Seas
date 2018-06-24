@@ -6,17 +6,17 @@ Movable::Movable(Player& player) : currentLocation{nullptr}, owner{player}
 
 }
 
-GridPoint* Movable::getCurrentLocation() const
+GridPoint* Movable::GetCurrentLocation() const
 {
     return currentLocation;
 }
 
-void Movable::setCurrentLocation(GridPoint* cl)
+void Movable::SetCurrentLocation(GridPoint *cl)
 {
     currentLocation = cl;
 }
 
-bool Movable::setEdgeOwners(Direction direction) {
+bool Movable::SetEdgeOwners(Direction direction) {
         switch(direction){
             case up:
                 if(currentLocation->getSquareNeighbor(northwest))

@@ -1,5 +1,6 @@
 #include "Ship.h"
 #include "Map.h"
+#include "GameWindow.h"
 
 const Army* Ship::getArmyOnBoard() const
 {
@@ -15,16 +16,16 @@ void Ship::setArmyOnBoard(const Army* army)
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
     sf::CircleShape circle(4);
-    circle.setPosition(Map::MARGIN + currentLocation->getCoordinates().x*Map::GRID_SIDE-4,
-                       Map::MARGIN + currentLocation->getCoordinates().y*Map::GRID_SIDE-4);
-    circle.setFillColor(owner.getColor());
+    circle.setPosition(GameWindow::MARGIN + currentLocation->getCoordinates().x*GameWindow::GRID_SIDE-4,
+                       GameWindow::MARGIN + currentLocation->getCoordinates().y*GameWindow::GRID_SIDE-4);
+    circle.setFillColor(owner.GetColor());
     target.draw(circle);
 }
 
-bool Ship::move(Direction direction) {
+bool Ship::Move(Direction direction) {
     GridPoint* destination = currentLocation->getPointNeighbor(direction);
     if(destination && destination->enter(this)){
-        setEdgeOwners(direction);
+        SetEdgeOwners(direction);
         currentLocation->exit(this);
         currentLocation = destination;
         return true;

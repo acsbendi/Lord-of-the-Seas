@@ -14,10 +14,10 @@ private:
 public:
     Treasure(int x,int y);
     void draw(sf::RenderTarget& target, sf::RenderStates) const override;
-    int getValue() const override;
-    bool isSea() const override;
-    bool isLand() const override;
-    bool canEnd() const override;
+    int GetValue() const override;
+    bool IsSea() const override;
+    bool IsLand() const override;
+    bool CanEnd() const override;
 };
 
 

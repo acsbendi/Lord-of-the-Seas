@@ -5,26 +5,32 @@
 #ifndef LORD_OF_THE_SEAS_LOCALPLAYER_H
 #define LORD_OF_THE_SEAS_LOCALPLAYER_H
 
+#include <SFML/Graphics/Color.hpp>
+#include <string>
 #include "Player.h"
-#include "ILocalPlayerObserver.h"
+
+using std::string;
+using sf::Color;
+
+class ILocalPlayerObserver;
 
 class LocalPlayer : public Player {
 private:
     std::vector<ILocalPlayerObserver *> localPlayerobservers;
 
-    void notifyOnMove(Direction direction) const override;
+    void NotifyOnMove(Direction direction) const override;
 
-    void notifyOnConfirmation(bool confirmed) const;
+    void NotifyOnConfirmation(bool confirmed) const;
 
-    void confirmed() override;
+    void Confirmed() override;
 
-    void unconfirmed() override;
+    void Unconfirmed() override;
 public:
-    LocalPlayer(sf::Color color, const std::string &name);
+    LocalPlayer(Color color, const string &name);
 
-    void attachLocalPlayerObserver(ILocalPlayerObserver *observer);
+    void AttachLocalPlayerObserver(ILocalPlayerObserver *observer);
 
-    void detachLocalPlayerObserver(ILocalPlayerObserver* observer);
+    void DetachLocalPlayerObserver(ILocalPlayerObserver *observer);
 };
 
 

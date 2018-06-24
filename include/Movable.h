@@ -14,10 +14,10 @@ class Movable : public sf::Drawable
     public:
         explicit Movable(Player&);
         ~Movable() override = default;
-        GridPoint* getCurrentLocation() const;
-        void setCurrentLocation(GridPoint*);
-        bool setEdgeOwners(Direction);
-        virtual bool move(Direction) = 0;
+        GridPoint* GetCurrentLocation() const;
+        void SetCurrentLocation(GridPoint*);
+        bool SetEdgeOwners(Direction);
+        virtual bool Move(Direction) = 0;
 
     protected:
         GridPoint* currentLocation;

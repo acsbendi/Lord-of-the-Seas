@@ -5,27 +5,32 @@
 #ifndef LORD_OF_THE_SEAS_APPLICATION_H
 #define LORD_OF_THE_SEAS_APPLICATION_H
 
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "Button.h"
+
+using std::vector;
+using sf::RenderWindow;
+using sf::Texture;
 
 class Application {
 private:
     static const int WIDTH = 400;
     static const int HEIGHT = 400;
-    static const sf::Texture background;
+    static const Texture background;
     bool end;
-    sf::RenderWindow window;
-    std::vector<Button> buttons;
+    RenderWindow window;
+    vector<Button> buttons;
 
-    void startNewLocalGame();
-    void startNewOnlineGame();
-    void exit();
-    void showScores(int scoreOfPlayer1,int scoreOfPlayer2);
-    void refresh();
+    void StartNewLocalGame();
+    void StartNewOnlineGame();
+    void Exit();
+    void ShowScores(int scoreOfPlayer1, int scoreOfPlayer2);
+    void Refresh();
 
 public:
     Application();
-    void start();
+    void Start();
 };
 
 

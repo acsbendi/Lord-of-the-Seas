@@ -11,75 +11,75 @@ Player::Player(const sf::Color color, const std::string& name) : color{color}, n
     ship->setArmyOnBoard(army.get());
 }
 
-Ship* Player::getShip() const
+Ship* Player::GetShip() const
 {
     return ship.get();
 }
 
-sf::Color Player::getColor() const
+sf::Color Player::GetColor() const
 {
     return color;
 }
 
-int Player::getScore() const
+int Player::GetScore() const
 {
     return score;
 }
 
-void Player::addScore(int scoreToAdd){
+void Player::AddScore(int scoreToAdd){
     score += scoreToAdd;
 }
 
-void Player::move(Direction direction)
+void Player::Move(Direction direction)
 {
     std::cout << "move " << state << " " << successfulMoves <<std::endl;
     switch (state){
         case shipMoving:
-            moveShip(direction);
+            MoveShip(direction);
             break;
         case armyMoving:
-            moveArmy(direction);
+            MoveArmy(direction);
             break;
         case armyLanding:
-            landArmy(direction);
+            LandArmy(direction);
             break;
         default:
             break;
     }
 }
 
-void Player::moveShip(Direction direction){
-    if(ship->move(direction)){
-        notifyOnMove(direction);
+void Player::MoveShip(Direction direction){
+    if(ship->Move(direction)){
+        NotifyOnMove(direction);
         successfulMoves++;
         if(ship->getArmyOnBoard() && ship->isAtCoast())
             state = waitingForConfirmation;
         else if(successfulMoves == NUMBER_OF_SHIP_MOVES){
             successfulMoves = 0;
-            if(army->getCurrentLocation())
+            if(army->GetCurrentLocation())
                 state = armyMoving;
             else{
                 state = waitingForTurn;
-                notifyOnTurnEnd();
+                NotifyOnTurnEnd();
             }
         }
     }
 }
 
-void Player::moveArmy(Direction direction){
-    if(army->move(direction)){
-        notifyOnMove(direction);
+void Player::MoveArmy(Direction direction){
+    if(army->Move(direction)){
+        NotifyOnMove(direction);
         successfulMoves++;
         if(successfulMoves == NUMBER_OF_ARMY_MOVES){
             successfulMoves = 0;
             state = waitingForTurn;
-            notifyOnTurnEnd();
+            NotifyOnTurnEnd();
         }
     }
 }
 
-void Player::landArmy(Direction direction) {
-    if(army->move(direction)){
+void Player::LandArmy(Direction direction) {
+    if(army->Move(direction)){
         if(successfulMoves != NUMBER_OF_SHIP_MOVES)
             state = shipMoving;
         else{
@@ -87,66 +87,66 @@ void Player::landArmy(Direction direction) {
             successfulMoves = 0;
         }
 
-        notifyOnMove(direction);
+        NotifyOnMove(direction);
     }
 }
 
-void Player::landingAccepted(){
+void Player::LandingAccepted(){
     ship->setArmyOnBoard(nullptr);
-    army->setCurrentLocation(ship->getCurrentLocation());
+    army->SetCurrentLocation(ship->GetCurrentLocation());
     state = armyLanding;
 }
 
-void Player::attach(IPlayerObserver* observer){
+void Player::Attach(IPlayerObserver *observer){
     observers.push_back(observer);
 }
 
-void Player::detach(IPlayerObserver* observer){
+void Player::Detach(IPlayerObserver *observer){
     observers.erase(std::remove(observers.begin(),observers.end(),observer),observers.end());
 }
 
-void Player::notifyOnMove(Direction direction) const{
+void Player::NotifyOnMove(Direction direction) const{
     for(IPlayerObserver* observer : observers)
-        observer->onMove();
+        observer->OnMove();
 }
 
-void Player::notifyOnTurnEnd() const{
+void Player::NotifyOnTurnEnd() const{
     for(IPlayerObserver* observer : observers)
-        observer->onTurnEnd();
+        observer->OnTurnEnd();
 }
 
-void Player::onDirectionSelected(Direction direction) {
-    move(direction);
+void Player::OnDirectionSelected(Direction direction) {
+    Move(direction);
 }
 
-void Player::onConfirmation(bool confirmed) {
+void Player::OnConfirmation(bool confirmed) {
     if(state == waitingForConfirmation && confirmed)
-        this->confirmed();
+        this->Confirmed();
     else if(state == waitingForConfirmation){
-        unconfirmed();
+        Unconfirmed();
     }
 }
 
-void Player::yourTurn() {
+void Player::YourTurn() {
     state = shipMoving;
 }
 
-void Player::unconfirmed() {
-    landingDeclined();
+void Player::Unconfirmed() {
+    LandingDeclined();
 }
 
-void Player::confirmed() {
-    landingAccepted();
+void Player::Confirmed() {
+    LandingAccepted();
 }
 
-void Player::landingDeclined() {
+void Player::LandingDeclined() {
     if(successfulMoves == NUMBER_OF_SHIP_MOVES){
         successfulMoves = 0;
-        if(army->getCurrentLocation())
+        if(army->GetCurrentLocation())
             state = armyMoving;
         else{
             state = waitingForTurn;
-            notifyOnTurnEnd();
+            NotifyOnTurnEnd();
         }
     }
     else

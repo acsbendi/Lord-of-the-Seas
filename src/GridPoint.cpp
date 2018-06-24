@@ -59,14 +59,14 @@ void GridPoint::setSquareNeighbor(IntermediateDirection intermediateDirection, G
 }
 
 void GridPoint::finishInitialization() {
-    isLandBool =(squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->isLand()) ||
-                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->isLand()) ||
-                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->isLand()) ||
-                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->isLand());
-    isSeaBool = (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->isSea()) ||
-                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->isSea()) ||
-                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->isSea()) ||
-                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->isSea());
+    isLandBool =(squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsLand()) ||
+                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsLand()) ||
+                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsLand()) ||
+                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsLand());
+    isSeaBool = (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsSea()) ||
+                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsSea()) ||
+                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsSea()) ||
+                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
 }
 
 sf::Vector2i GridPoint::getCoordinates() const

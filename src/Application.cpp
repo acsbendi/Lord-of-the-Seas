@@ -11,49 +11,49 @@
 const sf::Texture Application::background = Graphics::createTexture("menu-background.png");
 
 Application::Application() : window{sf::VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}, end{false} {
-    buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){this->startNewLocalGame();});
-    buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){this->startNewOnlineGame();});
-    buttons.emplace_back(100,200,200,50,"          EXIT",[&](){this->exit();});
-    refresh();
+    buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){ this->StartNewLocalGame();});
+    buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){ this->StartNewOnlineGame();});
+    buttons.emplace_back(100,200,200,50,"          EXIT",[&](){ this->Exit();});
+    Refresh();
 }
 
-void Application::startNewLocalGame(){
+void Application::StartNewLocalGame(){
     window.setVisible(false);
     int scoreOfPlayer1 = 0;
     int scoreOfPlayer2 = 0;
     Game game;
-    game.playGame(scoreOfPlayer1,scoreOfPlayer2);
+    game.PlayGame(scoreOfPlayer1, scoreOfPlayer2);
     if(scoreOfPlayer1 != 0 || scoreOfPlayer2 != 0)
-        showScores(scoreOfPlayer1,scoreOfPlayer2);
+        ShowScores(scoreOfPlayer1, scoreOfPlayer2);
     window.setVisible(true);
-    refresh();
+    Refresh();
 }
 
-void Application::startNewOnlineGame(){
+void Application::StartNewOnlineGame(){
     window.setVisible(false);
     int scoreOfPlayer1 = 0;
     int scoreOfPlayer2 = 0;
     OnlineGame onlineGame;
-    onlineGame.playGame(scoreOfPlayer1,scoreOfPlayer2);
+    onlineGame.PlayGame(scoreOfPlayer1, scoreOfPlayer2);
     if(scoreOfPlayer1 != 0 || scoreOfPlayer2 != 0)
-        showScores(scoreOfPlayer1,scoreOfPlayer2);
+        ShowScores(scoreOfPlayer1, scoreOfPlayer2);
     window.setVisible(true);
-    refresh();
+    Refresh();
 }
 
-void Application::showScores(int scoreOfPlayer1, int scoreOfPlayer2){
+void Application::ShowScores(int scoreOfPlayer1, int scoreOfPlayer2){
     ScoreDisplay scoreDisplay(scoreOfPlayer1,scoreOfPlayer2);
     scoreDisplay.show();
 }
 
-void Application::start() {
+void Application::Start() {
     sf::Event event{};
     while(!end) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::KeyPressed)
                 switch (event.key.code) {
                     case sf::Keyboard::Escape:
-                        exit();
+                        Exit();
                         break;
                     case sf::Keyboard::Return:
                         break;
@@ -66,7 +66,7 @@ void Application::start() {
             } else if(event.type == sf::Event::MouseMoved){
                 for (Button& button : buttons)
                     button.onMouseMove(event.mouseMove.x, event.mouseMove.y);
-                refresh();
+                Refresh();
             } else if (event.type == sf::Event::Closed) {
                 end = true;
                 window.close();
@@ -76,12 +76,12 @@ void Application::start() {
     }
 }
 
-void Application::exit() {
+void Application::Exit() {
     end = true;
     window.close();
 }
 
-void Application::refresh()
+void Application::Refresh()
 {
     window.clear();
     sf::Sprite sprite;

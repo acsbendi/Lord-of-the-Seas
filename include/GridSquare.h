@@ -22,11 +22,11 @@ public:
     void setEdgeOwner(Direction,Player*);
     GridSquare* getNeighbor(Direction) const;
     void setNeighbor(Direction, GridSquare*);
-    virtual bool isLand() const = 0;
-    virtual bool isSea() const = 0;
+    virtual bool IsLand() const = 0;
+    virtual bool IsSea() const = 0;
     static std::vector<std::vector<std::unique_ptr<GridSquare>>> createGridSquares(int,int);
 
-    virtual int getValue() const = 0;
+    virtual int GetValue() const = 0;
 
     /**
      * @brief Finds the owner of this GridSquare, if there is one.
@@ -46,7 +46,7 @@ public:
      * @brief Checks whether this GridSquare stops the game from ending.
      * @return True, if this GridSquare doesn't stop the game from ending, false if it does.
      */
-    virtual bool canEnd() const = 0;
+    virtual bool CanEnd() const = 0;
 
     /**
      * @brief Checks whether this GridSquare is owned by the specified Player,

@@ -4,8 +4,11 @@
 #include "Map.h"
 #include "Player.h"
 #include "IWindowEventObserver.h"
+#include "GameWindow.h"
 
 using std::unique_ptr;
+
+class GameWindow;
 
 class Game : public IPlayerObserver, public IWindowEventObserver {
 public:
@@ -17,18 +20,18 @@ public:
     /**
      * @brief If one player has finished their turn, the other player needs to be notified.
      */
-    void onTurnEnd() override;
+    void OnTurnEnd() override;
 
     /**
      * @brief After every successful move, checks whether the game has ended or not.
      */
-    void onMove() override;
+    void OnMove() override;
 
     /**
      * @brief After the window of the map has been closed,
      * the Game stops asking for user input and the application exits as well.
      */
-    void onExit() override;
+    void OnExit() override;
 
     /**
     * @brief This method has to be called to start the game.
@@ -36,7 +39,7 @@ public:
     * @param scoreOfPlayer1 The final score of the first player.
     * @param scoreOfPlayer2 The final score of the second player.
     */
-    virtual void playGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
+    virtual void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
 
 
 protected:
@@ -45,9 +48,10 @@ protected:
 /**
  * @brief Checks if the game has already ended, if so, calls the exit handler function.
  */
-    void checkEnd();
+    void CheckEnd();
 
-    Map map; ///< Map object belonging to this Game.
+    Map map; ///< Map object belonging to this game.
+    GameWindow gameWindow; ///< The window that shows everything related to this game.
     unique_ptr<Player> player1; ///< The first player playing this game.
     unique_ptr<Player> player2; ///< The second player playing this game.
     Player* currentPlayer; ///< The player who currently gets to move its pieces.

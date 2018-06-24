@@ -2,6 +2,7 @@
 // Created by Bendi on 1/21/2018.
 //
 
+#include "GameWindow.h"
 #include "GridSquare.h"
 #include <iostream>
 #include "Land.h"
@@ -22,43 +23,43 @@ void GridSquare::drawGridSquare(sf::RenderTarget& target) const
 
     /*drawing the edges*/
     sf::Vertex line[2];
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + coordinates.x*Map::GRID_SIDE, Map::MARGIN + coordinates.y*Map::GRID_SIDE));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + (coordinates.y)*Map::GRID_SIDE));
+    line[0] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE, GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE));
+    line[1] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + (coordinates.x+1)*GameWindow::GRID_SIDE, GameWindow::MARGIN + (coordinates.y)*GameWindow::GRID_SIDE));
 
     if(edgeOwners.at(up))
     {
-        line[0].color = edgeOwners.at(up)->getColor();
-        line[1].color = edgeOwners.at(up)->getColor();
+        line[0].color = edgeOwners.at(up)->GetColor();
+        line[1].color = edgeOwners.at(up)->GetColor();
     }
     target.draw(line, 2, sf::Lines);
 
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + coordinates.x*Map::GRID_SIDE+1, Map::MARGIN + coordinates.y*Map::GRID_SIDE));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x)*Map::GRID_SIDE+1, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE));
+    line[0] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE+1, GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE));
+    line[1] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + (coordinates.x)*GameWindow::GRID_SIDE+1, GameWindow::MARGIN + (coordinates.y+1)*GameWindow::GRID_SIDE));
 
     if(edgeOwners.at(left))
     {
-        line[0].color = edgeOwners.at(left)->getColor();
-        line[1].color = edgeOwners.at(left)->getColor();
+        line[0].color = edgeOwners.at(left)->GetColor();
+        line[1].color = edgeOwners.at(left)->GetColor();
     }
     target.draw(line, 2, sf::Lines);
 
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + coordinates.y*Map::GRID_SIDE));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE));
+    line[0] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + (coordinates.x+1)*GameWindow::GRID_SIDE, GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE));
+    line[1] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + (coordinates.x+1)*GameWindow::GRID_SIDE, GameWindow::MARGIN + (coordinates.y+1)*GameWindow::GRID_SIDE));
 
     if(edgeOwners.at(right))
     {
-        line[0].color = edgeOwners.at(right)->getColor();
-        line[1].color = edgeOwners.at(right)->getColor();
+        line[0].color = edgeOwners.at(right)->GetColor();
+        line[1].color = edgeOwners.at(right)->GetColor();
     }
     target.draw(line, 2, sf::Lines);
 
-    line[0] = sf::Vertex(sf::Vector2f(Map::MARGIN + coordinates.x*Map::GRID_SIDE, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE-1));
-    line[1] = sf::Vertex(sf::Vector2f(Map::MARGIN + (coordinates.x+1)*Map::GRID_SIDE, Map::MARGIN + (coordinates.y+1)*Map::GRID_SIDE-1));
+    line[0] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE, GameWindow::MARGIN + (coordinates.y+1)*GameWindow::GRID_SIDE-1));
+    line[1] = sf::Vertex(sf::Vector2f(GameWindow::MARGIN + (coordinates.x+1)*GameWindow::GRID_SIDE, GameWindow::MARGIN + (coordinates.y+1)*GameWindow::GRID_SIDE-1));
 
     if(edgeOwners.at(down))
     {
-        line[0].color = edgeOwners.at(down)->getColor();
-        line[1].color = edgeOwners.at(down)->getColor();
+        line[0].color = edgeOwners.at(down)->GetColor();
+        line[1].color = edgeOwners.at(down)->GetColor();
     }
     target.draw(line, 2, sf::Lines);
 }

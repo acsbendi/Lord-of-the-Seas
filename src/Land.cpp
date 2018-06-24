@@ -4,6 +4,7 @@
 
 #include "Land.h"
 #include "Graphics.h"
+#include "GameWindow.h"
 
 sf::Texture Land::texture = Graphics::createTexture("land.png");
 
@@ -14,24 +15,25 @@ void Land::draw(sf::RenderTarget & target, sf::RenderStates) const {
     /*drawing the texture*/
     sf::Sprite sprite;
     sprite.setTexture(texture);
-    sprite.setPosition(Map::MARGIN + coordinates.x*Map::GRID_SIDE,Map::MARGIN + coordinates.y*Map::GRID_SIDE);
+    sprite.setPosition(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE,
+                       GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE);
     target.draw(sprite);
 
     drawGridSquare(target);
 }
 
-int Land::getValue() const {
+int Land::GetValue() const {
     return 5;
 }
 
-bool Land::isSea() const {
+bool Land::IsSea() const {
     return false;
 }
 
-bool Land::isLand() const {
+bool Land::IsLand() const {
     return true;
 }
 
-bool Land::canEnd() const{
+bool Land::CanEnd() const{
     return true;
 }

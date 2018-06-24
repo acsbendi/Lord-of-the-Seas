@@ -3,7 +3,7 @@
 int main()
 {
     Application application;
-    application.start();
+    application.Start();
 
     return EXIT_SUCCESS;
 }

@@ -1,19 +1,17 @@
 #include "Map.h"
+#include "IMapObserver.hpp"
 #include <iostream>
 
-int Map::WIDTH = 40;
+/*int Map::WIDTH = 40;
 int Map::HEIGHT = 30;
-int Map::GRID_SIDE = 15;
-int Map::MARGIN = 15;
+*/
 
-
-Map::Map() : window{sf::VideoMode(static_cast<unsigned>(Map::GRID_SIDE*(Map::WIDTH-1) + 2*MARGIN),
-                                  static_cast<unsigned>(Map::GRID_SIDE*(Map::HEIGHT-1) + 2*MARGIN)),"Lord of the Seas"}, active{true}
+Map::Map()
 {
 
 }
 
-void Map::initializeGrid(Player* player1, Player* player2)
+void Map::InitializeGrid(Player *player1, Player *player2)
 {
     gridSquares = GridSquare::createGridSquares(WIDTH, HEIGHT);
 
@@ -25,21 +23,26 @@ void Map::initializeGrid(Player* player1, Player* player2)
         for(int j = 0; j < WIDTH; j++)
                 gridPoints[i][j] = std::make_unique<GridPoint>(j,i);
 
-    setNeighbors();
+    SetNeighbors();
 
     for(int i = 0; i < HEIGHT; i++)
         for(int j = 0; j < WIDTH; j++)
             gridPoints[i][j]->finishInitialization();
 
-    gridPoints[0][0]->setMovable(player1->getShip());
-    player1->getShip()->setCurrentLocation(gridPoints[0][0].get());
-    gridPoints[HEIGHT-2][WIDTH-2]->setMovable(player2->getShip());
-    player2->getShip()->setCurrentLocation(gridPoints[HEIGHT-2][WIDTH-2].get());
-    refresh();
+    gridPoints[0][0]->setMovable(player1->GetShip());
+    player1->GetShip()->SetCurrentLocation(gridPoints[0][0].get());
+    gridPoints[HEIGHT-2][WIDTH-2]->setMovable(player2->GetShip());
+    player2->GetShip()->SetCurrentLocation(gridPoints[HEIGHT - 2][WIDTH - 2].get());
+    Notify();
 }
 
-void Map::refresh()
+void Map::Notify()
 {
+    for(IMapObserver* observer : observers)
+        observer->Update(*this);
+}
+
+void Map::Show(RenderWindow& window){
     window.clear();
     for(int i = 0; i < HEIGHT-1; ++i)
         for(int j = 0; j < WIDTH-1; ++j)
@@ -53,15 +56,14 @@ void Map::refresh()
     window.display();
 }
 
-void Map::addPoints(std::unordered_set<const GridSquare*> ownedSquares, Player* owner) const
+void Map::AddPoints(std::unordered_set<const GridSquare *> ownedSquares, Player *owner) const
 {
     for(auto gridSquare : ownedSquares)
-        owner->addScore(gridSquare->getValue());
+        owner->AddScore(gridSquare->GetValue());
 }
 
 
-void Map::countScore() const
-{
+void Map::CountScore() const {
     std::unordered_set<const GridSquare*> checked;
     for(int i = 0; i < HEIGHT-1; ++i)
         for(int j = 0; j < WIDTH-1; ++j)
@@ -71,17 +73,17 @@ void Map::countScore() const
                 Player *owner = gridSquares[i][j]->getOwner(previous);
                 if (owner) {
                     checked.insert(previous.begin(), previous.end());
-                    addPoints(previous, owner);
+                    AddPoints(previous, owner);
                 }
             }
         }
 }
 
-void Map::onMove(){
-    refresh();
+void Map::OnMove(){
+    Notify();
 }
 
-void Map::setNeighbors() {
+void Map::SetNeighbors() {
     for(int i = 0; i < HEIGHT; ++i)
         for(int j = 0; j < WIDTH; ++j){
             //Setting neighbors connections between points and points
@@ -106,100 +108,23 @@ void Map::setNeighbors() {
         }
 }
 
-bool Map::checkEnd(){
+bool Map::CheckEnd(){
     for(const auto& i : gridSquares)
        for(const auto& j : i)
-           if(!j->canEnd())
+           if(!j->CanEnd())
                return false;
     return true;
 }
 
-void Map::attachUserEventObserver(IUserEventObserver * observer){
-    userEventObservers.push_back(observer);
-}
-
-void Map::detachUserEventObserver(IUserEventObserver * observer){
-    userEventObservers.erase(std::remove(userEventObservers.begin(),
-                                         userEventObservers.end(),observer),userEventObservers.end());
-}
-
-void Map::attachWindowEventObserver(IWindowEventObserver * observer){
-    windowEventObservers.push_back(observer);
-}
-
-void Map::detachWindowEventObserver(IWindowEventObserver * observer){
-    windowEventObservers.erase(std::remove(windowEventObservers.begin(),
-                                           windowEventObservers.end(),observer),windowEventObservers.end());
-}
-
-void Map::notifyOnExit() const {
-    for(auto observer : windowEventObservers)
-        observer->onExit();
-}
-
-void Map::notifyOnConfirmation(bool confirmed) const {
-    for(auto observer : userEventObservers)
-        observer->onConfirmation(confirmed);
-}
-
-void Map::notifyOnDirectionSelected(Direction direction) const {
-    for(auto observer : userEventObservers)
-        observer->onDirectionSelected(direction);
-}
-
-void Map::getInput() {
-    std::cout << "getInput" << std::endl;
-
-    sf::Event event{};
-    sf::Context context;
-
-
-    //clearing event queue
-    while (window.pollEvent(event));
-
-    std::cout << "cleared";
-
-    while (true) {
-        while (window.pollEvent(event)) {
-            std::cout << "event";
-            if (active && event.type == sf::Event::KeyPressed){ std::cout << " active" << std::endl;
-                switch (event.key.code) {
-                    case sf::Keyboard::Up:
-                        notifyOnDirectionSelected(up);
-                        return;
-                    case sf::Keyboard::Down:
-                        notifyOnDirectionSelected(down);
-                        return;
-                    case sf::Keyboard::Right:
-                        notifyOnDirectionSelected(right);
-                        return;
-                    case sf::Keyboard::Left:
-                        notifyOnDirectionSelected(left);
-                        return;
-                    case sf::Keyboard::Escape:
-                        notifyOnExit();
-                        return;
-                    case sf::Keyboard::Return:
-                        notifyOnConfirmation(true);
-                        return;
-                    default:
-                        notifyOnConfirmation(false);
-                        return;
-                }}
-            else if (event.type == sf::Event::Closed) {
-                notifyOnExit();
-                window.close();
-                return;
-            } else if (!active)
-                return;
-        }
-    }
-}
-
-void Map::onTurnEnd() {
+void Map::OnTurnEnd() {
 
 }
 
-void Map::setActive(bool active) {
-    this->active = active;
+void Map::Attach(IMapObserver *observer) {
+    observers.push_back(observer);
+}
+
+void Map::Detach(IMapObserver *observer) {
+    observers.erase(std::remove(observers.begin(),
+                                observers.end(),observer),observers.end());
 }

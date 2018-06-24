@@ -41,14 +41,14 @@ private:
      * @brief Creates a connection to the server.
      */
     void createConnection();
-    void onExit() override;
+    void OnExit() override;
 
 public:
     OnlineGame();
-    void playGame(int &scoreOfPlayer1, int &scoreOfPlayer2) override;
-    void onMove(Direction direction) override;
-    void onTurnEnd() override;
-    void onConfirmation(bool confirmed) override;
+    void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) override;
+    void OnMove(Direction direction) override;
+    void OnTurnEnd() override;
+    void OnConfirmation(bool confirmed) override;
 };
 
 

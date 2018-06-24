@@ -10,8 +10,8 @@
 
 class ILocalPlayerObserver{
 public:
-    virtual void onConfirmation(bool) = 0;
-    virtual void onMove(Direction) = 0;
+    virtual void OnConfirmation(bool) = 0;
+    virtual void OnMove(Direction) = 0;
     virtual ~ILocalPlayerObserver() = default;
 };
 

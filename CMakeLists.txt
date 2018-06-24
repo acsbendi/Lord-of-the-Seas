@@ -3,6 +3,8 @@ project(Lord_of_the_Seas)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+
 add_executable(Lord_of_the_Seas
         include/Army.h
         include/Enums.h
@@ -41,7 +43,7 @@ add_executable(Lord_of_the_Seas
         src/OnlineGame.cpp
         include/OnlineGame.h
         src/LocalPlayer.cpp
-        include/LocalPlayer.h include/ILocalPlayerObserver.h)
+        include/LocalPlayer.h include/ILocalPlayerObserver.h src/GameWindow.cpp include/GameWindow.h include/IMapObserver.hpp)
 
 add_executable(Lord_of_the_Seas_server src/Server.cpp include/Server.h src/server_main.cpp)
 
@@ -51,7 +53,6 @@ set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_ROOT "C:/Program Files/SFML-2.4.2")
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 find_package(SFML 2 REQUIRED graphics network audio window system)
 
 if(SFML_FOUND)

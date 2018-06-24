@@ -1,25 +1,27 @@
 #include "Army.h"
-#include "Map.h"
+#include "GameWindow.h"
+#include "Player.h"
 #include <iostream>
+
 Army::Army(Player& player) : Movable(player)
 {
 
 }
 
-void Army::draw(sf::RenderTarget& target, sf::RenderStates) const
+void Army::draw(sf::RenderTarget& target, sf::RenderStates rs) const
 {
     sf::RectangleShape rect(sf::Vector2f(6,6));
-    rect.setPosition(Map::MARGIN + currentLocation->getCoordinates().x*Map::GRID_SIDE-3,
-                       Map::MARGIN + currentLocation->getCoordinates().y*Map::GRID_SIDE-3);
-    rect.setFillColor(owner.getColor());
+    rect.setPosition(GameWindow::MARGIN + currentLocation->getCoordinates().x*GameWindow::GRID_SIDE-3,
+                     GameWindow::MARGIN + currentLocation->getCoordinates().y*GameWindow::GRID_SIDE-3);
+    rect.setFillColor(owner.GetColor());
     target.draw(rect);
 }
 
-bool Army::move(Direction direction) {
+bool Army::Move(Direction direction) {
     std::cout << "army move";
     GridPoint* destination = currentLocation->getPointNeighbor(direction);
     if(destination && destination->enter(this)){
-        setEdgeOwners(direction);
+        SetEdgeOwners(direction);
         currentLocation->exit(this);
         currentLocation = destination;
         return true;

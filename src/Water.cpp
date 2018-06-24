@@ -4,6 +4,7 @@
 
 #include "Water.h"
 #include "Graphics.h"
+#include "GameWindow.h"
 
 sf::Texture Water::texture = Graphics::createTexture("water.png");
 
@@ -14,24 +15,24 @@ void Water::draw(sf::RenderTarget & target, sf::RenderStates) const {
     /*drawing the texture*/
     sf::Sprite sprite;
     sprite.setTexture(texture);
-    sprite.setPosition(Map::MARGIN + coordinates.x*Map::GRID_SIDE,Map::MARGIN + coordinates.y*Map::GRID_SIDE);
+    sprite.setPosition(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE,GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE);
     target.draw(sprite);
 
     drawGridSquare(target);
 }
 
-int Water::getValue() const {
+int Water::GetValue() const {
     return 1;
 }
 
-bool Water::isSea() const {
+bool Water::IsSea() const {
     return true;
 }
 
-bool Water::isLand() const {
+bool Water::IsLand() const {
     return false;
 }
 
-bool Water::canEnd() const{
+bool Water::CanEnd() const{
     return true;
 }

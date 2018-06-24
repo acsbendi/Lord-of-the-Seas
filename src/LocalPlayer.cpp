@@ -3,37 +3,38 @@
 //
 
 #include "LocalPlayer.h"
+#include "ILocalPlayerObserver.h"
 
 LocalPlayer::LocalPlayer(sf::Color color, const std::string &name) : Player{color,name}{
 
 }
 
-void LocalPlayer::attachLocalPlayerObserver(ILocalPlayerObserver* observer){
+void LocalPlayer::AttachLocalPlayerObserver(ILocalPlayerObserver *observer){
     localPlayerobservers.push_back(observer);
 }
 
-void LocalPlayer::detachLocalPlayerObserver(ILocalPlayerObserver* observer){
+void LocalPlayer::DetachLocalPlayerObserver(ILocalPlayerObserver *observer){
     localPlayerobservers.erase(std::remove(localPlayerobservers.begin(),localPlayerobservers.end(),observer),localPlayerobservers.end());
 }
 
-void LocalPlayer::notifyOnMove(Direction direction) const{
+void LocalPlayer::NotifyOnMove(Direction direction) const{
     for(ILocalPlayerObserver* observer : localPlayerobservers)
-        observer->onMove(direction);
+        observer->OnMove(direction);
     for(IPlayerObserver* observer : observers)
-        observer->onMove();
+        observer->OnMove();
 }
 
-void LocalPlayer::notifyOnConfirmation(bool confirmed) const{
+void LocalPlayer::NotifyOnConfirmation(bool confirmed) const{
     for(ILocalPlayerObserver* observer : localPlayerobservers)
-        observer->onConfirmation(confirmed);
+        observer->OnConfirmation(confirmed);
 }
 
-void LocalPlayer::confirmed(){
-    notifyOnConfirmation(true);
-    landingAccepted();
+void LocalPlayer::Confirmed(){
+    NotifyOnConfirmation(true);
+    LandingAccepted();
 }
 
-void LocalPlayer::unconfirmed(){
-    notifyOnConfirmation(false);
-    landingAccepted();
+void LocalPlayer::Unconfirmed(){
+    NotifyOnConfirmation(false);
+    LandingAccepted();
 }

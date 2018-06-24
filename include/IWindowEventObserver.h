@@ -8,7 +8,7 @@
 
 class IWindowEventObserver {
 public:
-    virtual void onExit() = 0;
+    virtual void OnExit() = 0;
     virtual ~IWindowEventObserver() = default;
 };
 
