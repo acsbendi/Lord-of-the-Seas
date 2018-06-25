@@ -13,15 +13,15 @@ class Ship : public Movable
 {
     public:
         explicit Ship(Player& player);
-        const Army* getArmyOnBoard() const;
-        void setArmyOnBoard(const Army*);
+        const Army* GetArmyOnBoard() const;
+        void SetArmyOnBoard(const Army *);
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
     /*!
      * Makes the ship move in a specified direction
      * @return Returns whether the movement was successful.
      */
         bool Move(Direction) override;
-        bool isAtCoast() const;
+        bool IsAtCoast() const;
 
     protected:
 

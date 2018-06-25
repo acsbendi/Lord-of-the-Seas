@@ -8,7 +8,7 @@ Player::Player(const sf::Color color, const std::string& name) : color{color}, n
 {
     ship = std::make_unique<Ship>(*this);
     army = std::make_unique<Army>(*this);
-    ship->setArmyOnBoard(army.get());
+    ship->SetArmyOnBoard(army.get());
 }
 
 Ship* Player::GetShip() const
@@ -52,7 +52,7 @@ void Player::MoveShip(Direction direction){
     if(ship->Move(direction)){
         NotifyOnMove(direction);
         successfulMoves++;
-        if(ship->getArmyOnBoard() && ship->isAtCoast())
+        if(ship->GetArmyOnBoard() && ship->IsAtCoast())
             state = waitingForConfirmation;
         else if(successfulMoves == NUMBER_OF_SHIP_MOVES){
             successfulMoves = 0;
@@ -92,7 +92,7 @@ void Player::LandArmy(Direction direction) {
 }
 
 void Player::LandingAccepted(){
-    ship->setArmyOnBoard(nullptr);
+    ship->SetArmyOnBoard(nullptr);
     army->SetCurrentLocation(ship->GetCurrentLocation());
     state = armyLanding;
 }
@@ -105,7 +105,7 @@ void Player::Detach(IPlayerObserver *observer){
     observers.erase(std::remove(observers.begin(),observers.end(),observer),observers.end());
 }
 
-void Player::NotifyOnMove(Direction direction) const{
+void Player::NotifyOnMove(Direction) const{
     for(IPlayerObserver* observer : observers)
         observer->OnMove();
 }

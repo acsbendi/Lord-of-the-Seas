@@ -6,7 +6,7 @@
 #include "Graphics.h"
 #include "GameWindow.h"
 
-sf::Texture Land::texture = Graphics::createTexture("land.png");
+sf::Texture Land::texture = Graphics::CreateTexture("land.png");
 
 Land::Land(int x, int y) : GridSquare{x,y} { }
 
@@ -19,7 +19,7 @@ void Land::draw(sf::RenderTarget & target, sf::RenderStates) const {
                        GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE);
     target.draw(sprite);
 
-    drawGridSquare(target);
+    DrawGridSquare(target);
 }
 
 int Land::GetValue() const {

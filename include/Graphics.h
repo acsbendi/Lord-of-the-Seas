@@ -5,18 +5,23 @@
 #ifndef LORD_OF_THE_SEAS_GRAPHICS_H
 #define LORD_OF_THE_SEAS_GRAPHICS_H
 
+#include <string>
 #include <SFML/Graphics.hpp>
 
+using std::string;
+using sf::Texture;
+using sf::Font;
+
 namespace Graphics{
-    inline sf::Texture createTexture(const std::string& fileName)
+    inline Texture CreateTexture(const string& fileName)
     {
-        sf::Texture texture;
+        Texture texture;
         texture.loadFromFile(fileName);
         return texture;
     }
 
-    inline const sf::Font createFont(const std::string& fileName){
-        sf::Font font;
+    inline const sf::Font CreateFont(const string& fileName){
+        Font font;
         font.loadFromFile(fileName);
         return font;
     }

@@ -1,5 +1,7 @@
 #include "GridPoint.h"
 #include "GridSquare.h"
+#include "Army.h"
+#include "Ship.h"
 #include <iostream>
 
 GridPoint::GridPoint(int x, int y) : movable{nullptr}, coordinates{x,y}
@@ -7,25 +9,25 @@ GridPoint::GridPoint(int x, int y) : movable{nullptr}, coordinates{x,y}
 
 }
 
-Movable* GridPoint::getMovable() const
+Movable* GridPoint::GetMovable() const
 {
     return movable;
 }
 
-void GridPoint::setMovable(Movable* m)
+void GridPoint::SetMovable(Movable* m)
 {
     movable = m;
 }
 
-GridPoint* GridPoint::getPointNeighbor(Direction direction) const{
+GridPoint* GridPoint::GetPointNeighbor(Direction direction) const{
     return pointNeighbors.at(direction);
 }
 
-GridSquare* GridPoint::getSquareNeighbor(IntermediateDirection intermediateDirection) const {
+GridSquare* GridPoint::GetSquareNeighbor(IntermediateDirection intermediateDirection) const {
     return squareNeighbors.at(intermediateDirection);
 }
 
-bool GridPoint::enter(Army* coming) {
+bool GridPoint::Enter(Army* coming) {
     if(movable) return false; //this point is occupied
 
     if(!isLandBool)
@@ -35,7 +37,7 @@ bool GridPoint::enter(Army* coming) {
     return true;
 }
 
-bool GridPoint::enter(Ship* coming) {
+bool GridPoint::Enter(Ship* coming) {
     if(movable) return false; //this point is occupied
 
     if(!isSeaBool)
@@ -45,20 +47,20 @@ bool GridPoint::enter(Ship* coming) {
     return true;
 }
 
-void GridPoint::exit(Movable* leaving) {
+void GridPoint::Exit(Movable* leaving) {
     if(leaving == movable)
         movable= nullptr;
 }
 
-void GridPoint::setPointNeighbor(Direction direction, GridPoint* gridPoint) {
+void GridPoint::SetPointNeighbor(Direction direction, GridPoint* gridPoint) {
     pointNeighbors.insert(std::pair<Direction,GridPoint* const>(direction,gridPoint));
 }
 
-void GridPoint::setSquareNeighbor(IntermediateDirection intermediateDirection, GridSquare *gridSquare) {
+void GridPoint::SetSquareNeighbor(IntermediateDirection intermediateDirection, GridSquare* gridSquare) {
     squareNeighbors.insert(std::pair<IntermediateDirection,GridSquare* const>(intermediateDirection,gridSquare));
 }
 
-void GridPoint::finishInitialization() {
+void GridPoint::FinishInitialization() {
     isLandBool =(squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsLand()) ||
                 (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsLand()) ||
                 (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsLand()) ||
@@ -69,12 +71,12 @@ void GridPoint::finishInitialization() {
                 (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
 }
 
-sf::Vector2i GridPoint::getCoordinates() const
+sf::Vector2i GridPoint::GetCoordinates() const
 {
     return coordinates;
 }
 
-bool GridPoint::isLand() const{
+bool GridPoint::IsLand() const{
     return isLandBool;
 }
 

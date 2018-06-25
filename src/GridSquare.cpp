@@ -8,7 +8,7 @@
 #include "Land.h"
 #include "Treasure.h"
 #include "Water.h"
-
+#include "Player.h"
 
 GridSquare::GridSquare(int x,int y) : coordinates{x,y}
 {
@@ -18,7 +18,7 @@ GridSquare::GridSquare(int x,int y) : coordinates{x,y}
     edgeOwners[right] = nullptr;
 }
 
-void GridSquare::drawGridSquare(sf::RenderTarget& target) const
+void GridSquare::DrawGridSquare(sf::RenderTarget& target) const
 {
 
     /*drawing the edges*/
@@ -64,17 +64,12 @@ void GridSquare::drawGridSquare(sf::RenderTarget& target) const
     target.draw(line, 2, sf::Lines);
 }
 
-void GridSquare::setEdgeOwner(Direction direction,Player* player)
+void GridSquare::SetEdgeOwner(Direction direction, Player* player)
 {
     edgeOwners[direction] = player;
 }
 
-const Player* GridSquare::getEdgeOwner(Direction direction) const
-{
-    return edgeOwners.at(direction);
-}
-
-std::vector<std::vector<std::unique_ptr<GridSquare>>> GridSquare::createGridSquares(int width, int height)
+std::vector<std::vector<std::unique_ptr<GridSquare>>> GridSquare::CreateGridSquares(int width, int height)
 {
     std::vector<std::vector<std::unique_ptr<GridSquare>>> gridSquares;
     std::vector<sf::Vector2i> lands = {{19,20},{21,20},{20,21},{20,22},{20,19},{19,19},{19,18},
@@ -98,38 +93,37 @@ std::vector<std::vector<std::unique_ptr<GridSquare>>> GridSquare::createGridSqua
     return gridSquares;
 }
 
-void GridSquare::setNeighbor(Direction direction, GridSquare* gridSquare){
+void GridSquare::SetNeighbor(Direction direction, GridSquare* gridSquare){
     neighbors.insert(std::pair<Direction,GridSquare* const>(direction,gridSquare));
 }
 
-GridSquare* GridSquare::getNeighbor(Direction direction) const {
-    return neighbors.at(direction);
-}
+Player* GridSquare::GetOwner(std::unordered_set<const GridSquare*>& previous) const {
+    Player* possibleOwner = GetPossibleOwner(up);
 
-Player* GridSquare::getOwner(std::unordered_set<const GridSquare*>& previous) const {
-    Player* possibleOwner = getPossibleOwner(up);
-
-    if(isOwnedBy(possibleOwner,previous))
+    if(IsOwnedBy(possibleOwner, previous))
         return possibleOwner;
     else
         return nullptr;
 }
 
-bool GridSquare::isOwnedBy(const Player* player, std::unordered_set<const GridSquare *>& previous) const{
+bool GridSquare::IsOwnedBy(const Player* player, std::unordered_set<const GridSquare*>& previous) const{
     previous.insert(this);
-    return isEdgeOwnedBy(up,player,previous) && isEdgeOwnedBy(down,player,previous) &&
-           isEdgeOwnedBy(right,player,previous) && isEdgeOwnedBy(left,player,previous);
+    return IsEdgeOwnedBy(up, player, previous) && IsEdgeOwnedBy(down, player, previous) &&
+            IsEdgeOwnedBy(right, player, previous) && IsEdgeOwnedBy(left, player, previous);
 }
 
-bool GridSquare::isEdgeOwnedBy(Direction direction, const Player* player, std::unordered_set<const GridSquare *>& previous) const{
+bool GridSquare::IsEdgeOwnedBy(Direction direction, const Player* player,
+                               std::unordered_set<const GridSquare*>& previous) const{
     return edgeOwners.at(direction) == player ||
            (neighbors.at(direction) && (previous.find(neighbors.at(direction)) != previous.end() ||
-                                        neighbors.at(direction)->isOwnedBy(player,previous)));
+                   neighbors.at(direction)->IsOwnedBy(player, previous)));
 }
 
-Player* GridSquare::getPossibleOwner(Direction direction) const{
-    return edgeOwners.at(up) ? edgeOwners.at(up) : edgeOwners.at(down) ?
-           edgeOwners.at(down) : edgeOwners.at(right) ? edgeOwners.at(right) :
-           edgeOwners.at(left) ? edgeOwners.at(left) : neighbors.at(direction) ?
-           neighbors.at(direction)->getPossibleOwner(direction) : nullptr;
+Player* GridSquare::GetPossibleOwner(Direction direction) const{
+    return edgeOwners.at(up) ? edgeOwners.at(up) :
+           edgeOwners.at(down) ? edgeOwners.at(down) :
+           edgeOwners.at(right) ? edgeOwners.at(right) :
+           edgeOwners.at(left) ? edgeOwners.at(left) :
+           neighbors.at(direction) ? neighbors.at(direction)->GetPossibleOwner(direction) :
+           nullptr;
 }

@@ -8,26 +8,31 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 
+using sf::Text;
+using sf::RenderWindow;
+using sf::Font;
+using sf::Texture;
+
 class ScoreDisplay{
 private:
     bool end;
-    static const int WIDTH = 400;
-    static const int HEIGHT = 400;
-    static const int TEXT_X = 165;
+    static constexpr int WIDTH = 400;
+    static constexpr int HEIGHT = 400;
+    static constexpr int TEXT_X = 165;
     Button okButton;
-    sf::RenderWindow window;
-    static const sf::Font font;
-    static const sf::Texture background;
-    sf::Text text1;
-    sf::Text text2;
+    RenderWindow window;
+    static const Font font;
+    static const Texture background;
+    Text text1;
+    Text text2;
     const int scoreOfPlayer1;
     const int scoreOfPlayer2;
 
-    void exit();
+    void Exit();
 public:
     ScoreDisplay(int scoreOfPlayer1,int scoreOfPlayer2);
-    void show();
-    void refresh();
+    void Show();
+    void Refresh();
 };
 
 

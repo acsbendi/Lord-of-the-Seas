@@ -1,5 +1,6 @@
 #include "Movable.h"
 #include "GridSquare.h"
+#include "GridPoint.h"
 
 Movable::Movable(Player& player) : currentLocation{nullptr}, owner{player}
 {
@@ -19,29 +20,29 @@ void Movable::SetCurrentLocation(GridPoint *cl)
 bool Movable::SetEdgeOwners(Direction direction) {
         switch(direction){
             case up:
-                if(currentLocation->getSquareNeighbor(northwest))
-                    currentLocation->getSquareNeighbor(northwest)->setEdgeOwner(right,&owner);
-                if(currentLocation->getSquareNeighbor(northeast) )
-                    currentLocation->getSquareNeighbor(northeast)->setEdgeOwner(left,&owner);
+                if(currentLocation->GetSquareNeighbor(northwest))
+                    currentLocation->GetSquareNeighbor(northwest)->SetEdgeOwner(right, &owner);
+                if(currentLocation->GetSquareNeighbor(northeast) )
+                    currentLocation->GetSquareNeighbor(northeast)->SetEdgeOwner(left, &owner);
                 break;
             case down:
-                if(currentLocation->getSquareNeighbor(southwest))
-                    currentLocation->getSquareNeighbor(southwest)->setEdgeOwner(right,&owner);
-                if(currentLocation->getSquareNeighbor(southeast) )
-                    currentLocation->getSquareNeighbor(southeast)->setEdgeOwner(left,&owner);
+                if(currentLocation->GetSquareNeighbor(southwest))
+                    currentLocation->GetSquareNeighbor(southwest)->SetEdgeOwner(right, &owner);
+                if(currentLocation->GetSquareNeighbor(southeast) )
+                    currentLocation->GetSquareNeighbor(southeast)->SetEdgeOwner(left, &owner);
                 break;
             case left:
-                if(currentLocation->getSquareNeighbor(northwest))
-                    currentLocation->getSquareNeighbor(northwest)->setEdgeOwner(down,&owner);
-                if(currentLocation->getSquareNeighbor(southwest) )
-                    currentLocation->getSquareNeighbor(southwest)->setEdgeOwner(up,&owner);
+                if(currentLocation->GetSquareNeighbor(northwest))
+                    currentLocation->GetSquareNeighbor(northwest)->SetEdgeOwner(down, &owner);
+                if(currentLocation->GetSquareNeighbor(southwest) )
+                    currentLocation->GetSquareNeighbor(southwest)->SetEdgeOwner(up, &owner);
                 break;
 
             case right:
-                if(currentLocation->getSquareNeighbor(northeast))
-                    currentLocation->getSquareNeighbor(northeast)->setEdgeOwner(down,&owner);
-                if(currentLocation->getSquareNeighbor(southeast) )
-                    currentLocation->getSquareNeighbor(southeast)->setEdgeOwner(up,&owner);
+                if(currentLocation->GetSquareNeighbor(northeast))
+                    currentLocation->GetSquareNeighbor(northeast)->SetEdgeOwner(down, &owner);
+                if(currentLocation->GetSquareNeighbor(southeast) )
+                    currentLocation->GetSquareNeighbor(southeast)->SetEdgeOwner(up, &owner);
                 break;
         }
 }

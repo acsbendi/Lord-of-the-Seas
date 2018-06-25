@@ -6,7 +6,7 @@
 int main()
 {
     Server server;
-    server.start();
+    server.Start();
 
     return 0;
 }

@@ -8,20 +8,28 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 
+using std::string;
+using std::function;
+using sf::IntRect;
+using sf::Font;
+using sf::Texture;
+using sf::RenderTarget;
+using sf::RenderStates;
+
 class Button : public sf::Drawable{
 private:
-    const std::function<void()> action;
-    const std::string text;
-    const sf::IntRect rect; ///< The coordinates and dimensions of the button's rectangle's top-left corner.
-    static const sf::Font font;
-    static const sf::Texture texture;
+    const function<void()> action;
+    const string text;
+    const IntRect rect; ///< The coordinates and dimensions of the button's rectangle's top-left corner.
+    static const Font font;
+    static const Texture texture;
     bool selected;
 public:
-    Button(int x, int y, int width, int height, std::string text, std::function<void()> action);
+    Button(int x, int y, int width, int height, string text, function<void()> action);
 
-    void draw(sf::RenderTarget &target, sf::RenderStates) const override;
-    void onClick(int x, int y) const;
-    bool onMouseMove(int x, int y);
+    void draw(RenderTarget &target, RenderStates) const override;
+    void OnClick(int x, int y) const;
+    bool OnMouseMove(int x, int y);
 };
 
 

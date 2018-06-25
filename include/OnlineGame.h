@@ -26,21 +26,21 @@ private:
      * @brief Waits for the remote player's move and notifies the Player instance that
      * represents the remote player.
      */
-    void getRemoteMove();
+    void GetRemoteMove();
     /**
      * @brief Checks if the server has sent messages and returns them in a vector.
      * @return The vector containing the messages received from the server, empty if no messages were sent.
      */
-    vector<int> receiveMessages() ;
+    vector<int> ReceiveMessages() ;
     /**
      * @brief Sends a text message to the server.
      * @param message The text to be sent.
      */
-    void sendText(string message);
+    void SendText(string message);
     /**
      * @brief Creates a connection to the server.
      */
-    void createConnection();
+    void CreateConnection();
     void OnExit() override;
 
 public:

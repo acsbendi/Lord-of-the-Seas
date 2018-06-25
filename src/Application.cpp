@@ -8,7 +8,7 @@
 #include "ScoreDisplay.h"
 #include "OnlineGame.h"
 
-const sf::Texture Application::background = Graphics::createTexture("menu-background.png");
+const sf::Texture Application::background = Graphics::CreateTexture("menu-background.png");
 
 Application::Application() : window{sf::VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}, end{false} {
     buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){ this->StartNewLocalGame();});
@@ -43,7 +43,7 @@ void Application::StartNewOnlineGame(){
 
 void Application::ShowScores(int scoreOfPlayer1, int scoreOfPlayer2){
     ScoreDisplay scoreDisplay(scoreOfPlayer1,scoreOfPlayer2);
-    scoreDisplay.show();
+    scoreDisplay.Show();
 }
 
 void Application::Start() {
@@ -62,10 +62,10 @@ void Application::Start() {
                 }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 for (const Button& button : buttons)
-                    button.onClick(event.mouseButton.x, event.mouseButton.y);
+                    button.OnClick(event.mouseButton.x, event.mouseButton.y);
             } else if(event.type == sf::Event::MouseMoved){
                 for (Button& button : buttons)
-                    button.onMouseMove(event.mouseMove.x, event.mouseMove.y);
+                    button.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
                 Refresh();
             } else if (event.type == sf::Event::Closed) {
                 end = true;

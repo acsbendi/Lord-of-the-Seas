@@ -2,13 +2,13 @@
 #include "Map.h"
 #include "GameWindow.h"
 
-const Army* Ship::getArmyOnBoard() const
+const Army* Ship::GetArmyOnBoard() const
 {
     return armyOnBoard;
 }
 
 
-void Ship::setArmyOnBoard(const Army* army)
+void Ship::SetArmyOnBoard(const Army *army)
 {
     armyOnBoard = army;
 }
@@ -16,17 +16,17 @@ void Ship::setArmyOnBoard(const Army* army)
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
     sf::CircleShape circle(4);
-    circle.setPosition(GameWindow::MARGIN + currentLocation->getCoordinates().x*GameWindow::GRID_SIDE-4,
-                       GameWindow::MARGIN + currentLocation->getCoordinates().y*GameWindow::GRID_SIDE-4);
+    circle.setPosition(GameWindow::MARGIN + currentLocation->GetCoordinates().x*GameWindow::GRID_SIDE-4,
+                       GameWindow::MARGIN + currentLocation->GetCoordinates().y*GameWindow::GRID_SIDE-4);
     circle.setFillColor(owner.GetColor());
     target.draw(circle);
 }
 
 bool Ship::Move(Direction direction) {
-    GridPoint* destination = currentLocation->getPointNeighbor(direction);
-    if(destination && destination->enter(this)){
+    GridPoint* destination = currentLocation->GetPointNeighbor(direction);
+    if(destination && destination->Enter(this)){
         SetEdgeOwners(direction);
-        currentLocation->exit(this);
+        currentLocation->Exit(this);
         currentLocation = destination;
         return true;
     } else
@@ -38,9 +38,9 @@ Ship::Ship(Player& player) : Movable(player)
 
 }
 
-bool Ship::isAtCoast() const{
-    return  currentLocation->getPointNeighbor(left) && currentLocation->getPointNeighbor(left)->isLand() ||
-            currentLocation->getPointNeighbor(right) &&currentLocation->getPointNeighbor(right)->isLand() ||
-            currentLocation->getPointNeighbor(up) && currentLocation->getPointNeighbor(up)->isLand() ||
-            currentLocation->getPointNeighbor(down) &&currentLocation->getPointNeighbor(down)->isLand();
+bool Ship::IsAtCoast() const{
+    return currentLocation->GetPointNeighbor(left) && currentLocation->GetPointNeighbor(left)->IsLand() ||
+            currentLocation->GetPointNeighbor(right) && currentLocation->GetPointNeighbor(right)->IsLand() ||
+            currentLocation->GetPointNeighbor(up) && currentLocation->GetPointNeighbor(up)->IsLand() ||
+            currentLocation->GetPointNeighbor(down) && currentLocation->GetPointNeighbor(down)->IsLand();
 }

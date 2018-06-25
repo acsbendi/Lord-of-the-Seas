@@ -5,19 +5,26 @@
 #ifndef LORD_OF_THE_SEAS_SERVER_H
 #define LORD_OF_THE_SEAS_SERVER_H
 
+#include <string>
 #include <SFML/Network.hpp>
 #include <SFML/Network/TcpSocket.hpp>
 
+using sf::TcpSocket;
+using std::string;
+
 class Server {
 private:
-    sf::TcpSocket socket1;
-    sf::TcpSocket socket2;
+    TcpSocket socket1;
+    TcpSocket socket2;
 
-    std::string receiveText(sf::TcpSocket& socket);
-    void sendText(const std::string& message, sf::TcpSocket& socket);
+    string ReceiveText(TcpSocket& socket);
+
+    void SendText(const string& message, TcpSocket& socket);
+
 public:
     Server();
-    void start();
+
+    void Start();
 };
 
 

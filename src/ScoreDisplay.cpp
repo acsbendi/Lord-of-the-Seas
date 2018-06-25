@@ -5,42 +5,42 @@
 #include "ScoreDisplay.h"
 #include "Graphics.h"
 
-const sf::Font ScoreDisplay::font = Graphics::createFont("Treamd.ttf");
-const sf::Texture ScoreDisplay::background = Graphics::createTexture("score-background2.png");
+const sf::Font ScoreDisplay::font = Graphics::CreateFont("Treamd.ttf");
+const sf::Texture ScoreDisplay::background = Graphics::CreateTexture("score-background2.png");
 
-ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) : okButton(100,300,200,50,"           OK",[&](){this->exit();}),
+ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) : okButton(100,300,200,50,"           OK",[&](){ this->Exit();}),
                                                                      window{sf::VideoMode(WIDTH,HEIGHT),"Congratulations"}, end{false},
 text1{"First player's score: " + std::to_string(scoreOfPlayer1),font,20}, text2{"Second player's score: " + std::to_string(scoreOfPlayer2),font,20},
                                                                      scoreOfPlayer1{scoreOfPlayer1}, scoreOfPlayer2{scoreOfPlayer2}
 {
-    refresh();
+    Refresh();
 }
 
-void ScoreDisplay::exit() {
+void ScoreDisplay::Exit() {
     end = true;
     window.close();
 }
 
-void ScoreDisplay::show(){
+void ScoreDisplay::Show(){
     sf::Event event{};
     while(!end) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::KeyPressed)
                 switch (event.key.code) {
                     case sf::Keyboard::Escape:
-                        exit();
+                        Exit();
                         break;
                     case sf::Keyboard::Return:
-                        exit();
+                        Exit();
                         break;
                     default:
                         break;
                 }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                okButton.onClick(event.mouseButton.x, event.mouseButton.y);
+                okButton.OnClick(event.mouseButton.x, event.mouseButton.y);
             } else if(event.type == sf::Event::MouseMoved) {
-                okButton.onMouseMove(event.mouseMove.x, event.mouseMove.y);
-                refresh();
+                okButton.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
+                Refresh();
             } else if (event.type == sf::Event::Closed) {
                 end = true;
                 window.close();
@@ -50,7 +50,7 @@ void ScoreDisplay::show(){
     }
 }
 
-void ScoreDisplay::refresh(){
+void ScoreDisplay::Refresh(){
     sf::Sprite sprite;
     sprite.setTexture(background);
     window.draw(sprite);

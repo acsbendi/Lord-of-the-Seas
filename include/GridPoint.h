@@ -1,16 +1,18 @@
 #ifndef GRIDPOINT_H
 #define GRIDPOINT_H
 
+#include <map>
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "Movable.h"
 #include "Enums.h"
 
+using sf::Vector2i;
+using std::map;
+
 class Ship;
-
 class GridSquare;
-
 class Army;
+class Movable;
 
 class GridPoint
 {
@@ -18,26 +20,26 @@ class GridPoint
 
     GridPoint(int, int);
     virtual ~GridPoint() = default;
-    Movable* getMovable() const;
-    void setMovable(Movable*);
-    GridPoint* getPointNeighbor(Direction) const;
-    GridSquare* getSquareNeighbor(IntermediateDirection) const;
-    void setPointNeighbor(Direction, GridPoint*);
-    void setSquareNeighbor(IntermediateDirection, GridSquare*);
-    bool enter(Army*);
-    bool enter(Ship*);
-    void exit(Movable*);
-    void finishInitialization();
-    sf::Vector2i getCoordinates() const;
-    bool isLand() const;
+    Movable* GetMovable() const;
+    void SetMovable(Movable*);
+    GridPoint* GetPointNeighbor(Direction) const;
+    GridSquare* GetSquareNeighbor(IntermediateDirection) const;
+    void SetPointNeighbor(Direction, GridPoint*);
+    void SetSquareNeighbor(IntermediateDirection, GridSquare*);
+    bool Enter(Army*);
+    bool Enter(Ship*);
+    void Exit(Movable*);
+    void FinishInitialization();
+    Vector2i GetCoordinates() const;
+    bool IsLand() const;
 
     protected:
 
     private:
-        const sf::Vector2i coordinates;
+        const Vector2i coordinates;
         Movable* movable;
-        std::map<Direction, GridPoint* const> pointNeighbors;
-        std::map<IntermediateDirection, GridSquare* const> squareNeighbors;
+        map<Direction, GridPoint* const> pointNeighbors;
+        map<IntermediateDirection, GridSquare* const> squareNeighbors;
         bool isLandBool;
         bool isSeaBool;
 };

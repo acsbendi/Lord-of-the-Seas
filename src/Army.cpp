@@ -8,21 +8,21 @@ Army::Army(Player& player) : Movable(player)
 
 }
 
-void Army::draw(sf::RenderTarget& target, sf::RenderStates rs) const
+void Army::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
     sf::RectangleShape rect(sf::Vector2f(6,6));
-    rect.setPosition(GameWindow::MARGIN + currentLocation->getCoordinates().x*GameWindow::GRID_SIDE-3,
-                     GameWindow::MARGIN + currentLocation->getCoordinates().y*GameWindow::GRID_SIDE-3);
+    rect.setPosition(GameWindow::MARGIN + currentLocation->GetCoordinates().x*GameWindow::GRID_SIDE-3,
+                     GameWindow::MARGIN + currentLocation->GetCoordinates().y*GameWindow::GRID_SIDE-3);
     rect.setFillColor(owner.GetColor());
     target.draw(rect);
 }
 
 bool Army::Move(Direction direction) {
     std::cout << "army move";
-    GridPoint* destination = currentLocation->getPointNeighbor(direction);
-    if(destination && destination->enter(this)){
+    GridPoint* destination = currentLocation->GetPointNeighbor(direction);
+    if(destination && destination->Enter(this)){
         SetEdgeOwners(direction);
-        currentLocation->exit(this);
+        currentLocation->Exit(this);
         currentLocation = destination;
         return true;
     } else

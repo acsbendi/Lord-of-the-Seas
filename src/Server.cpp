@@ -30,11 +30,11 @@ Server::Server() {
     socket1.setBlocking(false);
 }
 
-void Server::start() {
+void Server::Start() {
     std::cout << " start " << std::endl;
 
     sf::TcpSocket* currentSocket = &socket1;
-    int message = strtol(receiveText(*currentSocket).c_str(), nullptr,10);
+    int message = strtol(ReceiveText(*currentSocket).c_str(), nullptr,10);
     while(true){
         std::cout << message << std::endl;
         switch(message){
@@ -48,16 +48,16 @@ void Server::start() {
                 return;
             default:
                 if(currentSocket == &socket1)
-                    sendText(std::to_string(message),socket2);
+                    SendText(std::to_string(message), socket2);
                 else
-                    sendText(std::to_string(message),socket1);
+                    SendText(std::to_string(message), socket1);
         }
-        message = strtol(receiveText(*currentSocket).c_str(), nullptr,10);
+        message = strtol(ReceiveText(*currentSocket).c_str(), nullptr,10);
     }
 }
 
 
-std::string Server::receiveText(sf::TcpSocket& socket) {
+std::string Server::ReceiveText(sf::TcpSocket &socket) {
     char buffer[1024];
     std::size_t received = 0;
     while(socket.receive(buffer, sizeof(buffer), received) == sf::Socket::NotReady)
@@ -66,7 +66,7 @@ std::string Server::receiveText(sf::TcpSocket& socket) {
     return text;
 }
 
-void Server::sendText(const std::string& message, sf::TcpSocket& socket){
+void Server::SendText(const std::string &message, sf::TcpSocket &socket){
     size_t s = 0;
     while(socket.send(message.c_str(),message.size() + 1,s) == sf::Socket::NotReady)
         std::cout << "t";

@@ -5,26 +5,36 @@
 #ifndef LORD_OF_THE_SEAS_GRIDSQUARE_H
 #define LORD_OF_THE_SEAS_GRIDSQUARE_H
 
+#include <memory>
+#include <vector>
+#include <unordered_set>
+#include <map>
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
-#include "Player.h"
 
-class GridSquare : public sf::Drawable
+using sf::Drawable;
+using sf::Vector2i;
+using std::map;
+using std::unordered_set;
+using std::vector;
+using std::unique_ptr;
+
+class Player;
+
+class GridSquare : public Drawable
 {
 private:
-    std::map<Direction, GridSquare* const> neighbors;
-    std::map<Direction,Player*> edgeOwners;
+    map<Direction, GridSquare* const> neighbors;
+    map<Direction,Player*> edgeOwners;
 
-    bool isEdgeOwnedBy(Direction, const Player*, std::unordered_set<const GridSquare *>&) const;
+    bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
 
 public:
-    const Player* getEdgeOwner(Direction) const;
-    void setEdgeOwner(Direction,Player*);
-    GridSquare* getNeighbor(Direction) const;
-    void setNeighbor(Direction, GridSquare*);
+    void SetEdgeOwner(Direction, Player*);
+    void SetNeighbor(Direction, GridSquare*);
     virtual bool IsLand() const = 0;
     virtual bool IsSea() const = 0;
-    static std::vector<std::vector<std::unique_ptr<GridSquare>>> createGridSquares(int,int);
+    static vector<vector<unique_ptr<GridSquare>>> CreateGridSquares(int, int);
 
     virtual int GetValue() const = 0;
 
@@ -32,7 +42,7 @@ public:
      * @brief Finds the owner of this GridSquare, if there is one.
      * @return The owner, if exists, nullptr otherwise.
      */
-    Player* getOwner(std::unordered_set<const GridSquare*>&) const;
+    Player* GetOwner(std::unordered_set<const GridSquare*>&) const;
 
     /**
      * @brief Finds a player who owns an edge in this GridSquare, if no such player exists,
@@ -40,7 +50,7 @@ public:
      * if it doesn't have it, return nullptr.
      * @return The possible owner, if exists, nullptr otherwise.
      */
-    Player* getPossibleOwner(Direction direction) const;
+    Player* GetPossibleOwner(Direction direction) const;
 
     /**
      * @brief Checks whether this GridSquare stops the game from ending.
@@ -53,14 +63,13 @@ public:
      * that is, whether it is in a territory of that player.
      * @return True, if this GridSquare is owned by the Player, false, if not.
      */
-    bool isOwnedBy(const Player* player, std::unordered_set<const GridSquare *>& previous) const;
+    bool IsOwnedBy(const Player* player, std::unordered_set<const GridSquare*>& previous) const;
 
 protected:
-    static sf::Texture createTexture(std::string);
-    void drawGridSquare(sf::RenderTarget& target) const;
+    void DrawGridSquare(sf::RenderTarget& target) const;
     GridSquare(int,int);
 
-    const sf::Vector2i coordinates;
+    const Vector2i coordinates;
 };
 
 

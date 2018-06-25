@@ -6,7 +6,6 @@
 #include "Enums.h"
 
 class GridPoint;
-
 class Player;
 
 class Movable : public sf::Drawable
