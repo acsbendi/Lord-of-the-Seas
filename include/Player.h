@@ -15,45 +15,33 @@
 using std::string;
 using std::unique_ptr;
 using sf::Color;
+using std::vector;
 
 class Player : public IUserEventObserver {
 public:
-    Player(sf::Color color, const std::string &name);
-
-    Ship *GetShip() const;
-
-    sf::Color GetColor() const;
-
+    Player(Color color, const string &name);
+    Ship* GetShip() const;
+    Color GetColor() const;
     void AddScore(int scoreToAdd);
-
     int GetScore() const;
-
-    void Attach(IPlayerObserver *observer);
-
-    void Detach(IPlayerObserver *observer);
-
+    void Attach(IPlayerObserver* observer);
+    void Detach(IPlayerObserver* observer);
     void OnDirectionSelected(Direction direction) override;
-
     void OnConfirmation(bool confirmed) override;
-
     void YourTurn();
 
 protected:
-    std::vector<IPlayerObserver *> observers;
+    vector<IPlayerObserver *> observers;
 
     virtual void Confirmed();
-
     virtual void Unconfirmed();
-
     void LandingAccepted();
-
     void LandingDeclined();
 
 
 private:
-    static int NUMBER_OF_SHIP_MOVES;
-    static int NUMBER_OF_ARMY_MOVES;
-
+    static constexpr int NUMBER_OF_SHIP_MOVES = 3;
+    static constexpr int NUMBER_OF_ARMY_MOVES = 2;
 
     unique_ptr<Ship> ship;
     unique_ptr<Army> army;
@@ -68,14 +56,15 @@ private:
     State state;
 
     virtual void NotifyOnMove(Direction direction) const;
-
     void NotifyOnTurnEnd() const;
-
     void Move(Direction direction);
-
     void MoveShip(Direction direction);
     void MoveArmy(Direction direction);
     void LandArmy(Direction direction);
+    void SetStateAfterSuccessfulMove();
+    void SetStateAfterLastShipMove();
+    void SetStateAfterLastArmyMove();
+    void SuccessfulArmyMove(Direction direction);
 };
 
 #endif // PLAYER_H
