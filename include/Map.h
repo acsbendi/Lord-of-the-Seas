@@ -14,6 +14,7 @@
 
 using std::vector;
 using std::unique_ptr;
+using std::unordered_set;
 using sf::RenderWindow;
 
 class GridSquare;
@@ -86,7 +87,7 @@ private:
  * @param ownedSquares The owned squares.
  * @param owner The owner of the squares (player).
  */
-    void AddPoints(std::unordered_set<const GridSquare *> ownedSquares, Player *owner) const;
+    void AddPoints(unordered_set<const GridSquare *> ownedSquares, Player *owner) const;
 
 /**
  * @brief Publishes an event to its subscribers, the state of the map may have been changed.

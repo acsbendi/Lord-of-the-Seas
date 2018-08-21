@@ -2,6 +2,8 @@
 #include "Map.h"
 #include "GameWindow.h"
 
+using sf::CircleShape;
+
 const Army* Ship::GetArmyOnBoard() const
 {
     return armyOnBoard;
@@ -13,9 +15,9 @@ void Ship::SetArmyOnBoard(const Army *army)
     armyOnBoard = army;
 }
 
-void Ship::draw(sf::RenderTarget& target, sf::RenderStates) const
+void Ship::draw(RenderTarget& target, RenderStates) const
 {
-    sf::CircleShape circle(4);
+    CircleShape circle(4);
     circle.setPosition(GameWindow::MARGIN + currentLocation->GetCoordinates().x*GameWindow::GRID_SIDE-4,
                        GameWindow::MARGIN + currentLocation->GetCoordinates().y*GameWindow::GRID_SIDE-4);
     circle.setFillColor(owner.GetColor());

@@ -9,6 +9,7 @@
 #include "IWindowEventObserver.h"
 #include "Map.h"
 
+using std::remove;
 using sf::Event;
 using sf::Context;
 using sf::Keyboard;
@@ -33,7 +34,7 @@ void GameWindow::GetInput() {
 
     while (true) {
         while (pollEvent(event)) {
-            if (active && event.type == sf::Event::KeyPressed){
+            if (active && event.type == Event::KeyPressed){
                 switch (event.key.code) {
                     case Keyboard::Up:
                         NotifyOnDirectionSelected(up);
@@ -58,7 +59,7 @@ void GameWindow::GetInput() {
                         return;
                 }
             }
-            else if (event.type == sf::Event::Closed) {
+            else if (event.type == Event::Closed) {
                 NotifyOnExit();
                 close();
                 return;
@@ -88,7 +89,7 @@ void GameWindow::AttachUserEventObserver(IUserEventObserver *observer){
 }
 
 void GameWindow::DetachUserEventObserver(IUserEventObserver *observer){
-    userEventObservers.erase(std::remove(userEventObservers.begin(),
+    userEventObservers.erase(remove(userEventObservers.begin(),
                                          userEventObservers.end(),observer),userEventObservers.end());
 }
 
@@ -97,7 +98,7 @@ void GameWindow::AttachWindowEventObserver(IWindowEventObserver *observer){
 }
 
 void GameWindow::DetachWindowEventObserver(IWindowEventObserver *observer){
-    windowEventObservers.erase(std::remove(windowEventObservers.begin(),
+    windowEventObservers.erase(remove(windowEventObservers.begin(),
                                            windowEventObservers.end(),observer),windowEventObservers.end());
 }
 

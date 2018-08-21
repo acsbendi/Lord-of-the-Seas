@@ -15,8 +15,9 @@ using sf::Font;
 using sf::Texture;
 using sf::RenderTarget;
 using sf::RenderStates;
+using sf::Drawable;
 
-class Button : public sf::Drawable{
+class Button : public Drawable{
 private:
     const function<void()> action;
     const string text;

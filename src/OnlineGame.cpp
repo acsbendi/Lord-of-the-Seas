@@ -9,17 +9,23 @@
 #include <thread>
 #include <cstring>
 
+using std::cout;
+using std::endl;
+using std::to_string;
+using std::make_unique;
+using std::runtime_error;
+using sf::Socket;
 
-OnlineGame::OnlineGame() : Game(std::make_unique<LocalPlayer>(sf::Color::Red,"Player 1"), std::make_unique<Player>(sf::Color::Magenta, "Player 2")) {
+OnlineGame::OnlineGame() : Game(make_unique<LocalPlayer>(Color::Red,"Player 1"), make_unique<Player>(Color::Magenta, "Player 2")) {
     CreateConnection();
     dynamic_cast<LocalPlayer *>(player1.get())->AttachLocalPlayerObserver(this);
 }
 
 void OnlineGame::CreateConnection(){
-    sf::Socket::Status status = socket.connect("localhost", 55003);
-    if (status != sf::Socket::Done)
+    Socket::Status status = socket.connect("localhost", 55003);
+    if (status != Socket::Done)
     {
-        throw std::runtime_error{"Connection to the server could not be established"};
+        throw runtime_error{"Connection to the server could not be established"};
     }
 }
 
@@ -47,7 +53,7 @@ void OnlineGame::PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) {
         gameWindow.GetInput();
         GetRemoteMove();
         if(turnEnd){
-            std::cout << "player notifed" << std::endl;
+            cout << "player notifed" << endl;
             currentPlayer->YourTurn(); //the notification can only take place after the previous move was entirely completed,
             //so that the current move will only be handled by one player, who is finishing their turn
             turnEnd = false;
@@ -62,8 +68,8 @@ vector<int> OnlineGame::ReceiveMessages() {
     vector<int> res;
 
     char buffer[1024];
-    std::size_t received = 0;
-    if (socket.receive(buffer, sizeof(buffer), received) == sf::Socket::NotReady)
+    size_t received = 0;
+    if (socket.receive(buffer, sizeof(buffer), received) == Socket::NotReady)
         return res;
     for(int i = 0; i < received;i++)
         if(buffer[i] != '\0')
@@ -71,7 +77,7 @@ vector<int> OnlineGame::ReceiveMessages() {
     return res;
 }
 
-void OnlineGame::SendText(std::string message){
+void OnlineGame::SendText(string message){
     socket.send(message.c_str(),message.size() + 1);
 }
 
@@ -94,14 +100,14 @@ void OnlineGame::GetRemoteMove() {
 }
 
 void OnlineGame::OnMove(Direction direction){
-    SendText(std::to_string(direction));
+    SendText(to_string(direction));
 }
 
 void OnlineGame::OnTurnEnd() {
-    std::cout << "OnTurnEnd" << std::endl;
+    cout << "OnTurnEnd" << endl;
     if(currentPlayer == player1.get()) {
         currentPlayer = player2.get();
-        SendText(std::to_string(6));
+        SendText(to_string(6));
         gameWindow.SetActive(false);
         //std::thread t{[&](){this->handleRemoteInput();}};
     }
@@ -113,11 +119,11 @@ void OnlineGame::OnTurnEnd() {
 }
 
 void OnlineGame::OnConfirmation(bool confirmed){
-    SendText(std::to_string(confirmed ? 4 : 5));
+    SendText(to_string(confirmed ? 4 : 5));
 }
 
 void OnlineGame::OnExit(){
     map.CountScore();
     gameEnd = true;
-    SendText(std::to_string(7));
+    SendText(to_string(7));
 }

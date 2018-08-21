@@ -2,6 +2,10 @@
 #include "IMapObserver.hpp"
 #include <iostream>
 
+using std::unordered_set;
+using std::remove;
+using std::make_unique;
+
 /*int Map::WIDTH = 40;
 int Map::HEIGHT = 30;
 */
@@ -18,7 +22,7 @@ void Map::InitializeGrid(Player *player1, Player *player2)
 
     for(int i = 0; i < HEIGHT; i++)
         for(int j = 0; j < WIDTH; j++)
-                gridPoints[i][j] = std::make_unique<GridPoint>(j,i);
+                gridPoints[i][j] = make_unique<GridPoint>(j,i);
 
     SetNeighbors();
 
@@ -53,7 +57,7 @@ void Map::Show(RenderWindow& window){
     window.display();
 }
 
-void Map::AddPoints(std::unordered_set<const GridSquare *> ownedSquares, Player *owner) const
+void Map::AddPoints(unordered_set<const GridSquare *> ownedSquares, Player *owner) const
 {
     for(auto gridSquare : ownedSquares)
         owner->AddScore(gridSquare->GetValue());
@@ -61,12 +65,12 @@ void Map::AddPoints(std::unordered_set<const GridSquare *> ownedSquares, Player 
 
 
 void Map::CountScore() const {
-    std::unordered_set<const GridSquare*> checked;
+    unordered_set<const GridSquare*> checked;
     for(int i = 0; i < HEIGHT-1; ++i)
         for(int j = 0; j < WIDTH-1; ++j)
         {
             if(checked.find(gridSquares[i][j].get()) == checked.end()) {
-                std::unordered_set<const GridSquare *> previous;
+                unordered_set<const GridSquare *> previous;
                 Player *owner = gridSquares[i][j]->GetOwner(previous);
                 if (owner) {
                     checked.insert(previous.begin(), previous.end());
@@ -126,6 +130,6 @@ void Map::Attach(IMapObserver *observer) {
 }
 
 void Map::Detach(IMapObserver *observer) {
-    observers.erase(std::remove(observers.begin(),
+    observers.erase(remove(observers.begin(),
                                 observers.end(),observer),observers.end());
 }

@@ -20,7 +20,7 @@ namespace Graphics{
         return texture;
     }
 
-    inline const sf::Font CreateFont(const string& fileName){
+    inline const Font CreateFont(const string& fileName){
         Font font;
         font.loadFromFile(fileName);
         return font;

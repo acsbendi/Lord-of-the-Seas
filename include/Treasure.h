@@ -7,13 +7,17 @@
 
 #include "GridSquare.h"
 
+using sf::Texture;
+using sf::RenderTarget;
+using sf::RenderStates;
+
 class Treasure : public GridSquare{
 private:
-    static const sf::Texture texture;
+    static const Texture texture;
 
 public:
     Treasure(int x,int y);
-    void draw(sf::RenderTarget& target, sf::RenderStates) const override;
+    void draw(RenderTarget& target, RenderStates) const override;
     int GetValue() const override;
     bool IsSea() const override;
     bool IsLand() const override;

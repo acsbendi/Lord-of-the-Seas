@@ -5,6 +5,9 @@
 #include "GridPoint.h"
 #include "Army.h"
 
+using sf::RenderTarget;
+using sf::RenderStates;
+
 class Army;
 
 class GridPoint;
@@ -15,7 +18,7 @@ class Ship : public Movable
         explicit Ship(Player& player);
         const Army* GetArmyOnBoard() const;
         void SetArmyOnBoard(const Army *);
-        void draw(sf::RenderTarget&, sf::RenderStates) const override;
+        void draw(RenderTarget&, RenderStates) const override;
     /*!
      * Makes the ship move in a specified direction
      * @return Returns whether the movement was successful.

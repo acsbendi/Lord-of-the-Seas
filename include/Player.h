@@ -38,7 +38,6 @@ protected:
     void LandingAccepted();
     void LandingDeclined();
 
-
 private:
     static constexpr int NUMBER_OF_SHIP_MOVES = 3;
     static constexpr int NUMBER_OF_ARMY_MOVES = 2;

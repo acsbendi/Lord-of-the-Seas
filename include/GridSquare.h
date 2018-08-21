@@ -12,12 +12,13 @@
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
 
-using sf::Drawable;
-using sf::Vector2i;
 using std::map;
 using std::unordered_set;
 using std::vector;
 using std::unique_ptr;
+using sf::Drawable;
+using sf::Vector2i;
+using sf::RenderTarget;
 
 class Player;
 
@@ -42,7 +43,7 @@ public:
      * @brief Finds the owner of this GridSquare, if there is one.
      * @return The owner, if exists, nullptr otherwise.
      */
-    Player* GetOwner(std::unordered_set<const GridSquare*>&) const;
+    Player* GetOwner(unordered_set<const GridSquare*>&) const;
 
     /**
      * @brief Finds a player who owns an edge in this GridSquare, if no such player exists,
@@ -63,10 +64,10 @@ public:
      * that is, whether it is in a territory of that player.
      * @return True, if this GridSquare is owned by the Player, false, if not.
      */
-    bool IsOwnedBy(const Player* player, std::unordered_set<const GridSquare*>& previous) const;
+    bool IsOwnedBy(const Player* player, unordered_set<const GridSquare*>& previous) const;
 
 protected:
-    void DrawGridSquare(sf::RenderTarget& target) const;
+    void DrawGridSquare(RenderTarget& target) const;
     GridSquare(int,int);
 
     const Vector2i coordinates;

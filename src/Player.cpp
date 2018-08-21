@@ -2,9 +2,9 @@
 #include <iostream>
 
 using std::make_unique;
+using std::remove;
 
-
-Player::Player(const Color color, const std::string& name) : color{color}, name{name}, state{waitingForTurn}, score{0}, successfulMoves{0}
+Player::Player(const Color color, const string& name) : color{color}, name{name}, state{waitingForTurn}, score{0}, successfulMoves{0}
 {
     ship = make_unique<Ship>(*this);
     army = make_unique<Army>(*this);
@@ -117,7 +117,7 @@ void Player::Attach(IPlayerObserver *observer){
 }
 
 void Player::Detach(IPlayerObserver *observer){
-    observers.erase(std::remove(observers.begin(),observers.end(),observer),observers.end());
+    observers.erase(remove(observers.begin(),observers.end(),observer),observers.end());
 }
 
 void Player::NotifyOnMove(Direction) const{

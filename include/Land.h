@@ -7,14 +7,18 @@
 
 #include "GridSquare.h"
 
+using sf::Texture;
+using sf::RenderTarget;
+using sf::RenderStates;
+
 class Land : public GridSquare{
 private:
-    static sf::Texture texture;
+    static Texture texture;
 
 public:
     Land(int x,int y);
 
-    void draw(sf::RenderTarget& target, sf::RenderStates) const override;
+    void draw(RenderTarget& target, RenderStates) const override;
     int GetValue() const override;
     bool IsSea() const override;
     bool IsLand() const override;

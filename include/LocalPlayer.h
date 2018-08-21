@@ -10,13 +10,14 @@
 #include "Player.h"
 
 using std::string;
+using std::vector;
 using sf::Color;
 
 class ILocalPlayerObserver;
 
 class LocalPlayer : public Player {
 private:
-    std::vector<ILocalPlayerObserver *> localPlayerobservers;
+    vector<ILocalPlayerObserver *> localPlayerobservers;
 
     void NotifyOnMove(Direction direction) const override;
 

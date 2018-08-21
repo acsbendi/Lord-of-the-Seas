@@ -6,14 +6,17 @@
 #include "Graphics.h"
 #include "GameWindow.h"
 
-const sf::Texture Treasure::texture = Graphics::CreateTexture("treasure.png");
+using std::unordered_set;
+using sf::Sprite;
+
+const Texture Treasure::texture = Graphics::CreateTexture("treasure.png");
 
 Treasure::Treasure(int x, int y) : GridSquare{x,y} { }
 
-void Treasure::draw(sf::RenderTarget & target, sf::RenderStates) const {
+void Treasure::draw(RenderTarget & target, RenderStates) const {
 
     /*drawing the texture*/
-    sf::Sprite sprite;
+    Sprite sprite;
     sprite.setTexture(texture);
     sprite.setPosition(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE,GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE);
     target.draw(sprite);
@@ -34,6 +37,6 @@ bool Treasure::IsLand() const {
 }
 
 bool Treasure::CanEnd() const{
-    std::unordered_set<const GridSquare*> unordered_set;
+    unordered_set<const GridSquare*> unordered_set;
     return GetOwner(unordered_set) != nullptr;
 }

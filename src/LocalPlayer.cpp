@@ -5,7 +5,9 @@
 #include "LocalPlayer.h"
 #include "ILocalPlayerObserver.h"
 
-LocalPlayer::LocalPlayer(sf::Color color, const std::string &name) : Player{color,name}{
+using std::remove;
+
+LocalPlayer::LocalPlayer(Color color, const string &name) : Player{color,name}{
 
 }
 
@@ -14,7 +16,7 @@ void LocalPlayer::AttachLocalPlayerObserver(ILocalPlayerObserver *observer){
 }
 
 void LocalPlayer::DetachLocalPlayerObserver(ILocalPlayerObserver *observer){
-    localPlayerobservers.erase(std::remove(localPlayerobservers.begin(),localPlayerobservers.end(),observer),localPlayerobservers.end());
+    localPlayerobservers.erase(remove(localPlayerobservers.begin(),localPlayerobservers.end(),observer),localPlayerobservers.end());
 }
 
 void LocalPlayer::NotifyOnMove(Direction direction) const{

@@ -1,8 +1,11 @@
 #include <iostream>
 #include "Game.h"
 
-Game::Game(std::unique_ptr<Player> p1, std::unique_ptr<Player> p2) : map{}, gameEnd{false}, turnEnd{false},
-                                                                     player1{std::move(p1)}, player2{std::move(p2)},
+using std::move;
+using std::make_unique;
+
+Game::Game(unique_ptr<Player> p1, unique_ptr<Player> p2) : map{}, gameEnd{false}, turnEnd{false},
+                                                                     player1{move(p1)}, player2{move(p2)},
                                                                      gameWindow{Map::WIDTH, Map::HEIGHT}
 {
     player1->Attach(&map);
@@ -16,7 +19,7 @@ Game::Game(std::unique_ptr<Player> p1, std::unique_ptr<Player> p2) : map{}, game
     player2->Attach(this);
 }
 
-Game::Game() : Game(std::make_unique<Player>(sf::Color::Red,"Player 1"),std::make_unique<Player>(sf::Color::Magenta, "Player 2")){
+Game::Game() : Game(make_unique<Player>(Color::Red,"Player 1"),make_unique<Player>(Color::Magenta, "Player 2")){
 }
 
 void Game::CheckEnd()
@@ -28,10 +31,6 @@ void Game::CheckEnd()
 void Game::PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2)
 {
     map.InitializeGrid(player1.get(), player2.get());
-    /*std::cout << "For movement, use the arrow keys." << std::endl;
-    std::cout << "When a ship is next to a land square, press Enter to land your army," << std::endl;
-    std::cout << "then choose the landing square by the arrow keys." << std::endl;
-    std::cout << "If you choose not to disembark your army, press any key other than Enter." << std::endl;*/
 
     currentPlayer->YourTurn();
 

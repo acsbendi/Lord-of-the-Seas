@@ -5,10 +5,12 @@
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
 
+using sf::Drawable;
+
 class GridPoint;
 class Player;
 
-class Movable : public sf::Drawable
+class Movable : public Drawable
 {
     public:
         explicit Movable(Player&);

@@ -9,6 +9,7 @@
 #include "IMapObserver.hpp"
 #include "Enums.h"
 
+using std::vector;
 using sf::RenderWindow;
 
 class IUserEventObserver;
@@ -19,8 +20,8 @@ private:
     const int width;
     const int height;
 
-    std::vector<IUserEventObserver*> userEventObservers; ///< Vector storing the attached user event observers.
-    std::vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
+    vector<IUserEventObserver*> userEventObservers; ///< Vector storing the attached user event observers.
+    vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
 
     bool active; ///< Should the window create events?
 

@@ -8,9 +8,15 @@
 #include "ScoreDisplay.h"
 #include "OnlineGame.h"
 
-const sf::Texture Application::background = Graphics::CreateTexture("menu-background.png");
+using sf::VideoMode;
+using sf::Event;
+using sf::Keyboard;
+using sf::Mouse;
+using sf::Sprite;
 
-Application::Application() : window{sf::VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}, end{false} {
+const Texture Application::background = Graphics::CreateTexture("menu-background.png");
+
+Application::Application() : window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}, end{false} {
     buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){ this->StartNewLocalGame();});
     buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){ this->StartNewOnlineGame();});
     buttons.emplace_back(100,200,200,50,"          EXIT",[&](){ this->Exit();});
@@ -47,27 +53,27 @@ void Application::ShowScores(int scoreOfPlayer1, int scoreOfPlayer2){
 }
 
 void Application::Start() {
-    sf::Event event{};
+    Event event{};
     while(!end) {
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::KeyPressed)
+            if (event.type == Event::KeyPressed)
                 switch (event.key.code) {
-                    case sf::Keyboard::Escape:
+                    case Keyboard::Escape:
                         Exit();
                         break;
-                    case sf::Keyboard::Return:
+                    case Keyboard::Return:
                         break;
                     default:
                         break;
                 }
-            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
                 for (const Button& button : buttons)
                     button.OnClick(event.mouseButton.x, event.mouseButton.y);
-            } else if(event.type == sf::Event::MouseMoved){
+            } else if(event.type == Event::MouseMoved){
                 for (Button& button : buttons)
                     button.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
                 Refresh();
-            } else if (event.type == sf::Event::Closed) {
+            } else if (event.type == Event::Closed) {
                 end = true;
                 window.close();
                 return;
@@ -84,7 +90,7 @@ void Application::Exit() {
 void Application::Refresh()
 {
     window.clear();
-    sf::Sprite sprite;
+    Sprite sprite;
     sprite.setTexture(background);
     window.draw(sprite);
 

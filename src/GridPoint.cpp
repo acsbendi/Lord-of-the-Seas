@@ -4,6 +4,8 @@
 #include "Ship.h"
 #include <iostream>
 
+using std::pair;
+
 GridPoint::GridPoint(int x, int y) : movable{nullptr}, coordinates{x,y}
 {
 
@@ -53,11 +55,11 @@ void GridPoint::Exit(Movable* leaving) {
 }
 
 void GridPoint::SetPointNeighbor(Direction direction, GridPoint* gridPoint) {
-    pointNeighbors.insert(std::pair<Direction,GridPoint* const>(direction,gridPoint));
+    pointNeighbors.insert(pair<Direction,GridPoint* const>(direction,gridPoint));
 }
 
 void GridPoint::SetSquareNeighbor(IntermediateDirection intermediateDirection, GridSquare* gridSquare) {
-    squareNeighbors.insert(std::pair<IntermediateDirection,GridSquare* const>(intermediateDirection,gridSquare));
+    squareNeighbors.insert(pair<IntermediateDirection,GridSquare* const>(intermediateDirection,gridSquare));
 }
 
 void GridPoint::FinishInitialization() {
@@ -71,7 +73,7 @@ void GridPoint::FinishInitialization() {
                 (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
 }
 
-sf::Vector2i GridPoint::GetCoordinates() const
+Vector2i GridPoint::GetCoordinates() const
 {
     return coordinates;
 }

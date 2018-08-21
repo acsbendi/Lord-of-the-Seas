@@ -6,14 +6,16 @@
 #include "Graphics.h"
 #include "GameWindow.h"
 
-sf::Texture Land::texture = Graphics::CreateTexture("land.png");
+using sf::Sprite;
+
+Texture Land::texture = Graphics::CreateTexture("land.png");
 
 Land::Land(int x, int y) : GridSquare{x,y} { }
 
-void Land::draw(sf::RenderTarget & target, sf::RenderStates) const {
+void Land::draw(RenderTarget& target, RenderStates) const {
 
     /*drawing the texture*/
-    sf::Sprite sprite;
+    Sprite sprite;
     sprite.setTexture(texture);
     sprite.setPosition(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE,
                        GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE);

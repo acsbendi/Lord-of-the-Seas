@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+using std::move;
 using sf::Sprite;
 using sf::Text;
 using sf::Color;
@@ -40,7 +41,7 @@ void Button::OnClick(int, int) const {
 }
 
 Button::Button(int x, int y, int width, int height, string text, function<void()> action)
-        : rect{x,y,width,height}, text{std::move(text)}, action{std::move(action)}, selected{false} {
+        : rect{x,y,width,height}, text{move(text)}, action{move(action)}, selected{false} {
 
 }
 
