@@ -8,7 +8,7 @@
 
 using sf::Sprite;
 
-Texture Land::texture = Graphics::CreateTexture("land.png");
+const Texture Land::texture = Graphics::CreateTexture("land.png");
 
 Land::Land(int x, int y) : GridSquare{x,y} { }
 

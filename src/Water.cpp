@@ -8,7 +8,7 @@
 
 using sf::Sprite;
 
-Texture Water::texture = Graphics::CreateTexture("water.png");
+const Texture Water::texture = Graphics::CreateTexture("water.png");
 
 Water::Water(int x, int y) : GridSquare{x,y} { }
 

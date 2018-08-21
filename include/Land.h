@@ -13,7 +13,7 @@ using sf::RenderStates;
 
 class Land : public GridSquare{
 private:
-    static Texture texture;
+    static const Texture texture;
 
 public:
     Land(int x,int y);
