@@ -8,8 +8,6 @@
 #include "GridSquare.h"
 
 using sf::Texture;
-using sf::RenderTarget;
-using sf::RenderStates;
 
 class Land : public GridSquare{
 private:
@@ -18,12 +16,11 @@ private:
 public:
     Land(int x,int y);
 
-    void draw(RenderTarget& target, RenderStates) const override;
     int GetValue() const override;
     bool IsSea() const override;
     bool IsLand() const override;
     bool CanEnd() const override;
-
+    const Texture& GetTexture() const override;
 };
 
 

@@ -18,6 +18,7 @@ using sf::Vertex;
 using sf::Vector2f;
 using sf::Vector2i;
 using sf::Lines;
+using sf::Sprite;
 
 GridSquare::GridSquare(int x,int y) : coordinates{x,y}
 {
@@ -135,4 +136,16 @@ Player* GridSquare::GetPossibleOwner(Direction direction) const{
            edgeOwners.at(left) ? edgeOwners.at(left) :
            neighbors.at(direction) ? neighbors.at(direction)->GetPossibleOwner(direction) :
            nullptr;
+}
+
+void GridSquare::draw(RenderTarget& target, RenderStates) const {
+    DrawTexture(GetTexture(), target);
+    DrawGridSquare(target);
+}
+
+void GridSquare::DrawTexture(const Texture& texture, RenderTarget& target) const {
+    Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.setPosition(GameWindow::MARGIN + coordinates.x*GameWindow::GRID_SIDE,GameWindow::MARGIN + coordinates.y*GameWindow::GRID_SIDE);
+    target.draw(sprite);
 }

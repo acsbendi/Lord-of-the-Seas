@@ -19,6 +19,8 @@ using std::unique_ptr;
 using sf::Drawable;
 using sf::Vector2i;
 using sf::RenderTarget;
+using sf::Texture;
+using sf::RenderStates;
 
 class Player;
 
@@ -27,12 +29,16 @@ class GridSquare : public Drawable
 private:
     map<Direction, GridSquare* const> neighbors;
     map<Direction,Player*> edgeOwners;
+    const Vector2i coordinates;
 
     bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
+    void DrawGridSquare(RenderTarget& target) const;
+    void DrawTexture(const Texture&, RenderTarget&) const;
 
 public:
     void SetEdgeOwner(Direction, Player*);
     void SetNeighbor(Direction, GridSquare*);
+    void draw(RenderTarget& target, RenderStates) const override;
     virtual bool IsLand() const = 0;
     virtual bool IsSea() const = 0;
     static vector<vector<unique_ptr<GridSquare>>> CreateGridSquares(int, int);
@@ -67,10 +73,8 @@ public:
     bool IsOwnedBy(const Player* player, unordered_set<const GridSquare*>& previous) const;
 
 protected:
-    void DrawGridSquare(RenderTarget& target) const;
     GridSquare(int,int);
-
-    const Vector2i coordinates;
+    virtual const Texture& GetTexture() const = 0;
 };
 
 
