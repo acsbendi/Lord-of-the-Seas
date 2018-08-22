@@ -15,7 +15,7 @@ private:
 
 public:
     Treasure(int x,int y);
-    
+
     int GetValue() const override;
     bool IsSea() const override;
     bool IsLand() const override;

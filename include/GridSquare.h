@@ -11,6 +11,7 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "Enums.h"
+#include "Edge.hpp"
 
 using std::map;
 using std::unordered_set;
@@ -34,6 +35,7 @@ private:
     bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
     void DrawGridSquare(RenderTarget& target) const;
     void DrawTexture(const Texture&, RenderTarget&) const;
+    void DrawEdge(const Edge& edge, RenderTarget&) const;
 
 public:
     void SetEdgeOwner(Direction, Player*);
