@@ -12,19 +12,44 @@ using std::to_string;
 using sf::TcpListener;
 using sf::Socket;
 
-Server::Server() {
+
+void Server::Start() {
+    PrepareForGame();
+
+    int message;
+    do{
+        message = strtol(ReceiveText(*currentSocket).c_str(), nullptr,10);
+        cout << message << endl;
+        HandleMessage(message);
+    } while(running);
+}
+
+void Server::PrepareForGame(){
+    EstablishConnections();
+    SendInitMessages();
+    PrepareSockets();
+
+    cout << " start " << endl;
+    currentSocket = &socket1;
+    running = true;
+}
+
+
+void Server::EstablishConnections() {
     TcpListener listener;
     listener.listen(55003);
 
     listener.accept(socket1);
     cout << "New client connected: " << socket1.getRemoteAddress() << endl;
 
+    listener.accept(socket2);
+    cout << "New client connected: " << socket2.getRemoteAddress() << endl;
+}
+
+void Server::SendInitMessages(){
     string message = "10";
     socket1.send(message.c_str(), message.size() + 1);
     cout << message << " sent" << endl;
-
-    listener.accept(socket2);
-    cout << "New client connected: " << socket2.getRemoteAddress() << endl;
 
     message = "20";
     socket2.send(message.c_str(), message.size() + 1);
@@ -32,34 +57,29 @@ Server::Server() {
 
     socket1.send("s",2);
     socket2.send("s",2);
-
-    socket1.setBlocking(false);
-    socket1.setBlocking(false);
 }
 
-void Server::Start() {
-    cout << " start " << endl;
+void Server::PrepareSockets(){
+    socket1.setBlocking(false);
+    socket2.setBlocking(false);
+}
 
-    TcpSocket* currentSocket = &socket1;
-    int message = strtol(ReceiveText(*currentSocket).c_str(), nullptr,10);
-    while(true){
-        cout << message << endl;
-        switch(message){
-            case 6:
-                if(currentSocket == &socket1)
-                    currentSocket = &socket2;
-                else
-                    currentSocket = &socket1;
-                break;
-            case 7:
-                return;
-            default:
-                if(currentSocket == &socket1)
-                    SendText(to_string(message), socket2);
-                else
-                    SendText(to_string(message), socket1);
-        }
-        message = strtol(ReceiveText(*currentSocket).c_str(), nullptr,10);
+void Server::HandleMessage(int message) {
+    switch(message){
+        case 6:
+            if(currentSocket == &socket1)
+                currentSocket = &socket2;
+            else
+                currentSocket = &socket1;
+            break;
+        case 7:
+            running = false;
+            break;
+        default:
+            if(currentSocket == &socket1)
+                SendText(to_string(message), socket2);
+            else
+                SendText(to_string(message), socket1);
     }
 }
 

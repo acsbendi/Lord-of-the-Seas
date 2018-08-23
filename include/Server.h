@@ -16,14 +16,18 @@ class Server {
 private:
     TcpSocket socket1;
     TcpSocket socket2;
+    TcpSocket* currentSocket;
+    bool running;
 
     string ReceiveText(TcpSocket& socket);
-
     void SendText(const string& message, TcpSocket& socket);
+    void HandleMessage(int message);
+    void PrepareForGame();
+    void EstablishConnections();
+    void SendInitMessages();
+    void PrepareSockets();
 
 public:
-    Server();
-
     void Start();
 };
 
