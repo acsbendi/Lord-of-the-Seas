@@ -12,6 +12,9 @@
 using std::vector;
 using sf::RenderWindow;
 using sf::Texture;
+using sf::Event;
+
+class Game;
 
 class Application {
 private:
@@ -23,7 +26,17 @@ private:
     vector<Button> buttons;
 
     void StartNewLocalGame();
+    void PlayGameAndShowResults(Game&&);
     void StartNewOnlineGame();
+    void StartNewGame(Game&&);
+    void HandleEvent(const Event&);
+    void HandleKeyPressedEvent(const Event&);
+    void HandleLeftMouseButtonPressedEvent(const Event&);
+    void HandleMouseMovedEvent(const Event&);
+    void HandleClosedEvent(const Event&);
+    void DrawElements();
+    void DrawBackground();
+    void DrawButtons();
     void Exit();
     void ShowScores(int scoreOfPlayer1, int scoreOfPlayer2);
     void Refresh();

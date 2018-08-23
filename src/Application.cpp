@@ -8,6 +8,7 @@
 #include "ScoreDisplay.h"
 #include "OnlineGame.h"
 
+using std::move;
 using sf::VideoMode;
 using sf::Event;
 using sf::Keyboard;
@@ -24,27 +25,26 @@ Application::Application() : window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"},
 }
 
 void Application::StartNewLocalGame(){
+    StartNewGame(Game{});
+}
+
+void Application::StartNewOnlineGame(){
+    StartNewGame(OnlineGame{});
+}
+
+void Application::StartNewGame(Game&& game) {
     window.setVisible(false);
-    int scoreOfPlayer1 = 0;
-    int scoreOfPlayer2 = 0;
-    Game game;
-    game.PlayGame(scoreOfPlayer1, scoreOfPlayer2);
-    if(scoreOfPlayer1 != 0 || scoreOfPlayer2 != 0)
-        ShowScores(scoreOfPlayer1, scoreOfPlayer2);
+    PlayGameAndShowResults(move(game));
     window.setVisible(true);
     Refresh();
 }
 
-void Application::StartNewOnlineGame(){
-    window.setVisible(false);
+void Application::PlayGameAndShowResults(Game&& game) {
     int scoreOfPlayer1 = 0;
     int scoreOfPlayer2 = 0;
-    OnlineGame onlineGame;
-    onlineGame.PlayGame(scoreOfPlayer1, scoreOfPlayer2);
+    game.PlayGame(scoreOfPlayer1, scoreOfPlayer2);
     if(scoreOfPlayer1 != 0 || scoreOfPlayer2 != 0)
         ShowScores(scoreOfPlayer1, scoreOfPlayer2);
-    window.setVisible(true);
-    Refresh();
 }
 
 void Application::ShowScores(int scoreOfPlayer1, int scoreOfPlayer2){
@@ -56,30 +56,48 @@ void Application::Start() {
     Event event{};
     while(!end) {
         while (window.pollEvent(event)) {
-            if (event.type == Event::KeyPressed)
-                switch (event.key.code) {
-                    case Keyboard::Escape:
-                        Exit();
-                        break;
-                    case Keyboard::Return:
-                        break;
-                    default:
-                        break;
-                }
-            else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-                for (const Button& button : buttons)
-                    button.OnClick(event.mouseButton.x, event.mouseButton.y);
-            } else if(event.type == Event::MouseMoved){
-                for (Button& button : buttons)
-                    button.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
-                Refresh();
-            } else if (event.type == Event::Closed) {
-                end = true;
-                window.close();
-                return;
-            }
+            HandleEvent(event);
         }
     }
+}
+
+void Application::HandleEvent(const Event& event) {
+    if (event.type == Event::KeyPressed)
+        HandleKeyPressedEvent(event);
+    else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+        HandleLeftMouseButtonPressedEvent(event);
+    else if(event.type == Event::MouseMoved)
+        HandleMouseMovedEvent(event);
+    else if (event.type == Event::Closed)
+        HandleClosedEvent(event);
+}
+
+void Application::HandleKeyPressedEvent(const Event& event) {
+    switch (event.key.code) {
+        case Keyboard::Escape:
+            Exit();
+            break;
+        case Keyboard::Return:
+            break;
+        default:
+            break;
+    }
+}
+
+void Application::HandleLeftMouseButtonPressedEvent(const Event& event) {
+    for (const Button& button : buttons)
+        button.OnClick(event.mouseButton.x, event.mouseButton.y);
+}
+
+void Application::HandleMouseMovedEvent(const Event& event) {
+    for (Button& button : buttons)
+        button.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
+    Refresh();
+}
+
+void Application::HandleClosedEvent(const Event&) {
+    end = true;
+    window.close();
 }
 
 void Application::Exit() {
@@ -90,12 +108,22 @@ void Application::Exit() {
 void Application::Refresh()
 {
     window.clear();
+    DrawElements();
+    window.display();
+}
+
+void Application::DrawElements() {
+    DrawBackground();
+    DrawButtons();
+}
+
+void Application::DrawBackground() {
     Sprite sprite;
     sprite.setTexture(background);
     window.draw(sprite);
+}
 
+void Application::DrawButtons(){
     for (const Button& button : buttons)
-            window.draw(button);
-
-    window.display();
+        window.draw(button);
 }
