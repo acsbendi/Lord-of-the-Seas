@@ -62,14 +62,23 @@ void Application::Start() {
 }
 
 void Application::HandleEvent(const Event& event) {
-    if (event.type == Event::KeyPressed)
-        HandleKeyPressedEvent(event);
-    else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
-        HandleLeftMouseButtonPressedEvent(event);
-    else if(event.type == Event::MouseMoved)
-        HandleMouseMovedEvent(event);
-    else if (event.type == Event::Closed)
-        HandleClosedEvent(event);
+    switch (event.type){
+        case Event::KeyPressed:
+            HandleKeyPressedEvent(event);
+            break;
+        case Event::MouseButtonPressed:
+            if(event.mouseButton.button == Mouse::Left)
+                HandleLeftMouseButtonPressedEvent(event);
+            break;
+        case Event::MouseMoved:
+            HandleMouseMovedEvent(event);
+            break;
+        case Event::Closed:
+            HandleClosedEvent(event);
+            break;
+        default:
+            break;
+    }
 }
 
 void Application::HandleKeyPressedEvent(const Event& event) {
