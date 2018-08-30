@@ -68,7 +68,7 @@ void Application::HandleEvent(const Event& event) {
             break;
         case Event::MouseButtonPressed:
             if(event.mouseButton.button == Mouse::Left)
-                HandleLeftMouseButtonPressedEvent(event);
+                NotifyButtonsOnLeftMouseButtonPressed(event);
             break;
         case Event::MouseMoved:
             HandleMouseMovedEvent(event);
@@ -94,15 +94,19 @@ void Application::HandleKeyPressedEvent(const Event& event) {
     }
 }
 
-void Application::HandleLeftMouseButtonPressedEvent(const Event& event) {
+void Application::NotifyButtonsOnLeftMouseButtonPressed(const Event& event) {
     for (const Button& button : buttons)
         button.OnClick(event.mouseButton.x, event.mouseButton.y);
 }
 
 void Application::HandleMouseMovedEvent(const Event& event) {
+    NotifyButtonsOnMouseMoved(event);
+    Refresh();
+}
+
+void Application::NotifyButtonsOnMouseMoved(const Event& event) {
     for (Button& button : buttons)
         button.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
-    Refresh();
 }
 
 void Application::HandleClosedEvent(const Event&) {
