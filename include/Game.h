@@ -41,15 +41,7 @@ public:
     */
     virtual void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
 
-
 protected:
-    Game(unique_ptr<Player> player1, unique_ptr<Player> player2);
-
-/**
- * @brief Checks if the game has already ended, if so, calls the exit handler function.
- */
-    void CheckEnd();
-
     Map map; ///< Map object belonging to this game.
     GameWindow gameWindow; ///< The window that shows everything related to this game.
     unique_ptr<Player> player1; ///< The first player playing this game.
@@ -58,8 +50,11 @@ protected:
     bool gameEnd; ///< Has the game ended?
     bool turnEnd; ///< Has the turn of the currentPlayer ended?
 
-
-private:
+    Game(unique_ptr<Player> player1, unique_ptr<Player> player2);
+/**
+ * @brief Checks if the game has already ended, if so, calls the exit handler function.
+ */
+    void CheckEnd();
 };
 
 #endif // GAME_H

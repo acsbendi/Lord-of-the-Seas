@@ -16,22 +16,18 @@ using sf::Color;
 class ILocalPlayerObserver;
 
 class LocalPlayer : public Player {
+public:
+    LocalPlayer(Color color, const string &name);
+    void AttachLocalPlayerObserver(ILocalPlayerObserver *observer);
+    void DetachLocalPlayerObserver(ILocalPlayerObserver *observer);
+
 private:
     vector<ILocalPlayerObserver *> localPlayerobservers;
 
     void NotifyOnMove(Direction direction) const override;
-
     void NotifyOnConfirmation(bool confirmed) const;
-
     void Confirmed() override;
-
     void Unconfirmed() override;
-public:
-    LocalPlayer(Color color, const string &name);
-
-    void AttachLocalPlayerObserver(ILocalPlayerObserver *observer);
-
-    void DetachLocalPlayerObserver(ILocalPlayerObserver *observer);
 };
 
 

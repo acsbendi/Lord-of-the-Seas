@@ -17,6 +17,10 @@ using sf::Event;
 class Game;
 
 class Application {
+public:
+    Application();
+    void Start();
+
 private:
     static const int WIDTH = 400;
     static const int HEIGHT = 400;
@@ -40,10 +44,6 @@ private:
     void Exit();
     void ShowScores(int scoreOfPlayer1, int scoreOfPlayer2);
     void Refresh();
-
-public:
-    Application();
-    void Start();
 };
 
 

@@ -18,6 +18,12 @@ using sf::RenderStates;
 using sf::Drawable;
 
 class Button : public Drawable{
+public:
+    Button(int x, int y, int width, int height, string text, function<void()> action);
+    void draw(RenderTarget &target, RenderStates) const override;
+    void OnClick(int x, int y) const;
+    bool OnMouseMove(int x, int y);
+
 private:
     const function<void()> action;
     const string text;
@@ -25,12 +31,6 @@ private:
     static const Font font;
     static const Texture texture;
     bool selected;
-public:
-    Button(int x, int y, int width, int height, string text, function<void()> action);
-
-    void draw(RenderTarget &target, RenderStates) const override;
-    void OnClick(int x, int y) const;
-    bool OnMouseMove(int x, int y);
 };
 
 

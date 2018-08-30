@@ -25,18 +25,7 @@ using sf::RenderStates;
 
 class Player;
 
-class GridSquare : public Drawable
-{
-private:
-    map<Direction, GridSquare* const> neighbors;
-    map<Direction,Player*> edgeOwners;
-    const Vector2i coordinates;
-
-    bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
-    void DrawGridSquare(RenderTarget& target) const;
-    void DrawTexture(const Texture&, RenderTarget&) const;
-    void DrawEdge(const Edge& edge, RenderTarget&) const;
-
+class GridSquare : public Drawable {
 public:
     void SetEdgeOwner(Direction, Player*);
     void SetNeighbor(Direction, GridSquare*);
@@ -77,6 +66,16 @@ public:
 protected:
     GridSquare(int,int);
     virtual const Texture& GetTexture() const = 0;
+
+private:
+    map<Direction, GridSquare* const> neighbors;
+    map<Direction,Player*> edgeOwners;
+    const Vector2i coordinates;
+
+    bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
+    void DrawGridSquare(RenderTarget& target) const;
+    void DrawTexture(const Texture&, RenderTarget&) const;
+    void DrawEdge(const Edge& edge, RenderTarget&) const;
 };
 
 

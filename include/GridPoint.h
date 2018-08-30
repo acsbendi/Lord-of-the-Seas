@@ -14,10 +14,8 @@ class GridSquare;
 class Army;
 class Movable;
 
-class GridPoint
-{
-    public:
-
+class GridPoint {
+public:
     GridPoint(int, int);
     virtual ~GridPoint() = default;
     Movable* GetMovable() const;
@@ -33,15 +31,13 @@ class GridPoint
     Vector2i GetCoordinates() const;
     bool IsLand() const;
 
-    protected:
-
-    private:
-        const Vector2i coordinates;
-        Movable* movable;
-        map<Direction, GridPoint* const> pointNeighbors;
-        map<IntermediateDirection, GridSquare* const> squareNeighbors;
-        bool isLandBool;
-        bool isSeaBool;
+private:
+    const Vector2i coordinates;
+    Movable* movable;
+    map<Direction, GridPoint* const> pointNeighbors;
+    map<IntermediateDirection, GridSquare* const> squareNeighbors;
+    bool isLandBool;
+    bool isSeaBool;
 };
 
 #endif // GRIDPOINT_H

@@ -12,16 +12,11 @@ class GridPoint;
 
 class Player;
 
-class Army : public Movable
-{
-    public:
-        explicit Army(Player&);
-        void draw(RenderTarget&, RenderStates) const override;
-        bool Move(Direction) override ;
-
-    protected:
-
-    private:
+class Army : public Movable {
+public:
+    explicit Army(Player&);
+    void draw(RenderTarget&, RenderStates) const override;
+    bool Move(Direction) override ;
 };
 
 #endif // ARMY_H

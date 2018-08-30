@@ -14,11 +14,17 @@ using sf::Font;
 using sf::Texture;
 
 class ScoreDisplay{
+public:
+    ScoreDisplay(int scoreOfPlayer1,int scoreOfPlayer2);
+    void Show();
+    void Refresh();
+
 private:
-    bool end;
     static constexpr int WIDTH = 400;
     static constexpr int HEIGHT = 400;
     static constexpr int TEXT_X = 165;
+
+    bool end;
     Button okButton;
     RenderWindow window;
     static const Font font;
@@ -29,10 +35,6 @@ private:
     const int scoreOfPlayer2;
 
     void Exit();
-public:
-    ScoreDisplay(int scoreOfPlayer1,int scoreOfPlayer2);
-    void Show();
-    void Refresh();
 };
 
 

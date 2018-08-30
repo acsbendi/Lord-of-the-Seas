@@ -10,9 +10,6 @@
 using sf::Texture;
 
 class Treasure : public GridSquare{
-private:
-    static const Texture texture;
-
 public:
     Treasure(int x,int y);
 
@@ -21,6 +18,9 @@ public:
     bool IsLand() const override;
     bool CanEnd() const override;
     const Texture& GetTexture() const override;
+
+private:
+    static const Texture texture;
 };
 
 

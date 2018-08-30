@@ -19,6 +19,13 @@ using std::string;
  * instead of the Map (local window) object.
  */
 class OnlineGame : public Game, public ILocalPlayerObserver{
+public:
+    OnlineGame();
+    void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) override;
+    void OnMove(Direction direction) override;
+    void OnTurnEnd() override;
+    void OnConfirmation(bool confirmed) override;
+
 private:
     TcpSocket socket;
 
@@ -42,13 +49,6 @@ private:
      */
     void CreateConnection();
     void OnExit() override;
-
-public:
-    OnlineGame();
-    void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) override;
-    void OnMove(Direction direction) override;
-    void OnTurnEnd() override;
-    void OnConfirmation(bool confirmed) override;
 };
 
 

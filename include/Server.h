@@ -13,6 +13,9 @@ using sf::TcpSocket;
 using std::string;
 
 class Server {
+public:
+    void Start();
+
 private:
     TcpSocket socket1;
     TcpSocket socket2;
@@ -26,9 +29,6 @@ private:
     void EstablishConnections();
     void SendInitMessages();
     void PrepareSockets();
-
-public:
-    void Start();
 };
 
 

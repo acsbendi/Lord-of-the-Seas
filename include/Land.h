@@ -10,17 +10,16 @@
 using sf::Texture;
 
 class Land : public GridSquare{
-private:
-    static const Texture texture;
-
 public:
     Land(int x,int y);
-
     int GetValue() const override;
     bool IsSea() const override;
     bool IsLand() const override;
     bool CanEnd() const override;
     const Texture& GetTexture() const override;
+
+private:
+    static const Texture texture;
 };
 
 
