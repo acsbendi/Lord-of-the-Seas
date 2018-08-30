@@ -36,6 +36,7 @@ private:
     void HandleEvent(const Event&);
     void HandleKeyPressedEvent(const Event&);
     void HandleLeftMouseButtonPressedEvent(const Event&);
+    void NotifyButtonsOnEnterPressed() const;
     void HandleMouseMovedEvent(const Event&);
     void HandleClosedEvent(const Event&);
     void DrawElements();

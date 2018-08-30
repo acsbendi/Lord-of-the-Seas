@@ -16,21 +16,31 @@ using sf::Texture;
 using sf::RenderTarget;
 using sf::RenderStates;
 using sf::Drawable;
+using sf::Text;
+using sf::Sprite;
 
 class Button : public Drawable{
 public:
-    Button(int x, int y, int width, int height, string text, function<void()> action);
-    void draw(RenderTarget &target, RenderStates) const override;
+    Button(int x, int y, int width, int height, const string& text, function<void()> action);
+    void draw(RenderTarget& target, RenderStates) const override;
     void OnClick(int x, int y) const;
     bool OnMouseMove(int x, int y);
+    void OnEnterPressed() const;
 
 private:
     const function<void()> action;
-    const string text;
     const IntRect rect; ///< The coordinates and dimensions of the button's rectangle's top-left corner.
     static const Font font;
     static const Texture texture;
     bool selected;
+    Text text;
+
+    void ShowText(RenderTarget&) const;
+    void ShowTexture(RenderTarget&) const;
+    void TransformIntoLocalCoordinates(int&,int&) const;
+    void SetTextProperties();
+    void SetBackgroundProperties(Sprite&) const;
+    void DoActionIfSelected() const;
 };
 
 

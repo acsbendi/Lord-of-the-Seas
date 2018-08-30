@@ -87,6 +87,7 @@ void Application::HandleKeyPressedEvent(const Event& event) {
             Exit();
             break;
         case Keyboard::Return:
+            NotifyButtonsOnEnterPressed();
             break;
         default:
             break;
@@ -135,4 +136,9 @@ void Application::DrawBackground() {
 void Application::DrawButtons(){
     for (const Button& button : buttons)
         window.draw(button);
+}
+
+void Application::NotifyButtonsOnEnterPressed() const {
+    for (const Button& button : buttons)
+        button.OnEnterPressed();
 }

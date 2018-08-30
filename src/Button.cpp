@@ -8,48 +8,70 @@
 #include <iostream>
 
 using std::move;
-using sf::Sprite;
-using sf::Text;
 using sf::Color;
 
 const Font Button::font = Graphics::CreateFont("Garamond Classico SC.ttf");
 const Texture Button::texture = Graphics::CreateTexture("button2.png");
 
 void Button::draw(RenderTarget &target, RenderStates) const {
-    //showing texture
-    Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.setPosition({static_cast<float >(rect.left), static_cast<float >(rect.top)});
-    if(selected)
-        sprite.move(-20,-5);
-    sprite.setScale({rect.width / sprite.getLocalBounds().width ,rect.height / sprite.getLocalBounds().height });
-    if(selected)
-        sprite.scale(1.2,1.2);
-    target.draw(sprite);
+    ShowTexture(target);
+    ShowText(target);
+}
 
-    //showing text
-    Text text1{text,font,19};
-    text1.setPosition({static_cast<float >(rect.left + 29), static_cast<float >(rect.top + 13)});
-    text1.setStyle(Text::Bold);
-    text1.setFillColor(Color::Black);
-    target.draw(text1);
+void Button::ShowTexture(RenderTarget &target) const {
+    Sprite background;
+    SetBackgroundProperties(background);
+    target.draw(background);
+}
+
+void Button::ShowText(RenderTarget& target) const {
+    target.draw(text);
 }
 
 void Button::OnClick(int, int) const {
-    if(selected)
-        action();
+    DoActionIfSelected();
 }
 
-Button::Button(int x, int y, int width, int height, string text, function<void()> action)
-        : rect{x,y,width,height}, text{move(text)}, action{move(action)}, selected{false} {
-
+Button::Button(int x, int y, int width, int height, const string& text, function<void()> action)
+        : rect{x,y,width,height}, text{text,font}, action{move(action)}, selected{false} {
+    SetTextProperties();
 }
 
 bool Button::OnMouseMove(int x, int y) {
-    //transforming x and y into local coordinates (inside the button's rect area)
-    x = x - rect.left;
-    y = y - rect.top;
+    TransformIntoLocalCoordinates(x,y);
     selected = x > 0 && y > 0 && x < rect.width && y < rect.height &&
        (x+y) > 8 && (y + rect.width - x) > 8 && (x + rect.height - y) > 8 && (rect.width - x + rect.height - y) > 10;
     return selected;
 }
+
+void Button::TransformIntoLocalCoordinates(int& x, int& y) const{
+    x = x - rect.left;
+    y = y - rect.top;
+}
+
+void Button::SetTextProperties() {
+    text.setCharacterSize(19);
+    text.setPosition({static_cast<float >(rect.left + 29), static_cast<float >(rect.top + 13)});
+    text.setStyle(Text::Bold);
+    text.setFillColor(Color::Black);
+}
+
+void Button::SetBackgroundProperties(Sprite& background) const {
+    background.setTexture(texture);
+    background.setPosition({static_cast<float >(rect.left), static_cast<float >(rect.top)});
+    if(selected)
+        background.move(-20,-5);
+    background.setScale({rect.width / background.getLocalBounds().width ,rect.height / background.getLocalBounds().height });
+    if(selected)
+        background.scale(1.2,1.2);
+}
+
+void Button::OnEnterPressed() const {
+    DoActionIfSelected();
+}
+
+void Button::DoActionIfSelected() const {
+    if(selected)
+        action();
+}
+
