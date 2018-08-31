@@ -17,33 +17,29 @@ void Movable::SetCurrentLocation(GridPoint *cl)
     currentLocation = cl;
 }
 
-bool Movable::SetEdgeOwners(Direction direction) {
-        switch(direction){
-            case up:
-                if(currentLocation->GetSquareNeighbor(northwest))
-                    currentLocation->GetSquareNeighbor(northwest)->SetEdgeOwner(right, &owner);
-                if(currentLocation->GetSquareNeighbor(northeast) )
-                    currentLocation->GetSquareNeighbor(northeast)->SetEdgeOwner(left, &owner);
-                break;
-            case down:
-                if(currentLocation->GetSquareNeighbor(southwest))
-                    currentLocation->GetSquareNeighbor(southwest)->SetEdgeOwner(right, &owner);
-                if(currentLocation->GetSquareNeighbor(southeast) )
-                    currentLocation->GetSquareNeighbor(southeast)->SetEdgeOwner(left, &owner);
-                break;
-            case left:
-                if(currentLocation->GetSquareNeighbor(northwest))
-                    currentLocation->GetSquareNeighbor(northwest)->SetEdgeOwner(down, &owner);
-                if(currentLocation->GetSquareNeighbor(southwest) )
-                    currentLocation->GetSquareNeighbor(southwest)->SetEdgeOwner(up, &owner);
-                break;
+bool Movable::SetEdgeOwners(Direction directionOfMove) {
+    switch (directionOfMove) {
+        case up:
+            SetOwnerInNeighborIfExists(northwest, right);
+            SetOwnerInNeighborIfExists(northeast, left);
+            break;
+        case down:
+            SetOwnerInNeighborIfExists(southwest, right);
+            SetOwnerInNeighborIfExists(southeast, left);
+            break;
+        case left:
+            SetOwnerInNeighborIfExists(northwest, down);
+            SetOwnerInNeighborIfExists(southwest, up);
+            break;
+        case right:
+            SetOwnerInNeighborIfExists(northeast, down);
+            SetOwnerInNeighborIfExists(southeast, up);
+            break;
+    }
+}
 
-            case right:
-                if(currentLocation->GetSquareNeighbor(northeast))
-                    currentLocation->GetSquareNeighbor(northeast)->SetEdgeOwner(down, &owner);
-                if(currentLocation->GetSquareNeighbor(southeast) )
-                    currentLocation->GetSquareNeighbor(southeast)->SetEdgeOwner(up, &owner);
-                break;
-        }
+void Movable::SetOwnerInNeighborIfExists(IntermediateDirection directionOfNeighbor, Direction directionOfEdge) {
+    if (currentLocation->GetSquareNeighbor(directionOfNeighbor))
+        currentLocation->GetSquareNeighbor(directionOfNeighbor)->SetEdgeOwner(directionOfEdge, &owner);
 }
 

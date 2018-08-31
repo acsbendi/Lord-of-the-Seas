@@ -22,6 +22,9 @@ public:
 protected:
     GridPoint* currentLocation;
     Player& owner;
+
+private:
+    void SetOwnerInNeighborIfExists(IntermediateDirection, Direction);
 };
 
 #endif // MOVABLE_H
