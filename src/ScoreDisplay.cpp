@@ -24,46 +24,70 @@ text1{"First player's score: " + to_string(scoreOfPlayer1),font,20}, text2{"Seco
     Refresh();
 }
 
-void ScoreDisplay::Exit() {
-    end = true;
-    window.close();
-}
-
 void ScoreDisplay::Show(){
     Event event{};
     while(!end) {
         while (window.pollEvent(event)) {
-            if (event.type == Event::KeyPressed)
-                switch (event.key.code) {
-                    case Keyboard::Escape:
-                        Exit();
-                        break;
-                    case Keyboard::Return:
-                        Exit();
-                        break;
-                    default:
-                        break;
-                }
-            else if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left) {
-                okButton.OnClick(event.mouseButton.x, event.mouseButton.y);
-            } else if(event.type == Event::MouseMoved) {
-                okButton.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
-                Refresh();
-            } else if (event.type == Event::Closed) {
-                end = true;
-                window.close();
-                return;
-            }
+            HandleEvent(event);
         }
     }
 }
 
+void ScoreDisplay::HandleEvent(const Event& event) {
+    switch (event.type){
+        case Event::KeyPressed:
+            HandleKeyPress(event);
+            break;
+        case Event::MouseButtonPressed:
+            if(event.mouseButton.button == Mouse::Left)
+                okButton.OnClick(event.mouseButton.x, event.mouseButton.y);
+            break;
+        case Event::MouseMoved:
+            okButton.OnMouseMove(event.mouseMove.x, event.mouseMove.y);
+            Refresh();
+            break;
+        case Event::Closed:
+            Exit();
+            break;
+        default:
+            break;
+    }
+}
+
+void ScoreDisplay::HandleKeyPress(const Event& event) {
+    switch (event.key.code) {
+        case Keyboard::Escape:
+            Exit();
+            break;
+        case Keyboard::Return:
+            Exit();
+            break;
+        default:
+            break;
+    }
+}
+
 void ScoreDisplay::Refresh(){
+    ShowBackgroundAndOkButton();
+    ShowText();
+    window.display();
+}
+
+void ScoreDisplay::ShowBackgroundAndOkButton() {
     Sprite sprite;
     sprite.setTexture(background);
     window.draw(sprite);
     window.draw(okButton);
+}
 
+void ScoreDisplay::ShowText(){
+    SetTextPosition();
+    SetTextStyleAndColor();
+    window.draw(text1);
+    window.draw(text2);
+}
+
+void ScoreDisplay::SetTextPosition() {
     if(scoreOfPlayer1 >= scoreOfPlayer2) {
         text1.setPosition(TEXT_X,50);
         text2.setPosition(TEXT_X,100);
@@ -72,12 +96,16 @@ void ScoreDisplay::Refresh(){
         text1.setPosition(TEXT_X,100);
         text2.setPosition(TEXT_X,50);
     }
+}
+
+void ScoreDisplay::SetTextStyleAndColor() {
     text1.setStyle(Text::Bold);
     text2.setStyle(Text::Bold);
     text1.setFillColor(Color::Black);
     text2.setFillColor(Color::Black);
-    window.draw(text1);
-    window.draw(text2);
+}
 
-    window.display();
+void ScoreDisplay::Exit() {
+    end = true;
+    window.close();
 }

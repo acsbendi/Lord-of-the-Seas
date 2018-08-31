@@ -12,6 +12,7 @@ using sf::Text;
 using sf::RenderWindow;
 using sf::Font;
 using sf::Texture;
+using sf::Event;
 
 class ScoreDisplay{
 public:
@@ -35,6 +36,12 @@ private:
     const int scoreOfPlayer2;
 
     void Exit();
+    void HandleEvent(const Event&);
+    void HandleKeyPress(const Event&);
+    void ShowBackgroundAndOkButton();
+    void ShowText();
+    void SetTextPosition();
+    void SetTextStyleAndColor();
 };
 
 
