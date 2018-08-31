@@ -3,13 +3,11 @@
 //
 
 #include <SFML/Network.hpp>
-#include <iostream>
 #include "OnlineGame.h"
 #include "LocalPlayer.h"
 #include <thread>
 #include <cstring>
 
-using std::cout;
 using std::endl;
 using std::to_string;
 using std::make_unique;
@@ -123,7 +121,6 @@ void OnlineGame::OnMove(Direction direction){
 }
 
 void OnlineGame::OnTurnEnd() {
-    cout << "OnTurnEnd" << endl;
     if(currentPlayer == player1.get()) {
         currentPlayer = player2.get();
         SendText(to_string(6));
