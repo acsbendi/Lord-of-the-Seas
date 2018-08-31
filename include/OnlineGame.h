@@ -49,6 +49,11 @@ private:
      */
     void CreateConnection();
     void OnExit() override;
+    void InitializePlayersAndMap();
+    void WaitForStartSignal();
+    void RunOneGameCycle();
+    void SetPlayersScores(int&,int&);
+    void HandleMessage(int);
 };
 
 

@@ -29,7 +29,23 @@ void OnlineGame::CreateConnection(){
     }
 }
 
-void OnlineGame::PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) {
+void OnlineGame::PlayGame(int& scoreOfPlayer1, int& scoreOfPlayer2) {
+    InitializePlayersAndMap();
+
+    socket.setBlocking(false);
+
+    WaitForStartSignal();
+
+    currentPlayer->YourTurn();
+
+    while(!gameEnd) {
+        RunOneGameCycle();
+    }
+
+    SetPlayersScores(scoreOfPlayer1,scoreOfPlayer2);
+}
+
+void OnlineGame::InitializePlayersAndMap() {
     bool firstLocal = ReceiveMessages()[0] == 10;
     if(firstLocal){
         map.InitializeGrid(player1.get(), player2.get());
@@ -40,29 +56,28 @@ void OnlineGame::PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) {
         gameWindow.SetActive(false);
         currentPlayer = player2.get();
     }
+}
 
-    socket.setBlocking(false);
-
-    //wait for signal to start game
+void OnlineGame::WaitForStartSignal() {
     while(ReceiveMessages().empty())
         gameWindow.GetInput();
+}
 
-    currentPlayer->YourTurn();
-
-    while(!gameEnd) {
-        gameWindow.GetInput();
-        GetRemoteMove();
-        if(turnEnd){
-            cout << "player notifed" << endl;
-            currentPlayer->YourTurn(); //the notification can only take place after the previous move was entirely completed,
-            //so that the current move will only be handled by one player, who is finishing their turn
-            turnEnd = false;
-        }
+void OnlineGame::RunOneGameCycle(){
+    gameWindow.GetInput();
+    GetRemoteMove();
+    if(turnEnd){
+        currentPlayer->YourTurn(); //the notification can only take place after the previous move was entirely completed,
+        //so that the current move will only be handled by one player, who is finishing their turn
+        turnEnd = false;
     }
+}
 
+void OnlineGame::SetPlayersScores(int& scoreOfPlayer1, int& scoreOfPlayer2) {
     scoreOfPlayer1 = player1->GetScore();
     scoreOfPlayer2 = player2->GetScore();
 }
+
 
 vector<int> OnlineGame::ReceiveMessages() {
     vector<int> res;
@@ -82,21 +97,25 @@ void OnlineGame::SendText(string message){
 }
 
 void OnlineGame::GetRemoteMove() {
-    vector<int> receivedVector = ReceiveMessages();
-    for (int received : receivedVector)
-        switch (received) {
-            case 4:
-                player2->OnConfirmation(true);
-                break;
-            case 5:
-                player2->OnConfirmation(false);
-                break;
-            case -1:
-                return;
-            default:
-                player2->OnDirectionSelected(static_cast<Direction>(received));
-                break;
-        }
+    vector<int> receivedMessages = ReceiveMessages();
+    for (int message : receivedMessages)
+        HandleMessage(message);
+}
+
+void OnlineGame::HandleMessage(int message) {
+    switch (message) {
+        case 4:
+            player2->OnConfirmation(true);
+            break;
+        case 5:
+            player2->OnConfirmation(false);
+            break;
+        case -1:
+            return;
+        default:
+            player2->OnDirectionSelected(static_cast<Direction>(message));
+            break;
+    }
 }
 
 void OnlineGame::OnMove(Direction direction){
@@ -109,7 +128,6 @@ void OnlineGame::OnTurnEnd() {
         currentPlayer = player2.get();
         SendText(to_string(6));
         gameWindow.SetActive(false);
-        //std::thread t{[&](){this->handleRemoteInput();}};
     }
     else{
         currentPlayer = player1.get();
