@@ -6,11 +6,14 @@
 #define LORD_OF_THE_SEAS_GAMEWINDOW_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include "IMapObserver.hpp"
 #include "Enums.h"
 
 using std::vector;
 using sf::RenderWindow;
+using sf::Keyboard;
+using sf::Event;
 
 class IUserEventObserver;
 class IWindowEventObserver;
@@ -71,6 +74,11 @@ private:
     vector<IUserEventObserver*> userEventObservers; ///< Vector storing the attached user event observers.
     vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
     bool active; ///< Should the window create events?
+    bool inputEnd;
+
+    void ClearEventQueue();
+    void HandleKeyPress(const Keyboard::Key&);
+    void HandleEvent(const Event&);
 };
 
 

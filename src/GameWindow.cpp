@@ -25,47 +25,59 @@ GameWindow::GameWindow(const int width, const int height) : width{width}, height
 }
 
 void GameWindow::GetInput() {
+    ClearEventQueue();
+
     Event event{};
-    Context context{};
-
-
-    //clearing event queue
-    while (pollEvent(event));
-
-    while (true) {
-        while (pollEvent(event)) {
-            if (active && event.type == Event::KeyPressed){
-                switch (event.key.code) {
-                    case Keyboard::Up:
-                        NotifyOnDirectionSelected(up);
-                        return;
-                    case Keyboard::Down:
-                        NotifyOnDirectionSelected(down);
-                        return;
-                    case Keyboard::Right:
-                        NotifyOnDirectionSelected(right);
-                        return;
-                    case Keyboard::Left:
-                        NotifyOnDirectionSelected(left);
-                        return;
-                    case Keyboard::Escape:
-                        NotifyOnExit();
-                        return;
-                    case Keyboard::Return:
-                        NotifyOnConfirmation(true);
-                        return;
-                    default:
-                        NotifyOnConfirmation(false);
-                        return;
-                }
-            }
-            else if (event.type == Event::Closed) {
-                NotifyOnExit();
-                close();
-                return;
-            } else if (!active)
-                return;
+    inputEnd = false;
+    while (!inputEnd) {
+        while (!inputEnd && pollEvent(event)) {
+           HandleEvent(event);
         }
+    }
+}
+
+void GameWindow::ClearEventQueue() {
+    Event event{};
+    while (pollEvent(event));
+}
+
+void GameWindow::HandleEvent(const Event& event) {
+    if (active && event.type == Event::KeyPressed){
+        HandleKeyPress(event.key.code);
+        inputEnd = true;
+    }
+    else if (event.type == Event::Closed) {
+        NotifyOnExit();
+        close();
+        inputEnd = true;
+    } else if (!active){
+        inputEnd = true;
+    }
+}
+
+void GameWindow::HandleKeyPress(const Keyboard::Key& key) {
+    switch (key) {
+        case Keyboard::Up:
+            NotifyOnDirectionSelected(up);
+            break;
+        case Keyboard::Down:
+            NotifyOnDirectionSelected(down);
+            break;
+        case Keyboard::Right:
+            NotifyOnDirectionSelected(right);
+            break;
+        case Keyboard::Left:
+            NotifyOnDirectionSelected(left);
+            break;
+        case Keyboard::Escape:
+            NotifyOnExit();
+            break;
+        case Keyboard::Return:
+            NotifyOnConfirmation(true);
+            break;
+        default:
+            NotifyOnConfirmation(false);
+            break;
     }
 }
 
