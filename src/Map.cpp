@@ -1,20 +1,19 @@
 #include "Map.h"
 #include "IMapObserver.hpp"
-#include <iostream>
+#include <MapCreator.hpp>
 
 using std::unordered_set;
 using std::remove;
 using std::make_unique;
 
-/*int Map::WIDTH = 40;
-int Map::HEIGHT = 30;
-*/
 
 Map::Map() = default;
 
 void Map::InitializeGrid(Player *player1, Player *player2)
 {
-    gridSquares = GridSquare::CreateGridSquares(WIDTH, HEIGHT);
+    MapCreator mapCreator = MapCreator(WIDTH, HEIGHT);
+
+    gridSquares = mapCreator.GetGridSquares();
 
     for(int i = 0; i < HEIGHT; i++){
         gridPoints.emplace_back(static_cast<unsigned>(WIDTH));

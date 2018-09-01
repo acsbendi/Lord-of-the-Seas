@@ -22,6 +22,7 @@ using sf::Vector2i;
 using sf::RenderTarget;
 using sf::Texture;
 using sf::RenderStates;
+using sf::Vertex;
 
 class Player;
 
@@ -32,8 +33,6 @@ public:
     void draw(RenderTarget& target, RenderStates) const override;
     virtual bool IsLand() const = 0;
     virtual bool IsSea() const = 0;
-    static vector<vector<unique_ptr<GridSquare>>> CreateGridSquares(int, int);
-
     virtual int GetValue() const = 0;
 
     /**
@@ -76,6 +75,7 @@ private:
     void DrawGridSquare(RenderTarget& target) const;
     void DrawTexture(const Texture&, RenderTarget&) const;
     void DrawEdge(const Edge& edge, RenderTarget&) const;
+    void ColorEdge(Vertex*, const Edge&) const;
 };
 
 

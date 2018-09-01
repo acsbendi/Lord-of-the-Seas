@@ -6,9 +6,6 @@
 #include <algorithm>
 #include "GameWindow.h"
 #include "GridSquare.h"
-#include "Land.h"
-#include "Treasure.h"
-#include "Water.h"
 #include "Player.h"
 
 using std::pair;
@@ -45,43 +42,21 @@ void GridSquare::DrawEdge(const Edge& edge, RenderTarget& target) const{
     line[0] = Vertex(Vector2f(GameWindow::MARGIN + edge.startCoordinates.x*GameWindow::GRID_SIDE, GameWindow::MARGIN + edge.startCoordinates.y*GameWindow::GRID_SIDE));
     line[1] = Vertex(Vector2f(GameWindow::MARGIN + edge.endCoordinates.x*GameWindow::GRID_SIDE, GameWindow::MARGIN + edge.endCoordinates.y*GameWindow::GRID_SIDE));
 
+    ColorEdge(line,edge);
+    target.draw(line, 2, Lines);
+}
+
+void GridSquare::ColorEdge(Vertex* line, const Edge& edge) const{
     if(edgeOwners.at(edge.directionInSquare))
     {
         line[0].color = edgeOwners.at(edge.directionInSquare)->GetColor();
         line[1].color = edgeOwners.at(edge.directionInSquare)->GetColor();
     }
-    target.draw(line, 2, Lines);
 }
-
-
 
 void GridSquare::SetEdgeOwner(Direction direction, Player* player)
 {
     edgeOwners[direction] = player;
-}
-
-vector<vector<unique_ptr<GridSquare>>> GridSquare::CreateGridSquares(int width, int height)
-{
-    vector<vector<unique_ptr<GridSquare>>> gridSquares;
-    vector<Vector2i> lands = {{19,20},{21,20},{20,21},{20,22},{20,19},{19,19},{19,18},
-                                       {5,9},{6,8},{7,8},{6,9},{7,9},{5,7},{4,10},{4,9}};
-    vector<Vector2i> treasures = {{20,20},{5,8}};
-
-    for(int i = 0; i < height-1; i++){
-        gridSquares.emplace_back(static_cast<unsigned>(width-1));
-    }
-
-    for(int i = 0; i < height-1; i++){
-        for(int j = 0; j < width-1; j++)
-            if (find(lands.begin(),lands.end(),Vector2i{i,j}) != lands.end())
-                gridSquares[i][j] = make_unique<Land>(j,i);
-            else if(find(treasures.begin(),treasures.end(),Vector2i{i,j}) != treasures.end())
-                gridSquares[i][j] = make_unique<Treasure>(j,i);
-            else
-                gridSquares[i][j] = make_unique<Water>(j,i);
-    }
-
-    return gridSquares;
 }
 
 void GridSquare::SetNeighbor(Direction direction, GridSquare* gridSquare){
