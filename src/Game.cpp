@@ -1,25 +1,38 @@
 #include <iostream>
 #include "Game.h"
+#include "MapBuilder.hpp"
 
 using std::move;
 using std::make_unique;
 
-Game::Game(unique_ptr<Player> p1, unique_ptr<Player> p2) : map{}, gameEnd{false}, turnEnd{false},
-                                                                     player1{move(p1)}, player2{move(p2)},
-                                                                     gameWindow{Map::WIDTH, Map::HEIGHT}
+Game::Game(MapBuilder&& mapInitializer) :
+        player1{make_unique<Player>(Color::Red, "Player 1")}, player2{make_unique<Player>(Color::Magenta, "Player 2")},
+        map{mapInitializer.BuildMap(*this->player1->GetShip(), *this->player2->GetShip())},
+        gameEnd{false}, turnEnd{false},
+        gameWindow{map.GetWidth(),map.GetHeight()}
 {
+    CreateAttachments();
+    currentPlayer = this->player1.get();
+}
+
+Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilder&& mapInitializer):
+        player1{move(player1)}, player2{move(player2)},
+        map{mapInitializer.BuildMap()},
+        gameEnd{false}, turnEnd{false},
+        gameWindow{map.GetWidth(),map.GetHeight()}
+{
+    CreateAttachments();
+}
+
+void Game::CreateAttachments(){
     player1->Attach(&map);
     player2->Attach(&map);
     gameWindow.AttachWindowEventObserver(this);
     gameWindow.AttachUserEventObserver(player1.get());
     gameWindow.AttachUserEventObserver(player2.get());
     map.Attach(&gameWindow);
-    currentPlayer = player1.get();
     player1->Attach(this);
     player2->Attach(this);
-}
-
-Game::Game() : Game(make_unique<Player>(Color::Red,"Player 1"),make_unique<Player>(Color::Magenta, "Player 2")){
 }
 
 void Game::CheckEnd()
@@ -30,8 +43,7 @@ void Game::CheckEnd()
 
 void Game::PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2)
 {
-    map.InitializeGrid(player1.get(), player2.get());
-
+    map.Show(gameWindow);
     currentPlayer->YourTurn();
 
     while(!gameEnd) {

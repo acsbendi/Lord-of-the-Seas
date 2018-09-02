@@ -20,7 +20,7 @@ using std::string;
  */
 class OnlineGame : public Game, public ILocalPlayerObserver{
 public:
-    OnlineGame();
+    explicit OnlineGame(MapBuilder&& mapInitializer);
     void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2) override;
     void OnMove(Direction direction) override;
     void OnTurnEnd() override;
@@ -49,7 +49,7 @@ private:
      */
     void CreateConnection();
     void OnExit() override;
-    void InitializePlayersAndMap();
+    void InitializeShipPositionsOnMap(MapBuilder& mapInitializer);
     void WaitForStartSignal();
     void RunOneGameCycle();
     void SetPlayersScores(int&,int&);

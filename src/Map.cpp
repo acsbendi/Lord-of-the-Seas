@@ -1,6 +1,6 @@
 #include "Map.h"
 #include "IMapObserver.hpp"
-#include <MapCreator.hpp>
+#include <MapBuilder.hpp>
 
 using std::unordered_set;
 using std::remove;
@@ -8,33 +8,6 @@ using std::make_unique;
 
 
 Map::Map() = default;
-
-void Map::InitializeGrid(Player *player1, Player *player2)
-{
-    MapCreator mapCreator = MapCreator(WIDTH, HEIGHT);
-
-    gridSquares = mapCreator.GetGridSquares();
-
-    for(int i = 0; i < HEIGHT; i++){
-        gridPoints.emplace_back(static_cast<unsigned>(WIDTH));
-    }
-
-    for(int i = 0; i < HEIGHT; i++)
-        for(int j = 0; j < WIDTH; j++)
-                gridPoints[i][j] = make_unique<GridPoint>(j,i);
-
-    SetNeighbors();
-
-    for(int i = 0; i < HEIGHT; i++)
-        for(int j = 0; j < WIDTH; j++)
-            gridPoints[i][j]->FinishInitialization();
-
-    gridPoints[0][0]->SetMovable(player1->GetShip());
-    player1->GetShip()->SetCurrentLocation(gridPoints[0][0].get());
-    gridPoints[HEIGHT - 2][WIDTH - 2]->SetMovable(player2->GetShip());
-    player2->GetShip()->SetCurrentLocation(gridPoints[HEIGHT - 2][WIDTH - 2].get());
-    Notify();
-}
 
 void Map::Notify()
 {
@@ -44,12 +17,12 @@ void Map::Notify()
 
 void Map::Show(RenderWindow& window){
     window.clear();
-    for(int i = 0; i < HEIGHT-1; ++i)
-        for(int j = 0; j < WIDTH-1; ++j)
+    for(int i = 0; i < height-1; ++i)
+        for(int j = 0; j < width-1; ++j)
             window.draw(*gridSquares[i][j]);
 
-    for(int i = 0; i < HEIGHT; ++i)
-        for(int j = 0; j < WIDTH; ++j)
+    for(int i = 0; i < height; ++i)
+        for(int j = 0; j < width; ++j)
             if(gridPoints[i][j]->GetMovable())
                 window.draw(*gridPoints[i][j]->GetMovable());
 
@@ -65,8 +38,8 @@ void Map::AddPoints(unordered_set<const GridSquare *> ownedSquares, Player *owne
 
 void Map::CountScore() const {
     unordered_set<const GridSquare*> checked;
-    for(int i = 0; i < HEIGHT-1; ++i)
-        for(int j = 0; j < WIDTH-1; ++j)
+    for(int i = 0; i < height-1; ++i)
+        for(int j = 0; j < width-1; ++j)
         {
             if(checked.find(gridSquares[i][j].get()) == checked.end()) {
                 unordered_set<const GridSquare *> previous;
@@ -81,35 +54,6 @@ void Map::CountScore() const {
 
 void Map::OnMove(){
     Notify();
-}
-
-void Map::SetNeighbors() {
-    for(int i = 0; i < HEIGHT; ++i)
-        for(int j = 0; j < WIDTH; ++j){
-            //Setting neighbors connections between points and points
-            gridPoints[i][j]->SetPointNeighbor(up, i - 1 >= 0 ? gridPoints[i - 1][j].get() : nullptr);
-            gridPoints[i][j]->SetPointNeighbor(left, j - 1 >= 0 ? gridPoints[i][j - 1].get() : nullptr);
-            gridPoints[i][j]->SetPointNeighbor(down, i + 1 < HEIGHT ? gridPoints[i + 1][j].get() : nullptr);
-            gridPoints[i][j]->SetPointNeighbor(right, j + 1 < WIDTH ? gridPoints[i][j + 1].get() : nullptr);
-
-            //Setting neighbors connections between squares and points
-            gridPoints[i][j]->SetSquareNeighbor(northwest,
-                                                i - 1 >= 0 && j - 1 >= 0 ? gridSquares[i - 1][j - 1].get() : nullptr);
-            gridPoints[i][j]->SetSquareNeighbor(northeast,
-                                                i - 1 >= 0 && j + 1 < WIDTH ? gridSquares[i - 1][j].get() : nullptr);
-            gridPoints[i][j]->SetSquareNeighbor(southeast,
-                                                i + 1 < HEIGHT && j + 1 < WIDTH ? gridSquares[i][j].get() : nullptr);
-            gridPoints[i][j]->SetSquareNeighbor(southwest,
-                                                i + 1 < HEIGHT && j - 1 >= 0 ? gridSquares[i][j - 1].get() : nullptr);
-
-            //Setting neighbors connections between squares and squares
-            if(i+1 < HEIGHT && j+1 < WIDTH) {
-                gridSquares[i][j]->SetNeighbor(up, i - 1 >= 0 ? gridSquares[i - 1][j].get() : nullptr);
-                gridSquares[i][j]->SetNeighbor(left, j - 1 >= 0 ? gridSquares[i][j - 1].get() : nullptr);
-                gridSquares[i][j]->SetNeighbor(down, i + 2 < HEIGHT ? gridSquares[i + 1][j].get() : nullptr);
-                gridSquares[i][j]->SetNeighbor(right, j + 2 < WIDTH ? gridSquares[i][j + 1].get() : nullptr);
-            }
-        }
 }
 
 bool Map::CheckEnd(){
@@ -131,4 +75,12 @@ void Map::Attach(IMapObserver *observer) {
 void Map::Detach(IMapObserver *observer) {
     observers.erase(remove(observers.begin(),
                                 observers.end(),observer),observers.end());
+}
+
+int Map::GetHeight() const {
+    return height;
+}
+
+int Map::GetWidth() const {
+    return width;
 }

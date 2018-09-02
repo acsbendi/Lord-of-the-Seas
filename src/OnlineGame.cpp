@@ -7,16 +7,20 @@
 #include "LocalPlayer.h"
 #include <thread>
 #include <cstring>
+#include "MapBuilder.hpp"
 
+using std::move;
 using std::endl;
 using std::to_string;
 using std::make_unique;
 using std::runtime_error;
 using sf::Socket;
 
-OnlineGame::OnlineGame() : Game(make_unique<LocalPlayer>(Color::Red,"Player 1"), make_unique<Player>(Color::Magenta, "Player 2")) {
+OnlineGame::OnlineGame(MapBuilder&& mapInitializer) :
+        Game(make_unique<LocalPlayer>(Color::Red, "Player 1"),make_unique<Player>(Color::Magenta, "Player 2"),move(mapInitializer)) {
     CreateConnection();
     dynamic_cast<LocalPlayer *>(player1.get())->AttachLocalPlayerObserver(this);
+    InitializeShipPositionsOnMap(mapInitializer);
 }
 
 void OnlineGame::CreateConnection(){
@@ -28,12 +32,11 @@ void OnlineGame::CreateConnection(){
 }
 
 void OnlineGame::PlayGame(int& scoreOfPlayer1, int& scoreOfPlayer2) {
-    InitializePlayersAndMap();
-
     socket.setBlocking(false);
 
     WaitForStartSignal();
 
+    map.Show(gameWindow);
     currentPlayer->YourTurn();
 
     while(!gameEnd) {
@@ -43,14 +46,14 @@ void OnlineGame::PlayGame(int& scoreOfPlayer1, int& scoreOfPlayer2) {
     SetPlayersScores(scoreOfPlayer1,scoreOfPlayer2);
 }
 
-void OnlineGame::InitializePlayersAndMap() {
+void OnlineGame::InitializeShipPositionsOnMap(MapBuilder& mapInitializer) {
     bool firstLocal = ReceiveMessages()[0] == 10;
     if(firstLocal){
-        map.InitializeGrid(player1.get(), player2.get());
+        mapInitializer.SetShipPositions(map,*player1->GetShip(), *player2->GetShip());
         currentPlayer = player1.get();
     }
     else {
-        map.InitializeGrid(player2.get(), player1.get());
+        mapInitializer.SetShipPositions(map,*player2->GetShip(), *player1->GetShip());
         gameWindow.SetActive(false);
         currentPlayer = player2.get();
     }

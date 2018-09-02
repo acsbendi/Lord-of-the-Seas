@@ -2,13 +2,17 @@
 // Created by Bendi on 1/28/2018.
 //
 
+#include <iostream>
+
 #include "Application.h"
 #include "Game.h"
 #include "Graphics.h"
 #include "ScoreDisplay.h"
 #include "OnlineGame.h"
+#include "MapBuilder.hpp"
 
 using std::move;
+using std::make_unique;
 using sf::VideoMode;
 using sf::Event;
 using sf::Keyboard;
@@ -25,11 +29,11 @@ Application::Application() : window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"},
 }
 
 void Application::StartNewLocalGame(){
-    StartNewGame(Game{});
+    StartNewGame(Game{MapBuilder{}});
 }
 
 void Application::StartNewOnlineGame(){
-    StartNewGame(OnlineGame{});
+    StartNewGame(OnlineGame{MapBuilder{}});
 }
 
 void Application::StartNewGame(Game&& game) {

@@ -18,24 +18,14 @@ using std::unordered_set;
 using sf::RenderWindow;
 
 class GridSquare;
-
 class IMapObserver;
 
 class Map : public IPlayerObserver {
 public:
-    static const int WIDTH = 40;   ///< The number of the columns in the grid structure of the map.
-    static const int HEIGHT = 30;  ///< The number of the rows in the grid structure of the map.
-
     /**
      * @brief Constructs a Map object, also creating the window. By default the Map is active.
      */
     Map();
-/**
- * @brief Initializes the map's structure with the specified players.
- * @param player1 The first player to play on this map.
- * @param player2 The second player to play on this map.
- */
-    void InitializeGrid(Player *player1, Player *player2);
     /**
      * @brief Sets the scores of all players at the end of the game.
      */
@@ -64,11 +54,15 @@ public:
      * @param observer The observer to detach.
      */
     void Detach(IMapObserver *observer);
+    int GetWidth() const;
+    int GetHeight() const;
 
 private:
     vector<vector<unique_ptr<GridPoint>>> gridPoints; ///< Two-dimension vector containing all the grid points in the map.
     vector<vector<unique_ptr<GridSquare>>> gridSquares; ///< Two-dimension vector containing all the grid squares in the map.
     vector<IMapObserver *> observers;
+    int width;
+    int height;
 
 /**
  * @brief Adds the points earned by owning the specified set of squares to the specified owner.
@@ -80,10 +74,8 @@ private:
  * @brief Publishes an event to its subscribers, the state of the map may have been changed.
  */
     void Notify();
-/**
- * @brief Sets the neighbor connections between squares and points, points and points, and squares and squares.
- */
-    void SetNeighbors();
+
+    friend class MapBuilder;
 };
 
 #endif // MAP_H

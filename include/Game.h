@@ -9,14 +9,12 @@
 using std::unique_ptr;
 
 class GameWindow;
+class MapBuilder;
 
 class Game : public IPlayerObserver, public IWindowEventObserver {
 public:
-    /**
-     * @brief Constructs a new Game object, also creating players and the map.
-     */
-    Game();
 
+    explicit Game(MapBuilder&& mapInitializer);
     /**
      * @brief If one player has finished their turn, the other player needs to be notified.
      */
@@ -42,19 +40,22 @@ public:
     virtual void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
 
 protected:
-    Map map; ///< Map object belonging to this game.
-    GameWindow gameWindow; ///< The window that shows everything related to this game.
     unique_ptr<Player> player1; ///< The first player playing this game.
     unique_ptr<Player> player2; ///< The second player playing this game.
+    Map map; ///< Map object belonging to this game.
+    GameWindow gameWindow; ///< The window that shows everything related to this game.
     Player* currentPlayer; ///< The player who currently gets to move its pieces.
     bool gameEnd; ///< Has the game ended?
     bool turnEnd; ///< Has the turn of the currentPlayer ended?
 
-    Game(unique_ptr<Player> player1, unique_ptr<Player> player2);
+
 /**
  * @brief Checks if the game has already ended, if so, calls the exit handler function.
  */
     void CheckEnd();
+    void CreateAttachments();
+
+    Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilder&& map);
 };
 
 #endif // GAME_H
