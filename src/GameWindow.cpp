@@ -42,11 +42,10 @@ void GameWindow::ClearEventQueue() {
 }
 
 void GameWindow::HandleEvent(const Event& event) {
-    if (active && event.type == Event::KeyPressed){
+    if(active && event.type == Event::KeyPressed){
         HandleKeyPress(event.key.code);
         inputEnd = true;
-    }
-    else if (event.type == Event::Closed) {
+    } else if(event.type == Event::Closed){
         NotifyOnExit();
         close();
         inputEnd = true;

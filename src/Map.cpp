@@ -17,39 +17,50 @@ void Map::Notify()
 
 void Map::Show(RenderWindow& window){
     window.clear();
+    DrawGridSqures(window);
+    DrawMovables(window);
+    window.display();
+}
+
+void Map::DrawGridSqures(RenderWindow& window) const {
     for(int i = 0; i < height-1; ++i)
         for(int j = 0; j < width-1; ++j)
             window.draw(*gridSquares[i][j]);
+}
 
+void Map::DrawMovables(RenderWindow& window) const {
     for(int i = 0; i < height; ++i)
         for(int j = 0; j < width; ++j)
             if(gridPoints[i][j]->GetMovable())
                 window.draw(*gridPoints[i][j]->GetMovable());
-
-    window.display();
 }
 
-void Map::AddPoints(unordered_set<const GridSquare *> ownedSquares, Player *owner) const
-{
+void Map::AddPoints(unordered_set<const GridSquare *> ownedSquares, Player *owner) const {
     for(auto gridSquare : ownedSquares)
         owner->AddScore(gridSquare->GetValue());
 }
 
+void Map::CheckForPoints(const GridSquare* gridSquareToCheck, unordered_set<const GridSquare*>& previouslyChecked) const {
+    unordered_set<const GridSquare *> areaWithSameOwner;
+    Player *owner = gridSquareToCheck->GetOwner(areaWithSameOwner);
+    if (owner) {
+        previouslyChecked.insert(areaWithSameOwner.begin(), areaWithSameOwner.end());
+        AddPoints(areaWithSameOwner, owner);
+    }
+}
 
 void Map::CountScore() const {
     unordered_set<const GridSquare*> checked;
     for(int i = 0; i < height-1; ++i)
-        for(int j = 0; j < width-1; ++j)
-        {
-            if(checked.find(gridSquares[i][j].get()) == checked.end()) {
-                unordered_set<const GridSquare *> previous;
-                Player *owner = gridSquares[i][j]->GetOwner(previous);
-                if (owner) {
-                    checked.insert(previous.begin(), previous.end());
-                    AddPoints(previous, owner);
-                }
-            }
+        for(int j = 0; j < width-1; ++j){
+            const GridSquare* currentGridSquare = gridSquares[i][j].get();
+            if(!HasBeenChecked(currentGridSquare, checked))
+                CheckForPoints(currentGridSquare, checked);
         }
+}
+
+bool Map::HasBeenChecked(const GridSquare* gridSquare, unordered_set<const GridSquare*>& previouslyChecked) const {
+    return previouslyChecked.find(gridSquare) != previouslyChecked.end();
 }
 
 void Map::OnMove(){
@@ -57,9 +68,9 @@ void Map::OnMove(){
 }
 
 bool Map::CheckEnd(){
-    for(const auto& i : gridSquares)
-       for(const auto& j : i)
-           if(!j->CanEnd())
+    for(const auto& gridSquareList : gridSquares)
+       for(const auto& gridSquare : gridSquareList)
+           if(!gridSquare->CanEnd())
                return false;
     return true;
 }

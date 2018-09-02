@@ -128,8 +128,7 @@ void OnlineGame::OnTurnEnd() {
         currentPlayer = player2.get();
         SendText(to_string(6));
         gameWindow.SetActive(false);
-    }
-    else{
+    } else{
         currentPlayer = player1.get();
         gameWindow.SetActive(true);
     }
