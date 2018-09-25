@@ -36,7 +36,7 @@ void OnlineGame::PlayGame(int& scoreOfPlayer1, int& scoreOfPlayer2) {
 
     WaitForStartSignal();
 
-    map.Show(gameWindow);
+    gameWindow.Show();
     currentPlayer->YourTurn();
 
     while(!gameEnd) {

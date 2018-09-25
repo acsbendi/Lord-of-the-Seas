@@ -1,6 +1,10 @@
+#include <algorithm>
 #include "Movable.h"
 #include "GridSquare.h"
 #include "GridPoint.h"
+#include "IMovableObserver.hpp"
+
+using std::remove;
 
 Movable::Movable(Player& player) : currentLocation{nullptr}, owner{player}
 {
@@ -43,3 +47,15 @@ void Movable::SetOwnerInNeighborIfExists(IntermediateDirection directionOfNeighb
         currentLocation->GetSquareNeighbor(directionOfNeighbor)->SetEdgeOwner(directionOfEdge, &owner);
 }
 
+void Movable::Attach(IMovableObserver* observer){
+    observers.push_back(observer);
+}
+
+void Movable::Detach(IMovableObserver* observer){
+    observers.erase(remove(observers.begin(),observers.end(),observer),observers.end());
+}
+
+void Movable::NotifyOnSuccessfulMove(Direction directionOfMove) const {
+    for(IMovableObserver* observer : observers)
+        observer->OnSuccessfulMove(directionOfMove);
+}

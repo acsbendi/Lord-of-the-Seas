@@ -3,10 +3,8 @@
 
 #include <map>
 #include <memory>
-#include <SFML/Graphics.hpp>
 #include "Enums.h"
 
-using sf::Vector2i;
 using std::map;
 
 class Ship;
@@ -16,7 +14,7 @@ class Movable;
 
 class GridPoint {
 public:
-    GridPoint(int, int);
+    GridPoint();
     virtual ~GridPoint() = default;
     Movable* GetMovable() const;
     void SetMovable(Movable*);
@@ -28,11 +26,9 @@ public:
     bool Enter(Ship*);
     void Exit(Movable*);
     void FinishInitialization();
-    Vector2i GetCoordinates() const;
     bool IsLand() const;
 
 private:
-    const Vector2i coordinates;
     Movable* movable;
     map<Direction, GridPoint* const> pointNeighbors;
     map<IntermediateDirection, GridSquare* const> squareNeighbors;

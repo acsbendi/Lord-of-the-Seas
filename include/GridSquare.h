@@ -9,28 +9,20 @@
 #include <vector>
 #include <unordered_set>
 #include <map>
-#include <SFML/Graphics.hpp>
 #include "Enums.h"
-#include "Edge.hpp"
 
 using std::map;
 using std::unordered_set;
 using std::vector;
 using std::unique_ptr;
-using sf::Drawable;
-using sf::Vector2i;
-using sf::RenderTarget;
-using sf::Texture;
-using sf::RenderStates;
-using sf::Vertex;
 
 class Player;
+class GridSquareView;
 
-class GridSquare : public Drawable {
+class GridSquare  {
 public:
     void SetEdgeOwner(Direction, Player*);
     void SetNeighbor(Direction, GridSquare*);
-    void draw(RenderTarget& target, RenderStates) const override;
     virtual bool IsLand() const = 0;
     virtual bool IsSea() const = 0;
     virtual int GetValue() const = 0;
@@ -63,19 +55,15 @@ public:
     bool IsOwnedBy(const Player* player, unordered_set<const GridSquare*>& previous) const;
 
 protected:
-    GridSquare(int,int);
-    virtual const Texture& GetTexture() const = 0;
+    GridSquare();
 
 private:
+    friend class GridSquareView;
+
     map<Direction, GridSquare* const> neighbors;
-    map<Direction,Player*> edgeOwners;
-    const Vector2i coordinates;
+    map<Direction, Player*> edgeOwners;
 
     bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
-    void DrawGridSquare(RenderTarget& target) const;
-    void DrawTexture(const Texture&, RenderTarget&) const;
-    void DrawEdge(const Edge& edge, RenderTarget&) const;
-    void ColorEdge(Vertex*, const Edge&) const;
 };
 
 

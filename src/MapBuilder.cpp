@@ -8,6 +8,9 @@
 #include "Treasure.h"
 #include "Water.h"
 #include "Map.h"
+#include "LandView.hpp"
+#include "WaterView.hpp"
+#include "TreasureView.hpp"
 
 using std::move;
 using std::find;
@@ -72,7 +75,7 @@ void MapBuilder::InitializeGrid()
 
 void MapBuilder::CreateGridSquares(){
     CreateGridSquareLists();
-    FillGridSquareLists();
+    FillGridSquareListsAndCreateGridSquareViews();
 }
 
 void MapBuilder::CreateGridPoints() {
@@ -96,7 +99,7 @@ void MapBuilder::CreateGridPointLists() {
 void MapBuilder::FillGridPointLists() {
     for(int i = 0; i < height; i++)
         for(int j = 0; j < width; j++)
-            gridPoints[i][j] = make_unique<GridPoint>(j,i);
+            gridPoints[i][j] = make_unique<GridPoint>();
 }
 
 void MapBuilder::CreateGridSquareLists() {
@@ -105,15 +108,21 @@ void MapBuilder::CreateGridSquareLists() {
     }
 }
 
-void MapBuilder::FillGridSquareLists(){
+void MapBuilder::FillGridSquareListsAndCreateGridSquareViews(){
     for(int i = 0; i < height-1; i++){
         for(int j = 0; j < width-1; j++)
-            if (find(lands.begin(),lands.end(),Position{i,j}) != lands.end())
-                gridSquares[i][j] = make_unique<Land>(j,i);
-            else if(find(treasures.begin(),treasures.end(),Position{i,j}) != treasures.end())
-                gridSquares[i][j] = make_unique<Treasure>(j,i);
-            else
-                gridSquares[i][j] = make_unique<Water>(j,i);
+            if (find(lands.begin(),lands.end(),Position{i,j}) != lands.end()){
+                gridSquares[i][j] = make_unique<Land>();
+                gridSquareViews.push_back(make_unique<LandView>(j,i,*gridSquares[i][j]));
+            }
+            else if(find(treasures.begin(),treasures.end(),Position{i,j}) != treasures.end()) {
+                gridSquares[i][j] = make_unique<Treasure>();
+                gridSquareViews.push_back(make_unique<TreasureView>(j,i,*gridSquares[i][j]));
+            }
+            else{
+                gridSquares[i][j] = make_unique<Water>();
+                gridSquareViews.push_back(make_unique<WaterView>(j,i,*gridSquares[i][j]));
+            }
     }
 }
 
@@ -171,4 +180,7 @@ bool MapBuilder::ExistsGridSquare(const Position& positionOfGridSquare) {
     return positionOfGridSquare.xCoordinate + 1 < width && positionOfGridSquare.yCoordinate + 1 < height;
 }
 
+vector<unique_ptr<GridSquareView>>&& MapBuilder::GetGridSquareViews(){
+    return move(gridSquareViews);
+}
 

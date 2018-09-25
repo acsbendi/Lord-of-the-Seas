@@ -31,7 +31,7 @@ public:
     void YourTurn();
 
 protected:
-    vector<IPlayerObserver *> observers;
+    vector<IPlayerObserver*> observers;
 
     virtual void Confirmed();
     virtual void Unconfirmed();

@@ -5,12 +5,16 @@
 #ifndef LORD_OF_THE_SEAS_GAMEWINDOW_H
 #define LORD_OF_THE_SEAS_GAMEWINDOW_H
 
+#include <memory>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include "IMapObserver.hpp"
 #include "Enums.h"
+#include "GridSquareView.hpp"
+#include "MovableView.hpp"
 
 using std::vector;
+using std::unique_ptr;
 using sf::RenderWindow;
 using sf::Keyboard;
 using sf::Event;
@@ -23,7 +27,7 @@ public:
     static int GRID_SIDE;   ///< The side length of one grid block.
     static int MARGIN;      ///< The margin around the grid structure of the map.
 
-    GameWindow(int width, int height);
+    GameWindow(int width, int height, vector<unique_ptr<GridSquareView>>&& gridSquareViews);
     /**
  * @brief Loop for all user input. Waits for the next meaningful event,
  * notifies the appropriate observers, then returns.
@@ -66,19 +70,24 @@ public:
      * @param active Should the window create events?
      */
     void SetActive(bool active);
-    void Update(Map&) override;
+    void Update() override;
+    void Show();
 
 private:
     const int width;
     const int height;
     vector<IUserEventObserver*> userEventObservers; ///< Vector storing the attached user event observers.
     vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
+    vector<unique_ptr<GridSquareView>> gridSquareViews;
+    vector<unique_ptr<MovableView>> movableViews;
     bool active; ///< Should the window create events?
     bool inputEnd;
 
     void ClearEventQueue();
     void HandleKeyPress(const Keyboard::Key&);
     void HandleEvent(const Event&);
+    void DrawMovables();
+    void DrawGridSqures();
 };
 
 

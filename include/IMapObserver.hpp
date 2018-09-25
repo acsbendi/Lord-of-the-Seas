@@ -9,7 +9,7 @@ class Map;
 
 class IMapObserver {
 public:
-    virtual void Update(Map&) = 0;
+    virtual void Update() = 0;
     virtual ~IMapObserver() = default;
 };
 

@@ -12,27 +12,7 @@ Map::Map() = default;
 void Map::Notify()
 {
     for(IMapObserver* observer : observers)
-        observer->Update(*this);
-}
-
-void Map::Show(RenderWindow& window){
-    window.clear();
-    DrawGridSqures(window);
-    DrawMovables(window);
-    window.display();
-}
-
-void Map::DrawGridSqures(RenderWindow& window) const {
-    for(int i = 0; i < height-1; ++i)
-        for(int j = 0; j < width-1; ++j)
-            window.draw(*gridSquares[i][j]);
-}
-
-void Map::DrawMovables(RenderWindow& window) const {
-    for(int i = 0; i < height; ++i)
-        for(int j = 0; j < width; ++j)
-            if(gridPoints[i][j]->GetMovable())
-                window.draw(*gridPoints[i][j]->GetMovable());
+        observer->Update();
 }
 
 void Map::AddPoints(unordered_set<const GridSquare *> ownedSquares, Player *owner) const {

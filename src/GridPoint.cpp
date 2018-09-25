@@ -6,7 +6,7 @@
 
 using std::pair;
 
-GridPoint::GridPoint(int x, int y) : movable{nullptr}, coordinates{x,y}
+GridPoint::GridPoint() : movable{nullptr}
 {
 
 }
@@ -71,11 +71,6 @@ void GridPoint::FinishInitialization() {
                 (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsSea()) ||
                 (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsSea()) ||
                 (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
-}
-
-Vector2i GridPoint::GetCoordinates() const
-{
-    return coordinates;
 }
 
 bool GridPoint::IsLand() const{

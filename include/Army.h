@@ -5,18 +5,17 @@
 #include "Movable.h"
 #include "GridPoint.h"
 
-using sf::RenderTarget;
-using sf::RenderStates;
-
 class GridPoint;
-
 class Player;
+class ArmyView;
 
 class Army : public Movable {
 public:
     explicit Army(Player&);
-    void draw(RenderTarget&, RenderStates) const override;
     bool Move(Direction) override ;
+
+private:
+    friend class ArmyView;
 };
 
 #endif // ARMY_H

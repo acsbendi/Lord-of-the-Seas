@@ -3,11 +3,6 @@
 //
 
 #include "Water.h"
-#include "Graphics.h"
-
-const Texture Water::texture = Graphics::CreateTexture("water.png");
-
-Water::Water(int x, int y) : GridSquare{x,y} { }
 
 int Water::GetValue() const {
     return 1;
@@ -23,8 +18,4 @@ bool Water::IsLand() const {
 
 bool Water::CanEnd() const{
     return true;
-}
-
-const Texture& Water::GetTexture() const {
-    return texture;
 }

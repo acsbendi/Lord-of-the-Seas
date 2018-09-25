@@ -7,10 +7,6 @@
 
 using std::unordered_set;
 
-const Texture Treasure::texture = Graphics::CreateTexture("treasure.png");
-
-Treasure::Treasure(int x, int y) : GridSquare{x,y} { }
-
 int Treasure::GetValue() const {
     return 20;
 }
@@ -26,8 +22,4 @@ bool Treasure::IsLand() const {
 bool Treasure::CanEnd() const{
     unordered_set<const GridSquare*> unordered_set;
     return GetOwner(unordered_set) != nullptr;
-}
-
-const Texture& Treasure::GetTexture() const {
-    return texture;
 }

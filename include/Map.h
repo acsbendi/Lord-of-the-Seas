@@ -43,7 +43,6 @@ public:
      * @brief Method needed to implement the IPlayerObserver interface.
      */
     void OnTurnEnd() override;
-    void Show(RenderWindow &);
     /**
  * @brief Attaches an observer to this map.
  * @param observer The observer to attach.
@@ -74,8 +73,6 @@ private:
  * @brief Publishes an event to its subscribers, the state of the map may have been changed.
  */
     void Notify();
-    void DrawMovables(RenderWindow& window) const;
-    void DrawGridSqures(RenderWindow& window) const;
     void CheckForPoints(const GridSquare* gridSquareToCheck, unordered_set<const GridSquare*>& previouslyChecked) const;
     bool HasBeenChecked(const GridSquare* gridSquare, unordered_set<const GridSquare*>& previouslyChecked) const;
 

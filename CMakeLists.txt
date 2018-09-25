@@ -43,7 +43,7 @@ add_executable(Lord_of_the_Seas
         src/OnlineGame.cpp
         include/OnlineGame.h
         src/LocalPlayer.cpp
-        include/LocalPlayer.h include/ILocalPlayerObserver.h src/GameWindow.cpp include/GameWindow.h include/IMapObserver.hpp include/Edge.hpp src/MapBuilder.cpp include/MapBuilder.hpp)
+        include/LocalPlayer.h include/ILocalPlayerObserver.h src/GameWindow.cpp include/GameWindow.h include/IMapObserver.hpp include/Edge.hpp src/MapBuilder.cpp include/MapBuilder.hpp src/GridSquareView.cpp include/GridSquareView.hpp src/WaterView.cpp include/WaterView.hpp src/LandView.cpp include/LandView.hpp src/TreasureView.cpp include/TreasureView.hpp src/ShipView.cpp include/ShipView.hpp src/ArmyView.cpp include/ArmyView.hpp include/MovableView.hpp include/IMovableObserver.hpp src/MovableView.cpp)
 
 add_executable(Lord_of_the_Seas_server src/Server.cpp include/Server.h src/server_main.cpp)
 

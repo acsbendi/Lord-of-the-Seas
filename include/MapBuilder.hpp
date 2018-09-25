@@ -16,6 +16,7 @@ class Map;
 class Player;
 class GridPoint;
 class Ship;
+class GridSquareView;
 
 class MapBuilder {
 public:
@@ -33,6 +34,7 @@ public:
     Map BuildMap(Ship& topLeftShip, Ship& bottomRightShip);
     Map BuildMap();
     void SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const;
+    vector<unique_ptr<GridSquareView>>&& GetGridSquareViews();
 
 private:
     int width;
@@ -41,11 +43,12 @@ private:
     vector<vector<unique_ptr<GridSquare>>> gridSquares;
     vector<Position> lands;
     vector<Position> treasures;
+    vector<unique_ptr<GridSquareView>> gridSquareViews;
 
     void CreateGridSquares();
     void CreateGridSquareLists();
     void CreateGridPointLists();
-    void FillGridSquareLists();
+    void FillGridSquareListsAndCreateGridSquareViews();
     void FillGridPointLists();
     void NotifyOnFinishInitialization();
     void CreateGridPoints();

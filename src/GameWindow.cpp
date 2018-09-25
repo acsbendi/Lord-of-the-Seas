@@ -9,6 +9,7 @@
 #include "IWindowEventObserver.h"
 #include "Map.h"
 
+using std::move;
 using std::remove;
 using sf::Event;
 using sf::Context;
@@ -18,9 +19,10 @@ using sf::VideoMode;
 int GameWindow::GRID_SIDE = 15;
 int GameWindow::MARGIN = 15;
 
-GameWindow::GameWindow(const int width, const int height) : width{width}, height{height}, active{true},
+GameWindow::GameWindow(const int width, const int height, vector<unique_ptr<GridSquareView>>&& gridSquareViews) : width{width}, height{height}, active{true},
         RenderWindow{VideoMode(static_cast<unsigned>(GRID_SIDE*(width - 1) + 2*MARGIN),
-                         static_cast<unsigned>(GRID_SIDE*(height - 1) + 2*MARGIN)),"Lord of the Seas"} {
+                         static_cast<unsigned>(GRID_SIDE*(height - 1) + 2*MARGIN)),"Lord of the Seas"},
+        gridSquareViews{move(gridSquareViews)}{
 
 }
 
@@ -117,6 +119,23 @@ void GameWindow::SetActive(bool active) {
     this->active = active;
 }
 
-void GameWindow::Update(Map& map) {
-    map.Show(*this);
+void GameWindow::Show(){
+    clear();
+    DrawGridSqures();
+    DrawMovables();
+    display();
+}
+
+void GameWindow::DrawGridSqures() {
+    for(auto& gridSquareView : gridSquareViews)
+        draw(*gridSquareView);
+}
+
+void GameWindow::DrawMovables() {
+    for(auto& movableView : movableViews)
+        draw(*movableView);
+}
+
+void GameWindow::Update() {
+    Show();
 }
