@@ -103,6 +103,7 @@ void Player::LandArmy(Direction direction) {
         }
 
         NotifyOnMove(direction);
+        NotifyOnLanding(direction);
     }
 }
 
@@ -158,4 +159,16 @@ void Player::LandingDeclined() {
         SetStateAfterLastShipMove();
     else
         state = shipMoving;
+}
+
+void Player::NotifyOnLanding(Direction landingDirection) const {
+    LandingEvent landingEvent = {
+            .army = *army,
+            .ship = *ship,
+            .owner = *this,
+            .direction = landingDirection
+    };
+
+    for(IPlayerObserver* observer : observers)
+        observer->OnLanding(landingEvent);
 }

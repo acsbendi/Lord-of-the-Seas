@@ -56,6 +56,7 @@ private:
 
     virtual void NotifyOnMove(Direction direction) const;
     void NotifyOnTurnEnd() const;
+    void NotifyOnLanding(Direction landingDirection) const;
     void Move(Direction direction);
     void MoveShip(Direction direction);
     void MoveArmy(Direction direction);
