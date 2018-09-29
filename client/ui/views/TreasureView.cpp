@@ -2,8 +2,10 @@
 // Created by Bendi on 9/3/2018.
 //
 
-#include "../client/GUI/TreasureView.hpp"
 #include "../../../common/utils/graphics/Graphics.h"
+#include "../../../common/gamecore/GridSquare.h"
+#include "TreasureView.hpp"
+
 
 const Texture TreasureView::texture = Graphics::CreateTexture("water.png");
 

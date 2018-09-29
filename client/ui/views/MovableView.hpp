@@ -6,7 +6,7 @@
 #define LORD_OF_THE_SEAS_MOVABLEVIEW_HPP
 
 #include <SFML/Graphics/Drawable.hpp>
-#include "../../common/gamecore/IMovableObserver.hpp"
+#include "../../../common/gamecore/IMovableObserver.hpp"
 
 using sf::Drawable;
 using sf::Vector2i;

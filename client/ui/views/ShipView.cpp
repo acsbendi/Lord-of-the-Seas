@@ -1,11 +1,11 @@
 //
 // Created by Bendi on 9/4/2018.
 //
-
-#include "../client/GUI/ShipView.hpp"
-#include "../client/GUI/GameWindow.h"
-#include "../../common/gamecore/Ship.h"
-#include "../../common/gamecore/Player.h"
+#include <SFML/Graphics/CircleShape.hpp>
+#include "../../../common/gamecore/Ship.h"
+#include "ShipView.hpp"
+#include "../GameWindow.h"
+#include "../../../common/gamecore/Player.h"
 
 using sf::CircleShape;
 

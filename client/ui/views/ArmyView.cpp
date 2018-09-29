@@ -2,8 +2,8 @@
 // Created by Bendi on 9/4/2018.
 //
 
-#include "../client/GUI/ArmyView.hpp"
-#include "../client/GUI/GameWindow.h"
+#include "ArmyView.hpp"
+#include "../GameWindow.h"
 #include "../../../common/gamecore/Army.h"
 #include "../../../common/gamecore/Player.h"
 

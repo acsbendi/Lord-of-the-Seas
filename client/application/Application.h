@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "GUI/Button.h"
+#include "../../common/utils/graphics/Button.h"
 
 using std::vector;
 using sf::RenderWindow;

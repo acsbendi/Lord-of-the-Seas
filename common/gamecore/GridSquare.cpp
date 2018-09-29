@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <algorithm>
-#include "../../client/GUI/GameWindow.h"
 #include "GridSquare.h"
 #include "Player.h"
 

@@ -9,8 +9,9 @@
 #include "Water.h"
 #include "Map.h"
 #include "../../client/ui/views/LandView.hpp"
-#include "../../client/GUI/WaterView.hpp"
-#include "../../client/GUI/TreasureView.hpp"
+#include "../../client/ui/views/TreasureView.hpp"
+#include "../../client/ui/views/WaterView.hpp"
+
 
 using std::move;
 using std::find;

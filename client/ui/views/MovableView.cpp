@@ -2,8 +2,8 @@
 // Created by Bendi on 9/9/2018.
 //
 
-#include "../../common/utils/Enums.h"
-#include "../client/GUI/MovableView.hpp"
+#include "../../../common/utils/Enums.h"
+#include "MovableView.hpp"
 
 void MovableView::ChangePositionOnMove(Direction directionOfMove){
     switch(directionOfMove){
