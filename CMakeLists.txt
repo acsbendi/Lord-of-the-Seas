@@ -6,51 +6,71 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
 add_executable(Lord_of_the_Seas
-        include/Army.h
-        include/Enums.h
-        include/Game.h
-        include/GridPoint.h
-        include/Map.h
-        include/Movable.h
-        include/Player.h
-        include/Ship.h
-        src/Army.cpp
-        src/Game.cpp
-        src/GridPoint.cpp
-        src/Map.cpp
-        src/Movable.cpp
-        src/Player.cpp
-        src/Ship.cpp
-        src/main.cpp
-        include/IPlayerObserver.h
-        src/GridSquare.cpp
-        include/GridSquare.h
-        include/IUserEventObserver.h
-        include/IWindowEventObserver.h
-        src/Land.cpp
-        include/Land.h
-        src/Treasure.cpp
-        include/Treasure.h
-        src/Water.cpp
-        include/Water.h
-        src/Application.cpp
-        include/Application.h
-        src/Button.cpp
-        include/Button.h
-        src/ScoreDisplay.cpp
-        include/ScoreDisplay.h
-        include/Graphics.h
-        src/OnlineGame.cpp
-        include/OnlineGame.h
-        src/LocalPlayer.cpp
-        include/LocalPlayer.h include/ILocalPlayerObserver.h src/GameWindow.cpp include/GameWindow.h include/IMapObserver.hpp include/Edge.hpp src/MapBuilder.cpp include/MapBuilder.hpp src/GridSquareView.cpp include/GridSquareView.hpp src/WaterView.cpp include/WaterView.hpp src/LandView.cpp include/LandView.hpp src/TreasureView.cpp include/TreasureView.hpp src/ShipView.cpp include/ShipView.hpp src/ArmyView.cpp include/ArmyView.hpp include/MovableView.hpp include/IMovableObserver.hpp src/MovableView.cpp)
+        common/gamecore/Army.h
+        common/utils/Enums.h
+        client/games/Game.h
+        common/gamecore/GridPoint.h
+        common/gamecore/Map.h
+        common/gamecore/Movable.h
+        common/gamecore/Player.h
+        common/gamecore/Ship.h
+        common/gamecore/Army.cpp
+        client/games/Game.cpp
+        common/gamecore/GridPoint.cpp
+        common/gamecore/Map.cpp
+        common/gamecore/Movable.cpp
+        common/gamecore/Player.cpp
+        common/gamecore/Ship.cpp
+        client/main.cpp
+        common/gamecore/IPlayerObserver.h
+        common/gamecore/GridSquare.cpp
+        common/gamecore/GridSquare.h
+        common/gamecore/IUserEventObserver.h
+        client/ui/IWindowEventObserver.h
+        common/gamecore/Land.cpp
+        common/gamecore/Land.h
+        common/gamecore/Treasure.cpp
+        common/gamecore/Treasure.h
+        common/gamecore/Water.cpp
+        common/gamecore/Water.h
+        client/application/Application.cpp
+        client/application/Application.h
+        common/utils/graphics/Button.cpp
+        common/utils/graphics/Button.h
+        client/ui/ScoreDisplay.cpp
+        client/ui/ScoreDisplay.h
+        common/utils/graphics/Graphics.h
+        client/games/OnlineGame.cpp
+        client/games/OnlineGame.h
+        common/gamecore/LocalPlayer.cpp
+        common/gamecore/LocalPlayer.h
+        common/gamecore/ILocalPlayerObserver.h
+        client/ui/GameWindow.cpp
+        client/ui/GameWindow.h
+        common/gamecore/IMapObserver.hpp
+        client/ui/Edge.hpp
+        common/gamecore/MapBuilder.cpp
+        common/gamecore/MapBuilder.hpp
+        client/ui/views/GridSquareView.cpp
+        client/ui/views/GridSquareView.hpp
+        client/ui/views/WaterView.cpp
+        client/ui/views/WaterView.hpp
+        client/ui/views/LandView.cpp
+        client/ui/views/LandView.hpp
+        client/ui/views/TreasureView.cpp
+        client/ui/views/TreasureView.hpp
+        client/ui/views/ShipView.cpp
+        client/ui/views/ShipView.hpp
+        client/ui/views/ArmyView.cpp
+        client/ui/views/ArmyView.hpp
+        client/ui/views/MovableView.hpp
+        common/gamecore/IMovableObserver.hpp
+        client/ui/views/MovableView.cpp)
 
-add_executable(Lord_of_the_Seas_server src/Server.cpp include/Server.h src/server_main.cpp)
+add_executable(Lord_of_the_Seas_server server/Server.cpp server/Server.h server/server_main.cpp)
 
-include_directories(include)
+include_directories(client/ui/include)
 
-set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc")
-set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_ROOT "C:/Program Files/SFML-2.4.2")
 
 find_package(SFML 2 REQUIRED graphics network audio window system)
