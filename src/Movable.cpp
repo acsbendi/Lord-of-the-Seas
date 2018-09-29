@@ -21,7 +21,7 @@ void Movable::SetCurrentLocation(GridPoint *cl)
     currentLocation = cl;
 }
 
-bool Movable::SetEdgeOwners(Direction directionOfMove) {
+void Movable::SetEdgeOwners(Direction directionOfMove) {
     switch (directionOfMove) {
         case up:
             SetOwnerInNeighborIfExists(northwest, right);

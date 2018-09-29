@@ -17,7 +17,7 @@ public:
     virtual ~Movable() = default;
     GridPoint* GetCurrentLocation() const;
     void SetCurrentLocation(GridPoint*);
-    bool SetEdgeOwners(Direction);
+    void SetEdgeOwners(Direction);
     void Attach(IMovableObserver* observer);
     void Detach(IMovableObserver* observer);
     virtual bool Move(Direction) = 0;
