@@ -1,5 +1,4 @@
 #include "Army.h"
-#include "../../client/ui/GameWindow.h"
 #include "Player.h"
 
 using sf::RectangleShape;

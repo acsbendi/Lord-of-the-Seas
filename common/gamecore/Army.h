@@ -7,7 +7,6 @@
 
 class GridPoint;
 class Player;
-class ArmyView;
 
 class Army : public Movable {
 public:

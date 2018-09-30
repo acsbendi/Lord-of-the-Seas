@@ -3,14 +3,12 @@
 
 #include <vector>
 #include <memory>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "GridPoint.h"
 #include "GridSquare.h"
 #include "Player.h"
 #include "../utils/Enums.h"
 #include "IUserEventObserver.h"
 #include "IPlayerObserver.h"
-#include "../../client/ui/IWindowEventObserver.h"
 
 using std::vector;
 using std::unique_ptr;

@@ -3,7 +3,6 @@
 //
 
 #include "Treasure.h"
-#include "../utils/graphics/Graphics.h"
 
 using std::unordered_set;
 
