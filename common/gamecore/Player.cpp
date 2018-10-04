@@ -172,3 +172,7 @@ void Player::NotifyOnLanding(Direction landingDirection) const {
     for(IPlayerObserver* observer : observers)
         observer->OnLanding(landingEvent);
 }
+
+PlayerProxy Player::CreateProxy() const {
+    return PlayerProxy{this};
+}

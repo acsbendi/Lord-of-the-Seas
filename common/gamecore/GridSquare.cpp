@@ -6,6 +6,8 @@
 #include <algorithm>
 #include "GridSquare.h"
 #include "Player.h"
+#include "EdgeOwnerChangedEvent.hpp"
+#include "IGridSquareObserver.hpp"
 
 using std::pair;
 using std::find;
@@ -57,4 +59,19 @@ Player* GridSquare::GetPossibleOwner(Direction direction) const{
            edgeOwners.at(left) ? edgeOwners.at(left) :
            neighbors.at(direction) ? neighbors.at(direction)->GetPossibleOwner(direction) :
            nullptr;
+}
+
+void GridSquare::Attach(IGridSquareObserver* observer) {
+    observers.push_back(observer);
+}
+
+void GridSquare::NotifyOnEdgeOwnerChanged(Direction edgeDirection, Player* newOwner){
+    EdgeOwnerChangedEvent event = {
+            .previousOwner = edgeOwners[edgeDirection]->CreateProxy(),
+            .newOwner = newOwner->CreateProxy(),
+            .edgeDirection = edgeDirection
+    };
+
+    for(IGridSquareObserver* observer : observers)
+        observer->OnEdgeOwnerChanged(event);
 }

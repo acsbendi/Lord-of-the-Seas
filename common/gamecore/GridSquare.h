@@ -18,6 +18,7 @@ using std::unique_ptr;
 
 class Player;
 class GridSquareView;
+class IGridSquareObserver;
 
 class GridSquare  {
 public:
@@ -53,15 +54,16 @@ public:
      * @return True, if this GridSquare is owned by the Player, false, if not.
      */
     bool IsOwnedBy(const Player* player, unordered_set<const GridSquare*>& previous) const;
+    void Attach(IGridSquareObserver* observer);
+    void NotifyOnEdgeOwnerChanged(Direction edgeDirection, Player* newOwner);
 
 protected:
     GridSquare();
 
 private:
-    friend class GridSquareView;
-
     map<Direction, GridSquare* const> neighbors;
     map<Direction, Player*> edgeOwners;
+    vector<IGridSquareObserver*> observers;
 
     bool IsEdgeOwnedBy(Direction, const Player*, unordered_set<const GridSquare*>&) const;
 };

@@ -36,12 +36,8 @@ void GridSquareView::DrawEdge(const Edge& edge, RenderTarget& target) const{
     target.draw(line, 2, Lines);
 }
 
-void GridSquareView::ColorEdge(Vertex* line, const Edge& edge) const{
-    if(gridSquare.edgeOwners.at(edge.directionInSquare))
-    {
-        line[0].color = gridSquare.edgeOwners.at(edge.directionInSquare)->GetColor();
-        line[1].color = gridSquare.edgeOwners.at(edge.directionInSquare)->GetColor();
-    }
+void GridSquareView::ColorEdge(Vertex*, const Edge& edge) const{
+    //TODO coloring with the help of PlayerView
 }
 
 void GridSquareView::draw(RenderTarget& target, RenderStates) const {

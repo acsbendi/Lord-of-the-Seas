@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "IPlayerObserver.h"
 #include "IUserEventObserver.h"
+#include "PlayerProxy.h"
 
 using std::string;
 using std::unique_ptr;
@@ -29,6 +30,7 @@ public:
     void OnDirectionSelected(Direction direction) override;
     void OnConfirmation(bool confirmed) override;
     void YourTurn();
+    PlayerProxy CreateProxy() const;
 
 protected:
     vector<IPlayerObserver*> observers;
