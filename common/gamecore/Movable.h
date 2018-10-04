@@ -20,7 +20,7 @@ public:
     void SetEdgeOwners(Direction);
     void Attach(IMovableObserver* observer);
     void Detach(IMovableObserver* observer);
-    virtual bool Move(Direction) = 0;
+    virtual void Move(Direction) = 0;
 
 protected:
     void NotifyOnSuccessfulMove(Direction directionOfMove) const;

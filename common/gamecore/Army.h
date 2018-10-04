@@ -11,7 +11,7 @@ class Player;
 class Army : public Movable {
 public:
     explicit Army(Player&);
-    bool Move(Direction) override ;
+    void Move(Direction) override ;
 
 private:
     friend class ArmyView;

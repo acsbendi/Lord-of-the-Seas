@@ -12,15 +12,14 @@ void Ship::SetArmyOnBoard(const Army *army)
     armyOnBoard = army;
 }
 
-bool Ship::Move(Direction direction) {
+void Ship::Move(Direction direction) {
     GridPoint* destination = currentLocation->GetPointNeighbor(direction);
     if(destination && destination->Enter(this)){
         SetEdgeOwners(direction);
         currentLocation->Exit(this);
         currentLocation = destination;
-        return true;
-    } else
-        return false;
+        NotifyOnSuccessfulMove(direction);
+    }
 }
 
 Ship::Ship(Player& player) : Movable(player)

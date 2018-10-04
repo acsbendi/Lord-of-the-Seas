@@ -18,7 +18,7 @@ public:
      * Makes the ship move in a specified direction
      * @return Returns whether the movement was successful.
      */
-    bool Move(Direction) override;
+    void Move(Direction) override;
     bool IsAtCoast() const;
 
 private:

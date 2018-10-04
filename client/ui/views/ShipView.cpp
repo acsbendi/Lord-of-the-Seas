@@ -21,8 +21,8 @@ void ShipView::draw(RenderTarget& target, RenderStates) const
     target.draw(circle);
 }
 
-void ShipView::OnSuccessfulMove(Direction directionOfMove) {
-    switch(directionOfMove){
+void ShipView::OnMove(Direction moveDirection) {
+    switch(moveDirection){
         case up:
             currentPosition = {currentPosition.x, currentPosition.y - 1};
             break;

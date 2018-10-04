@@ -48,11 +48,7 @@ void Player::Move(Direction direction)
 }
 
 void Player::MoveShip(Direction direction){
-    if(ship->Move(direction)){
-        NotifyOnMove(direction);
-        successfulMoves++;
-        SetStateAfterSuccessfulMove();
-    }
+    ship->Move(direction);
 }
 
 void Player::SetStateAfterSuccessfulMove(){
@@ -80,9 +76,7 @@ void Player::SetStateAfterLastArmyMove() {
 }
 
 void Player::MoveArmy(Direction direction){
-    if(army->Move(direction)){
-        SuccessfulArmyMove(direction);
-    }
+    army->Move(direction);
 }
 
 void Player::SuccessfulArmyMove(Direction direction){
@@ -94,17 +88,7 @@ void Player::SuccessfulArmyMove(Direction direction){
 }
 
 void Player::LandArmy(Direction direction) {
-    if(army->Move(direction)){
-        if(successfulMoves != NUMBER_OF_SHIP_MOVES)
-            state = shipMoving;
-        else{
-            state = armyMoving;
-            successfulMoves = 0;
-        }
-
-        NotifyOnMove(direction);
-        NotifyOnLanding(direction);
-    }
+    army->Move(direction);
 }
 
 void Player::LandingAccepted(){
@@ -175,4 +159,24 @@ void Player::NotifyOnLanding(Direction landingDirection) const {
 
 PlayerProxy Player::CreateProxy() const {
     return PlayerProxy{this};
+}
+
+void Player::OnMove(Direction moveDirection) {
+    if(state == armyMoving)
+        SuccessfulArmyMove(moveDirection);
+    else if (state == shipMoving){
+        NotifyOnMove(moveDirection);
+        successfulMoves++;
+        SetStateAfterSuccessfulMove();
+    } else if (state == armyLanding){
+        if(successfulMoves != NUMBER_OF_SHIP_MOVES)
+            state = shipMoving;
+        else{
+            state = armyMoving;
+            successfulMoves = 0;
+        }
+
+        NotifyOnMove(moveDirection);
+        NotifyOnLanding(moveDirection);
+    }
 }

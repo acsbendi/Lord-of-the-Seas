@@ -8,17 +8,17 @@
 #include "Ship.h"
 #include "Army.h"
 #include "../utils/Enums.h"
-#include "Map.h"
 #include "IPlayerObserver.h"
 #include "IUserEventObserver.h"
 #include "PlayerProxy.h"
+#include "IMovableObserver.hpp"
 
 using std::string;
 using std::unique_ptr;
 using sf::Color;
 using std::vector;
 
-class Player : public IUserEventObserver {
+class Player : public IUserEventObserver, public IMovableObserver {
 public:
     Player(Color color, const string &name);
     Ship* GetShip() const;
@@ -31,6 +31,7 @@ public:
     void OnConfirmation(bool confirmed) override;
     void YourTurn();
     PlayerProxy CreateProxy() const;
+    void OnMove(Direction moveDirection) override;
 
 protected:
     vector<IPlayerObserver*> observers;

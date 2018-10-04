@@ -57,5 +57,5 @@ void Movable::Detach(IMovableObserver* observer){
 
 void Movable::NotifyOnSuccessfulMove(Direction directionOfMove) const {
     for(IMovableObserver* observer : observers)
-        observer->OnSuccessfulMove(directionOfMove);
+        observer->OnMove(directionOfMove);
 }

@@ -10,7 +10,7 @@
 
 class IMovableObserver {
 public:
-    virtual void OnSuccessfulMove(Direction directionOfMove) = 0;
+    virtual void OnMove(Direction moveDirection) = 0;
     virtual ~IMovableObserver() = default;
 };
 
