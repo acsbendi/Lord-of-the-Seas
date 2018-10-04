@@ -75,3 +75,7 @@ void Game::OnTurnEnd() {
         currentPlayer = player1.get();
     turnEnd = true;
 }
+
+void Game::OnLanding(LandingEvent) {
+    CheckEnd();
+}

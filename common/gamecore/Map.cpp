@@ -75,3 +75,7 @@ int Map::GetHeight() const {
 int Map::GetWidth() const {
     return width;
 }
+
+void Map::OnLanding(LandingEvent) {
+    Notify();
+}

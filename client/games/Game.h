@@ -38,6 +38,7 @@ public:
     * @param scoreOfPlayer2 The final score of the second player.
     */
     virtual void PlayGame(int &scoreOfPlayer1, int &scoreOfPlayer2);
+    void OnLanding(LandingEvent event) override;
 
 protected:
     unique_ptr<Player> player1; ///< The first player playing this game.

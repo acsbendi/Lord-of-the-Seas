@@ -53,6 +53,7 @@ public:
     void Detach(IMapObserver *observer);
     int GetWidth() const;
     int GetHeight() const;
+    void OnLanding(LandingEvent event) override;
 
 private:
     vector<vector<unique_ptr<GridPoint>>> gridPoints; ///< Two-dimension vector containing all the grid points in the map.
