@@ -72,6 +72,8 @@ public:
     void SetActive(bool active);
     void Update() override;
     void Show();
+    void AddGridSquareView(unique_ptr<GridSquareView>&& gridSquareView);
+    void AddMovableView(unique_ptr<MovableView>&& movableView);
 
 private:
     const int width;

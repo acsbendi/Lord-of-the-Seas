@@ -139,3 +139,11 @@ void GameWindow::DrawMovables() {
 void GameWindow::Update() {
     Show();
 }
+
+void GameWindow::AddGridSquareView(unique_ptr<GridSquareView>&& gridSquareView) {
+    gridSquareViews.push_back(move(gridSquareView));
+}
+
+void GameWindow::AddMovableView(unique_ptr<MovableView>&& movableView) {
+    movableViews.push_back(move(movableView));
+}
