@@ -7,18 +7,20 @@
 
 #include <SFML/Graphics/Drawable.hpp>
 #include "../../../common/gamecore/IMovableObserver.hpp"
+#include "../../../common/gamecore/Position.hpp"
 
 using sf::Drawable;
 using sf::Vector2i;
 
 class MovableView : public Drawable, public IMovableObserver{
-public:
-    void SetCoordinates(Vector2i coordinates);
-
 protected:
-    void ChangePositionOnMove(Direction directionOfMove);
+    explicit MovableView(Position initialPosition);
 
-    Vector2i currentPosition;
+    void ChangePositionOnMove(Direction directionOfMove);
+    Position GetPositionInWindow() const;
+
+private:
+    Position currentPosition;
 };
 
 

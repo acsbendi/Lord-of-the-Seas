@@ -16,12 +16,9 @@ class Ship;
 
 class ShipView : public MovableView{
 public:
-    explicit ShipView(Ship& ship);
+    explicit ShipView(Position initialPosition);
     void draw(RenderTarget&, RenderStates) const override;
     void OnMove(Direction moveDirection) override;
-
-private:
-    Ship& ship;
 };
 
 
