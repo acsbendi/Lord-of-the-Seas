@@ -8,23 +8,26 @@
 #include "Treasure.h"
 #include "Water.h"
 #include "Map.h"
-#include "../../client/ui/views/LandView.hpp"
-#include "../../client/ui/views/TreasureView.hpp"
-#include "../../client/ui/views/WaterView.hpp"
+#include "IMapBuilderObserver.hpp"
 
 
 using std::move;
 using std::find;
 using std::make_unique;
 
-bool MapBuilder::Position::operator==(const Position& other) const {
-    return this->xCoordinate == other.xCoordinate && this->yCoordinate == other.yCoordinate;
-}
 
 MapBuilder::MapBuilder(int width, int height,
                                vector<Position> lands,
                                vector<Position> treasures) : width{width}, height{height},
-                        lands{move(lands)}, treasures{move(treasures)} {
+                        lands{move(lands)}, treasures{move(treasures)}, {
+    topLeftPosition = {
+            .xCoordinate = 0,
+            .yCoordinate = 0
+    };
+    bottomRightPosition = {
+            .xCoordinate = width - 2,
+            .yCoordinate = height - 2
+    };
 }
 
 Map MapBuilder::BuildMap(Ship& topLeftShip, Ship& bottomRightShip){
@@ -52,14 +55,21 @@ void MapBuilder::InjectMapMembers(Map& map) {
 }
 
 void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip) {
-    SetShipPositions(topLeftShip,bottomRightShip,*gridPoints[0][0],*gridPoints[height - 2][width - 2]);
+    SetShipPositions(topLeftShip,bottomRightShip,
+            *gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate],
+            *gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]);
+    NotifyOnShipPositionsSet(topLeftShip, bottomRightShip);
 }
 
 void MapBuilder::SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const{
-    SetShipPositions(topLeftShip,bottomRightShip,*map.gridPoints[0][0],*map.gridPoints[height - 2][width - 2]);
+    SetShipPositions(topLeftShip,bottomRightShip,
+                     *map.gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate],
+                     *map.gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]);
+    NotifyOnShipPositionsSet(topLeftShip, bottomRightShip);
 }
 
-void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip, GridPoint& topLeftGridPoint, GridPoint& bottomRightGridPoint) const {
+void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip,
+        GridPoint& topLeftGridPoint, GridPoint& bottomRightGridPoint) const {
     topLeftGridPoint.SetMovable(&topLeftShip);
     topLeftShip.SetCurrentLocation(&topLeftGridPoint);
     bottomRightGridPoint.SetMovable(&bottomRightShip);
@@ -111,19 +121,19 @@ void MapBuilder::CreateGridSquareLists() {
 
 void MapBuilder::FillGridSquareListsAndCreateGridSquareViews(){
     for(int i = 0; i < height-1; i++){
-        for(int j = 0; j < width-1; j++)
-            if (find(lands.begin(),lands.end(),Position{i,j}) != lands.end()){
+        for(int j = 0; j < width-1; j++) {
+            if (find(lands.begin(), lands.end(), Position{j, i}) != lands.end()) {
                 gridSquares[i][j] = make_unique<Land>();
-                gridSquareViews.push_back(make_unique<LandView>(j,i,*gridSquares[i][j]));
-            }
-            else if(find(treasures.begin(),treasures.end(),Position{i,j}) != treasures.end()) {
+            } else if (find(treasures.begin(), treasures.end(), Position{j, i}) != treasures.end()) {
                 gridSquares[i][j] = make_unique<Treasure>();
-                gridSquareViews.push_back(make_unique<TreasureView>(j,i,*gridSquares[i][j]));
-            }
-            else{
+            } else {
                 gridSquares[i][j] = make_unique<Water>();
-                gridSquareViews.push_back(make_unique<WaterView>(j,i,*gridSquares[i][j]));
             }
+            NotifyOnGridSquarePositionSet(*gridSquares[i][j],{
+                .xCoordinate = j,
+                .yCoordinate = i
+            });
+        }
     }
 }
 
@@ -181,7 +191,28 @@ bool MapBuilder::ExistsGridSquare(const Position& positionOfGridSquare) {
     return positionOfGridSquare.xCoordinate + 1 < width && positionOfGridSquare.yCoordinate + 1 < height;
 }
 
-vector<unique_ptr<GridSquareView>>&& MapBuilder::GetGridSquareViews(){
-    return move(gridSquareViews);
+void MapBuilder::Attach(IMapBuilderObserver* observer) {
+    observers.push_back(observer);
 }
+
+void MapBuilder::Detach(IMapBuilderObserver* observer) {
+    observers.erase(remove(observers.begin(),
+                           observers.end(), observer),observers.end());
+}
+
+void MapBuilder::NotifyOnShipPositionsSet(Ship& topLeftShip, Ship& bottomRightShip) const {
+    NotifyOnShipPositionSet(topLeftShip,topLeftPosition);
+    NotifyOnShipPositionSet(bottomRightShip,bottomRightPosition);
+}
+
+void MapBuilder::NotifyOnGridSquarePositionSet(GridSquare& gridSquare, Position position) const {
+    for(IMapBuilderObserver* observer : observers)
+        observer->OnGridSquarePositionSet(gridSquare, position);
+}
+
+void MapBuilder::NotifyOnShipPositionSet(Ship& ship, Position position) const {
+    for(IMapBuilderObserver* observer : observers)
+        observer->OnShipPositionSet(ship, position);
+}
+
 

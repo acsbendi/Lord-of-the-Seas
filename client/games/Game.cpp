@@ -9,7 +9,7 @@ Game::Game(MapBuilder&& mapInitializer) :
         player1{make_unique<Player>(Color::Red, "Player 1")}, player2{make_unique<Player>(Color::Magenta, "Player 2")},
         map{mapInitializer.BuildMap(*this->player1->GetShip(), *this->player2->GetShip())},
         gameEnd{false}, turnEnd{false},
-        gameWindow{map.GetWidth(),map.GetHeight(), mapInitializer.GetGridSquareViews()}
+        gameWindow{map.GetWidth(),map.GetHeight()}
 {
     CreateAttachments();
     currentPlayer = this->player1.get();
@@ -19,7 +19,7 @@ Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilde
         player1{move(player1)}, player2{move(player2)},
         map{mapInitializer.BuildMap()},
         gameEnd{false}, turnEnd{false},
-        gameWindow{map.GetWidth(),map.GetHeight(), mapInitializer.GetGridSquareViews()}
+        gameWindow{map.GetWidth(),map.GetHeight()}
 {
     CreateAttachments();
 }

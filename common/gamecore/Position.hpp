@@ -9,6 +9,10 @@
 struct Position {
     int xCoordinate;
     int yCoordinate;
+
+    inline bool operator==(const Position& other) const {
+        return this->xCoordinate == other.xCoordinate && this->yCoordinate == other.yCoordinate;
+    }
 };
 
 
