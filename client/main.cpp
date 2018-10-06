@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "application/Application.h"
 
 int main()

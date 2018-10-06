@@ -6,6 +6,7 @@
 #define LORD_OF_THE_SEAS_GRIDSQUAREVIEW_HPP
 
 #include "SFML/Graphics.hpp"
+#include "../../../common/gamecore/IGridSquareObserver.hpp"
 
 using sf::Drawable;
 using sf::Drawable;
@@ -18,7 +19,7 @@ using sf::Vertex;
 class GridSquare;
 struct Edge;
 
-class GridSquareView : public Drawable {
+class GridSquareView : public Drawable, public IGridSquareObserver {
 public:
     void draw(RenderTarget& target, RenderStates) const override;
     virtual const Texture& GetTexture() const = 0;
