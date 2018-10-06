@@ -5,18 +5,23 @@
 #ifndef LORD_OF_THE_SEAS_VIEWBUILDER_HPP
 #define LORD_OF_THE_SEAS_VIEWBUILDER_HPP
 
-
+#import <memory>
 #include "../../common/gamecore/IMapBuilderObserver.hpp"
 
+using std::unique_ptr;
+
 class GameWindow;
+class GridSquareView;
+class GridSquare;
 
 class ViewBuilder : public IMapBuilderObserver{
 public:
     explicit ViewBuilder(GameWindow& gameWindow);
     void OnShipPositionSet(Ship& ship, Position position) override;
-    void OnGridSquarePositionSet(GridSquare& square, Position position) override;
+    void OnGridSquarePositionSet(GridSquare& gridSquare, Position position) override;
 
 private:
+    unique_ptr<GridSquareView> CreateGridSquareView(GridSquare* gridSquare, Position position);
 
     GameWindow& gameWindow;
 };
