@@ -7,27 +7,27 @@
 
 using std::remove;
 
-LocalPlayer::LocalPlayer(Color color, const string &name) : Player{color,name}{
+LocalPlayer::LocalPlayer(const string &name) : Player{name}{
 
 }
 
 void LocalPlayer::AttachLocalPlayerObserver(ILocalPlayerObserver *observer){
-    localPlayerobservers.push_back(observer);
+    localPlayerObservers.push_back(observer);
 }
 
 void LocalPlayer::DetachLocalPlayerObserver(ILocalPlayerObserver *observer){
-    localPlayerobservers.erase(remove(localPlayerobservers.begin(),localPlayerobservers.end(),observer),localPlayerobservers.end());
+    localPlayerObservers.erase(remove(localPlayerObservers.begin(),localPlayerObservers.end(),observer),localPlayerObservers.end());
 }
 
 void LocalPlayer::NotifyOnMove(Direction direction) const{
-    for(ILocalPlayerObserver* observer : localPlayerobservers)
+    for(ILocalPlayerObserver* observer : localPlayerObservers)
         observer->OnMove(direction);
     for(IPlayerObserver* observer : observers)
         observer->OnMove();
 }
 
 void LocalPlayer::NotifyOnConfirmation(bool confirmed) const{
-    for(ILocalPlayerObserver* observer : localPlayerobservers)
+    for(ILocalPlayerObserver* observer : localPlayerObservers)
         observer->OnConfirmation(confirmed);
 }
 

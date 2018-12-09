@@ -7,7 +7,7 @@ using std::move;
 using std::make_unique;
 
 Game::Game(MapBuilder&& mapInitializer) :
-        player1{make_unique<Player>(Color::Red, "Player 1")}, player2{make_unique<Player>(Color::Magenta, "Player 2")},
+        player1{make_unique<Player>("Player 1")}, player2{make_unique<Player>("Player 2")},
         map{},
         gameEnd{false}, turnEnd{false},
         gameWindow{map.GetWidth(),map.GetHeight()}

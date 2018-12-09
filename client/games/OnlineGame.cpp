@@ -17,7 +17,7 @@ using std::runtime_error;
 using sf::Socket;
 
 OnlineGame::OnlineGame(MapBuilder&& mapInitializer) :
-        Game(make_unique<LocalPlayer>(Color::Red, "Player 1"),make_unique<Player>(Color::Magenta, "Player 2"),move(mapInitializer)) {
+        Game(make_unique<LocalPlayer>("Player 1"), make_unique<Player>("Player 2"), move(mapInitializer)) {
     CreateConnection();
     dynamic_cast<LocalPlayer *>(player1.get())->AttachLocalPlayerObserver(this);
     InitializeShipPositionsOnMap(mapInitializer);

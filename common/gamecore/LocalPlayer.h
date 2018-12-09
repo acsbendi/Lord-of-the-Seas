@@ -17,12 +17,12 @@ class ILocalPlayerObserver;
 
 class LocalPlayer : public Player {
 public:
-    LocalPlayer(Color color, const string &name);
+    explicit LocalPlayer(const string &name);
     void AttachLocalPlayerObserver(ILocalPlayerObserver *observer);
     void DetachLocalPlayerObserver(ILocalPlayerObserver *observer);
 
 private:
-    vector<ILocalPlayerObserver *> localPlayerobservers;
+    vector<ILocalPlayerObserver *> localPlayerObservers;
 
     void NotifyOnMove(Direction direction) const override;
     void NotifyOnConfirmation(bool confirmed) const;

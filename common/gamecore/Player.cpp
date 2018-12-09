@@ -4,7 +4,8 @@
 using std::make_unique;
 using std::remove;
 
-Player::Player(const Color color, const string& name) : color{color}, name{name}, state{waitingForTurn}, score{0}, successfulMoves{0}
+Player::Player(const string& name) :
+    name{name}, state{waitingForTurn}, score{0}, successfulMoves{0}
 {
     ship = make_unique<Ship>(*this);
     army = make_unique<Army>(*this);
@@ -14,11 +15,6 @@ Player::Player(const Color color, const string& name) : color{color}, name{name}
 Ship* Player::GetShip() const
 {
     return ship.get();
-}
-
-Color Player::GetColor() const
-{
-    return color;
 }
 
 int Player::GetScore() const

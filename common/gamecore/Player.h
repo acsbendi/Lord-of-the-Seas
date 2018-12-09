@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <memory>
-#include <SFML/Graphics.hpp>
 #include <unordered_set>
 #include <string>
 #include "Ship.h"
@@ -15,14 +14,12 @@
 
 using std::string;
 using std::unique_ptr;
-using sf::Color;
 using std::vector;
 
 class Player : public IUserEventObserver, public IMovableObserver {
 public:
-    Player(Color color, const string &name);
+    explicit Player(const string &name);
     Ship* GetShip() const;
-    Color GetColor() const;
     void AddScore(int scoreToAdd);
     int GetScore() const;
     void Attach(IPlayerObserver* observer);
