@@ -2,6 +2,7 @@
 // Created by Bendi on 1/31/2018.
 //
 
+#include <algorithm>
 #include "LocalPlayer.h"
 #include "ILocalPlayerObserver.h"
 

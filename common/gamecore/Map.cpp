@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Map.h"
 #include "IMapObserver.hpp"
 #include "MapBuilder.hpp"

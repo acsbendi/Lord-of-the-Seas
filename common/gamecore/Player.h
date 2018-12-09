@@ -44,7 +44,6 @@ private:
 
     unique_ptr<Ship> ship;
     unique_ptr<Army> army;
-    const Color color;
     const string name;
     int score;
     int successfulMoves;

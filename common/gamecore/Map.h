@@ -13,7 +13,6 @@
 using std::vector;
 using std::unique_ptr;
 using std::unordered_set;
-using sf::RenderWindow;
 
 class GridSquare;
 class IMapObserver;

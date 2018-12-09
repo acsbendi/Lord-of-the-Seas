@@ -3,6 +3,7 @@
 #include "GridSquare.h"
 #include "GridPoint.h"
 #include "IMovableObserver.hpp"
+#include "Player.h"
 
 using std::remove;
 
@@ -58,4 +59,8 @@ void Movable::Detach(IMovableObserver* observer){
 void Movable::NotifyOnSuccessfulMove(Direction directionOfMove) const {
     for(IMovableObserver* observer : observers)
         observer->OnMove(directionOfMove);
+}
+
+PlayerProxy Movable::getOwner() const {
+    return owner.CreateProxy();
 }

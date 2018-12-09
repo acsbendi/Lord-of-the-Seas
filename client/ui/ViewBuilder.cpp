@@ -18,11 +18,12 @@
 
 using std::unique_ptr;
 using std::make_unique;
+using std::make_shared;
 using std::move;
 
 
 void ViewBuilder::OnShipPositionSet(Ship& ship, Position position) {
-    unique_ptr<ShipView> newShipView = make_unique<ShipView>(position);
+    unique_ptr<ShipView> newShipView = make_unique<ShipView>(position, playerView, ship.getOwner());
 
     ship.Attach(newShipView.get());
     gameWindow.AddMovableView(move(newShipView));
@@ -36,7 +37,7 @@ void ViewBuilder::OnGridSquarePositionSet(GridSquare& gridSquare, Position posit
 }
 
 ViewBuilder::ViewBuilder(GameWindow& gameWindow) : gameWindow{gameWindow} {
-
+    playerView = make_shared<PlayerView>();
 }
 
 unique_ptr<GridSquareView> ViewBuilder::CreateGridSquareView(GridSquare* gridSquare, Position position) {

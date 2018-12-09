@@ -10,12 +10,14 @@ using std::vector;
 class GridPoint;
 class Player;
 class IMovableObserver;
+class PlayerProxy;
 
 class Movable {
 public:
     explicit Movable(Player&);
     virtual ~Movable() = default;
     GridPoint* GetCurrentLocation() const;
+    PlayerProxy getOwner() const;
     void SetCurrentLocation(GridPoint*);
     void SetEdgeOwners(Direction);
     void Attach(IMovableObserver* observer);

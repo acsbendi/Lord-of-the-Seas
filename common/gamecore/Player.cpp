@@ -1,5 +1,6 @@
-#include "Player.h"
 #include <iostream>
+#include <algorithm>
+#include "Player.h"
 
 using std::make_unique;
 using std::remove;
