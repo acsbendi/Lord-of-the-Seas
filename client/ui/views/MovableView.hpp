@@ -12,6 +12,7 @@
 #include "../../../common/gamecore/Position.hpp"
 #include "../../../common/gamecore/PlayerProxy.h"
 
+using std::unique_ptr;
 using std::shared_ptr;
 using sf::Drawable;
 using sf::Vector2i;
@@ -20,6 +21,9 @@ using sf::Color;
 class PlayerView;
 
 class MovableView : public Drawable, public IMovableObserver{
+public:
+    unique_ptr<MovableView> CreateLandedArmyView(Direction direction) const;
+
 protected:
     explicit MovableView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner);
 

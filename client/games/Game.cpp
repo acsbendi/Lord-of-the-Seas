@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Game.h"
 #include "../../common/gamecore/MapBuilder.hpp"
-#include "../ui/ViewBuilder.hpp"
 
 using std::move;
 using std::make_unique;
@@ -10,9 +9,9 @@ Game::Game(MapBuilder&& mapInitializer) :
         player1{make_unique<Player>("Player 1")}, player2{make_unique<Player>("Player 2")},
         map{},
         gameEnd{false}, turnEnd{false},
-        gameWindow{map.GetWidth(),map.GetHeight()}
+        gameWindow{map.GetWidth(),map.GetHeight()},
+        viewBuilder{gameWindow}
 {
-    ViewBuilder viewBuilder{gameWindow};
     mapInitializer.Attach(&viewBuilder);
     mapInitializer.BuildMap(map, *this->player1->GetShip(), *this->player2->GetShip());
     CreateAttachments();
@@ -23,9 +22,9 @@ Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilde
         player1{move(player1)}, player2{move(player2)},
         map{},
         gameEnd{false}, turnEnd{false},
-        gameWindow{map.GetWidth(),map.GetHeight()}
+        gameWindow{map.GetWidth(),map.GetHeight()},
+        viewBuilder{gameWindow}
 {
-    ViewBuilder viewBuilder{gameWindow};
     mapInitializer.Attach(&viewBuilder);
     mapInitializer.BuildMap(map);
     CreateAttachments();
@@ -34,6 +33,8 @@ Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilde
 void Game::CreateAttachments(){
     player1->Attach(&map);
     player2->Attach(&map);
+    player1->Attach(&viewBuilder);
+    player2->Attach(&viewBuilder);
     gameWindow.AttachWindowEventObserver(this);
     gameWindow.AttachUserEventObserver(player1.get());
     gameWindow.AttachUserEventObserver(player2.get());

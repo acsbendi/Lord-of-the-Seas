@@ -6,15 +6,15 @@
 #define LORD_OF_THE_SEAS_LANDINGEVENT_H
 
 #include "Ship.h"
-#include "Player.h"
 #include "Army.h"
 #include "../utils/Enums.h"
+#include "PlayerProxy.h"
 
 
 struct LandingEvent{
     const Army& army;
     const Ship& ship;
-    const Player& owner;
+    const PlayerProxy owner;
     Direction direction;
 };
 

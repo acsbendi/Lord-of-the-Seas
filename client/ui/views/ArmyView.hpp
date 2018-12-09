@@ -14,7 +14,7 @@ using sf::RenderStates;
 
 class Army;
 
-class ArmyView : MovableView{
+class ArmyView : public MovableView{
 public:
     explicit ArmyView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner);
     void draw(RenderTarget&, RenderStates) const override;

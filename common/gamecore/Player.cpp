@@ -146,7 +146,7 @@ void Player::NotifyOnLanding(Direction landingDirection) const {
     LandingEvent landingEvent = {
             .army = *army,
             .ship = *ship,
-            .owner = *this,
+            .owner = CreateProxy(),
             .direction = landingDirection
     };
 

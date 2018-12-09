@@ -24,8 +24,10 @@ using std::move;
 
 
 void ViewBuilder::OnShipPositionSet(Ship& ship, Position position) {
-    unique_ptr<ShipView> newShipView = make_unique<ShipView>(position, playerView, ship.getOwner());
-    playerView->RegisterPlayer(ship.getOwner());
+    PlayerProxy owner = ship.getOwner();
+    unique_ptr<ShipView> newShipView = make_unique<ShipView>(position, playerView, owner);
+    shipViews.emplace(owner, newShipView.get());
+    playerView->RegisterPlayer(owner);
 
     ship.Attach(newShipView.get());
     gameWindow.AddMovableView(move(newShipView));
@@ -52,4 +54,16 @@ unique_ptr<GridSquareView> ViewBuilder::CreateGridSquareView(GridSquare* gridSqu
     } else{
         throw std::runtime_error{"No such type exist"};
     }
+}
+
+void ViewBuilder::OnLanding(LandingEvent event) {
+    gameWindow.AddMovableView(shipViews.at(event.owner)->CreateLandedArmyView(event.direction));
+}
+
+void ViewBuilder::OnTurnEnd() {
+
+}
+
+void ViewBuilder::OnMove() {
+
 }

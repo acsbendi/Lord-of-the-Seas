@@ -7,6 +7,9 @@
 #include "MovableView.hpp"
 #include "PlayerView.hpp"
 #include "../GameWindow.h"
+#include "ArmyView.hpp"
+
+using std::make_unique;
 
 void MovableView::ChangePositionOnMove(Direction directionOfMove){
     switch(directionOfMove){
@@ -39,4 +42,8 @@ Position MovableView::GetPositionInWindow() const {
 
 Color MovableView::GetColor() const {
     return playerView->GetColorFor(owner);
+}
+
+unique_ptr<MovableView> MovableView::CreateLandedArmyView(Direction direction) const {
+    return make_unique<ArmyView>(currentPosition.NeighborPosition(direction), playerView, owner);
 }

@@ -5,6 +5,7 @@
 #include "../../common/gamecore/Player.h"
 #include "../ui/IWindowEventObserver.h"
 #include "../ui/GameWindow.h"
+#include "../ui/ViewBuilder.hpp"
 
 using std::unique_ptr;
 
@@ -57,6 +58,9 @@ protected:
     void CreateAttachments();
 
     Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilder&& map);
+
+private:
+    ViewBuilder viewBuilder;
 };
 
 #endif // GAME_H
