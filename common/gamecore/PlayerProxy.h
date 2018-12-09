@@ -5,6 +5,8 @@
 #ifndef LORD_OF_THE_SEAS_PLAYERPROXY_H
 #define LORD_OF_THE_SEAS_PLAYERPROXY_H
 
+#include <memory>
+
 class Player;
 
 class PlayerProxy {
@@ -17,7 +19,20 @@ private:
     const Player* const representedPlayer;
 
     friend class Player;
+    friend class std::hash<PlayerProxy>;
 };
 
+namespace std {
+
+    template <>
+    struct hash<PlayerProxy>
+    {
+        inline size_t operator()(const PlayerProxy& playerProxy) const
+        {
+            return hash<const Player*>()(playerProxy.representedPlayer);
+        }
+    };
+
+}
 
 #endif //LORD_OF_THE_SEAS_PLAYERPROXY_H

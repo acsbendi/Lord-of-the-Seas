@@ -38,5 +38,5 @@ Position MovableView::GetPositionInWindow() const {
 }
 
 Color MovableView::GetColor() const {
-    return playerView.GetColorFor(owner);
+    return playerView->GetColorFor(owner);
 }
