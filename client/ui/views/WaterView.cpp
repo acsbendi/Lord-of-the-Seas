@@ -7,7 +7,8 @@
 
 const Texture WaterView::texture = Graphics::CreateTexture("water.png");
 
-WaterView::WaterView(int x, int y, const GridSquare& gridSquare) : GridSquareView{x,y,gridSquare} { }
+WaterView::WaterView(Position position, shared_ptr<PlayerView> playerView) :
+GridSquareView{position, move(playerView)} { }
 
 const Texture& WaterView::GetTexture() const {
     return texture;

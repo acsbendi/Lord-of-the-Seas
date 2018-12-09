@@ -5,14 +5,11 @@
 #ifndef LORD_OF_THE_SEAS_LINE_HPP
 #define LORD_OF_THE_SEAS_LINE_HPP
 
-#include <SFML/System.hpp>
 #include "../../common/utils/Enums.h"
 
-using sf::Vector2i;
-
 struct Edge{
-    Vector2i startCoordinates;
-    Vector2i endCoordinates;
+    Position startCoordinates{};
+    Position endCoordinates{};
     Direction directionInSquare = up;
 };
 

@@ -11,7 +11,7 @@ using sf::Texture;
 
 class TreasureView : public GridSquareView {
 public:
-    TreasureView(int x, int y, const GridSquare& gridSquare);
+    explicit TreasureView(Position position, shared_ptr<PlayerView> playerView);
     const Texture& GetTexture() const override;
 
 private:

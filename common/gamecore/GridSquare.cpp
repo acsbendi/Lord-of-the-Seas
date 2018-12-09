@@ -24,6 +24,7 @@ GridSquare::GridSquare()
 void GridSquare::SetEdgeOwner(Direction direction, Player* player)
 {
     edgeOwners[direction] = player;
+    NotifyOnEdgeOwnerChanged(direction, player);
 }
 
 void GridSquare::SetNeighbor(Direction direction, GridSquare* gridSquare){

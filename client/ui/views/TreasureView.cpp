@@ -9,7 +9,8 @@
 
 const Texture TreasureView::texture = Graphics::CreateTexture("water.png");
 
-TreasureView::TreasureView(int x, int y, const GridSquare& gridSquare) : GridSquareView{x, y, gridSquare} { }
+TreasureView::TreasureView(Position position, shared_ptr<PlayerView> playerView) :
+GridSquareView{position, move(playerView)} { }
 
 const Texture& TreasureView::GetTexture() const {
     return texture;

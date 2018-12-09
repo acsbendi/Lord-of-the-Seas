@@ -8,7 +8,8 @@
 
 const Texture LandView::texture = Graphics::CreateTexture("land.png");
 
-LandView::LandView(int x, int y, const GridSquare& gridSquare) : GridSquareView{x, y, gridSquare} { }
+LandView::LandView(Position position, shared_ptr<PlayerView> playerView) :
+GridSquareView{position, move(playerView)} { }
 
 const Texture& LandView::GetTexture() const {
     return texture;

@@ -15,6 +15,7 @@
 #include "../../common/gamecore/Treasure.h"
 #include "views/WaterView.hpp"
 #include "../../common/gamecore/Water.h"
+#include "views/PlayerView.hpp"
 
 using std::unique_ptr;
 using std::make_unique;
@@ -42,11 +43,11 @@ ViewBuilder::ViewBuilder(GameWindow& gameWindow) : gameWindow{gameWindow} {
 
 unique_ptr<GridSquareView> ViewBuilder::CreateGridSquareView(GridSquare* gridSquare, Position position) {
     if(dynamic_cast<Land*>(gridSquare)){
-        return make_unique<LandView>(position);
+        return make_unique<LandView>(position, playerView);
     } else if (dynamic_cast<Water*>(gridSquare)){
-        return make_unique<WaterView>(position);
+        return make_unique<WaterView>(position, playerView);
     } else if (dynamic_cast<Treasure*>(gridSquare)){
-        return make_unique<TreasureView>(position);
+        return make_unique<TreasureView>(position, playerView);
     } else{
         throw std::runtime_error{"No such type exist"};
     }

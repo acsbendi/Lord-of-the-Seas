@@ -11,7 +11,7 @@ using sf::Texture;
 
 class WaterView : public GridSquareView {
 public:
-    WaterView(int x, int y, const GridSquare& gridSquare);
+    explicit WaterView(Position position, shared_ptr<PlayerView> playerView);
     const Texture& GetTexture() const override;
 
 private:

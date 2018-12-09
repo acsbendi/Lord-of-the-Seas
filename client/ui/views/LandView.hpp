@@ -11,7 +11,7 @@ using sf::Texture;
 
 class LandView : public GridSquareView{
 public:
-    LandView(int x, int y, const GridSquare& gridSquare);
+    explicit LandView(Position position, shared_ptr<PlayerView> playerView);
     const Texture& GetTexture() const override;
 
 private:

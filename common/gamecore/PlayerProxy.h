@@ -12,11 +12,12 @@ class Player;
 class PlayerProxy {
 public:
     bool operator==(const PlayerProxy& other) const;
+    PlayerProxy(const PlayerProxy& other) = default;
 
 private:
     explicit PlayerProxy(const Player* representedPlayer);
 
-    const Player* const representedPlayer;
+    const Player* representedPlayer;
 
     friend class Player;
     friend class std::hash<PlayerProxy>;
