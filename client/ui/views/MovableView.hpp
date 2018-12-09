@@ -6,21 +6,31 @@
 #define LORD_OF_THE_SEAS_MOVABLEVIEW_HPP
 
 #include <SFML/Graphics/Drawable.hpp>
+#include <memory>
+#include <SFML/Graphics/Color.hpp>
 #include "../../../common/gamecore/IMovableObserver.hpp"
 #include "../../../common/gamecore/Position.hpp"
+#include "../../../common/gamecore/PlayerProxy.h"
 
+using std::shared_ptr;
 using sf::Drawable;
 using sf::Vector2i;
+using sf::Color;
+
+class PlayerView;
 
 class MovableView : public Drawable, public IMovableObserver{
 protected:
-    explicit MovableView(Position initialPosition);
+    explicit MovableView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner);
 
     void ChangePositionOnMove(Direction directionOfMove);
     Position GetPositionInWindow() const;
+    Color GetColor() const;
 
 private:
     Position currentPosition;
+    shared_ptr<PlayerView> playerView;
+    PlayerProxy owner;
 };
 
 

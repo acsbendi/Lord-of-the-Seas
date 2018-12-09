@@ -7,20 +7,19 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include <unordered_map>
-#include "../../common/gamecore/PlayerProxy.h"
+#include "../../../common/gamecore/PlayerProxy.h"
 
 using std::unordered_map;
 using sf::Color;
 
 class PlayerView {
-private:
-    const Color colors[2] = {Color::Red, Color::Magenta};
-    unordered_map<PlayerProxy, Color> associations{};
-
 public:
     Color GetColorFor(PlayerProxy player);
     void RegisterPlayer(PlayerProxy player);
 
+private:
+    const Color colors[2] = {Color::Red, Color::Magenta};
+    unordered_map<PlayerProxy, Color> associations{};
 };
 
 

@@ -10,14 +10,21 @@
 using sf::RectangleShape;
 using sf::Vector2f;
 
-ArmyView::ArmyView(Army& army) : army{army} {
+
+ArmyView::ArmyView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner) :
+        MovableView{initialPosition, move(playerView), owner} {
 }
 
 void ArmyView::draw(RenderTarget& target, RenderStates) const
 {
+    Position positionInWindow = GetPositionInWindow();
+
     RectangleShape rect(Vector2f(6,6));
-    rect.setPosition(GameWindow::MARGIN + currentPosition.x*GameWindow::GRID_SIDE-3,
-                     GameWindow::MARGIN + currentPosition.y*GameWindow::GRID_SIDE-3);
-    rect.setFillColor(army.owner.GetColor());
+    rect.setPosition(positionInWindow.xCoordinate, positionInWindow.yCoordinate);
+    rect.setFillColor(GetColor());
     target.draw(rect);
+}
+
+void ArmyView::OnMove(Direction moveDirection) {
+    ChangePositionOnMove(moveDirection);
 }

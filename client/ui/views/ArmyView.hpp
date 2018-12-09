@@ -16,13 +16,9 @@ class Army;
 
 class ArmyView : MovableView{
 public:
-    explicit ArmyView(Army& army);
-
+    explicit ArmyView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner);
     void draw(RenderTarget&, RenderStates) const override;
-
-private:
-    Army& army;
-    bool hasMoved;
+    void OnMove(Direction moveDirection) override;
 };
 
 

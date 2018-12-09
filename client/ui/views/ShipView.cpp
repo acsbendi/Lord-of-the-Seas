@@ -8,8 +8,8 @@
 
 using sf::CircleShape;
 
-ShipView::ShipView(Position initialPosition) :
-    MovableView{initialPosition} {
+ShipView::ShipView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner) :
+    MovableView{initialPosition, move(playerView), owner} {
 }
 
 void ShipView::draw(RenderTarget& target, RenderStates) const
@@ -18,7 +18,7 @@ void ShipView::draw(RenderTarget& target, RenderStates) const
 
     CircleShape circle(4);
     circle.setPosition(positionInWindow.xCoordinate, positionInWindow.yCoordinate);
-    circle.setFillColor(ship.owner.GetColor()); //TODO change this to a single dot solution
+    circle.setFillColor(GetColor());
     target.draw(circle);
 }
 

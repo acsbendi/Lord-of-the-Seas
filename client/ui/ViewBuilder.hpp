@@ -9,10 +9,12 @@
 #include "../../common/gamecore/IMapBuilderObserver.hpp"
 
 using std::unique_ptr;
+using std::shared_ptr;
 
 class GameWindow;
 class GridSquareView;
 class GridSquare;
+class PlayerView;
 
 class ViewBuilder : public IMapBuilderObserver{
 public:
@@ -24,6 +26,7 @@ private:
     unique_ptr<GridSquareView> CreateGridSquareView(GridSquare* gridSquare, Position position);
 
     GameWindow& gameWindow;
+    shared_ptr<PlayerView> playerView;
 };
 
 

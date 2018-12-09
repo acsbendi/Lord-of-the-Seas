@@ -2,8 +2,10 @@
 // Created by Bendi on 9/9/2018.
 //
 
+#include <regex>
 #include "../../../common/utils/Enums.h"
 #include "MovableView.hpp"
+#include "PlayerView.hpp"
 #include "../GameWindow.h"
 
 void MovableView::ChangePositionOnMove(Direction directionOfMove){
@@ -23,8 +25,9 @@ void MovableView::ChangePositionOnMove(Direction directionOfMove){
     }
 }
 
-MovableView::MovableView(Position initialPosition) :
-    currentPosition{initialPosition}{
+MovableView::MovableView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner) :
+    currentPosition{initialPosition}, playerView{move(playerView)},
+    owner{owner}{
 }
 
 Position MovableView::GetPositionInWindow() const {
@@ -32,4 +35,8 @@ Position MovableView::GetPositionInWindow() const {
         .xCoordinate = GameWindow::MARGIN + currentPosition.xCoordinate*GameWindow::GRID_SIDE-4,
         .yCoordinate = GameWindow::MARGIN + currentPosition.yCoordinate*GameWindow::GRID_SIDE-4
     };
+}
+
+Color MovableView::GetColor() const {
+    return playerView.GetColorFor(owner);
 }
