@@ -8,8 +8,8 @@
 #include <memory>
 #include <unordered_map>
 #include "SFML/Graphics.hpp"
-#include "../../../common/gamecore/IGridSquareObserver.hpp"
 #include "../../../common/gamecore/Position.hpp"
+#include "../../../common/gamecore/IGridSquareObserver.hpp"
 
 using std::unordered_map;
 using std::shared_ptr;

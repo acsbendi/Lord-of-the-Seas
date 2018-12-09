@@ -10,8 +10,8 @@
 
 class IGridSquareObserver {
 public:
-    virtual ~IGridSquareObserver() =  0;
     virtual void OnEdgeOwnerChanged(EdgeOwnerChangedEvent event) = 0;
+    virtual ~IGridSquareObserver() = default;
 };
 
 
