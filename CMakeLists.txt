@@ -65,7 +65,7 @@ add_executable(Lord_of_the_Seas
         client/ui/views/ArmyView.hpp
         client/ui/views/MovableView.hpp
         common/gamecore/IMovableObserver.hpp
-        client/ui/views/MovableView.cpp common/gamecore/LandingEvent.h common/gamecore/PlayerProxy.cpp common/gamecore/PlayerProxy.h common/gamecore/EdgeOwnerChangedEvent.hpp common/gamecore/IGridSquareObserver.hpp common/gamecore/IMapBuilderObserver.hpp common/gamecore/Position.hpp client/ui/ViewBuilder.cpp client/ui/ViewBuilder.hpp)
+        client/ui/views/MovableView.cpp common/gamecore/LandingEvent.h common/gamecore/PlayerProxy.cpp common/gamecore/PlayerProxy.h common/gamecore/EdgeOwnerChangedEvent.hpp common/gamecore/IGridSquareObserver.hpp common/gamecore/IMapBuilderObserver.hpp common/gamecore/Position.hpp client/ui/ViewBuilder.cpp client/ui/ViewBuilder.hpp client/ui/PlayerView.cpp client/ui/PlayerView.hpp)
 
 add_executable(Lord_of_the_Seas_server server/Server.cpp server/Server.h server/server_main.cpp)
 
