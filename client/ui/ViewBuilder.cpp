@@ -25,6 +25,7 @@ using std::move;
 
 void ViewBuilder::OnShipPositionSet(Ship& ship, Position position) {
     unique_ptr<ShipView> newShipView = make_unique<ShipView>(position, playerView, ship.getOwner());
+    playerView->RegisterPlayer(ship.getOwner());
 
     ship.Attach(newShipView.get());
     gameWindow.AddMovableView(move(newShipView));

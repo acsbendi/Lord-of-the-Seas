@@ -7,7 +7,6 @@
 
 class Army;
 class GridPoint;
-class Shipview;
 
 class Ship : public Movable {
 public:
@@ -23,8 +22,6 @@ public:
 
 private:
     const Army* armyOnBoard;
-
-    friend class ShipView;
 };
 
 #endif // SHIP_H

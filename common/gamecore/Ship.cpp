@@ -28,8 +28,8 @@ Ship::Ship(Player& player) : Movable(player)
 }
 
 bool Ship::IsAtCoast() const{
-    return currentLocation->GetPointNeighbor(left) && currentLocation->GetPointNeighbor(left)->IsLand() ||
-            currentLocation->GetPointNeighbor(right) && currentLocation->GetPointNeighbor(right)->IsLand() ||
-            currentLocation->GetPointNeighbor(up) && currentLocation->GetPointNeighbor(up)->IsLand() ||
-            currentLocation->GetPointNeighbor(down) && currentLocation->GetPointNeighbor(down)->IsLand();
+    return  (currentLocation->GetPointNeighbor(left) && currentLocation->GetPointNeighbor(left)->IsLand()) ||
+            (currentLocation->GetPointNeighbor(right) && currentLocation->GetPointNeighbor(right)->IsLand()) ||
+            (currentLocation->GetPointNeighbor(up) && currentLocation->GetPointNeighbor(up)->IsLand()) ||
+            (currentLocation->GetPointNeighbor(down) && currentLocation->GetPointNeighbor(down)->IsLand());
 }
