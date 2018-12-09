@@ -25,8 +25,8 @@ public:
                     vector<Position> lands = {{19,20},{21,20},{20,21},{20,22},{20,19},{19,19},{19,18},{5,9},{6,8},{7,8},{6,9},{7,9},{5,7},{4,10},{4,9}},
                     vector<Position> treasures = {{20,20},{5,8}});
 
-    Map BuildMap(Ship& topLeftShip, Ship& bottomRightShip);
-    Map BuildMap();
+    void BuildMap(Map& map, Ship& topLeftShip, Ship& bottomRightShip);
+    void BuildMap(Map& map);
     void SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const;
     void Attach(IMapBuilderObserver* observer);
     void Detach(IMapBuilderObserver* observer);

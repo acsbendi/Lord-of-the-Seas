@@ -27,7 +27,7 @@ public:
     static int GRID_SIDE;   ///< The side length of one grid block.
     static int MARGIN;      ///< The margin around the grid structure of the map.
 
-    GameWindow(int width, int height, vector<unique_ptr<GridSquareView>>&& gridSquareViews);
+    GameWindow(int width, int height);
     /**
  * @brief Loop for all user input. Waits for the next meaningful event,
  * notifies the appropriate observers, then returns.
@@ -89,7 +89,7 @@ private:
     void HandleKeyPress(const Keyboard::Key&);
     void HandleEvent(const Event&);
     void DrawMovables();
-    void DrawGridSqures();
+    void DrawGridSquares();
 };
 
 

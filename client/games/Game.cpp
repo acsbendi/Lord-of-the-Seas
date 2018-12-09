@@ -1,26 +1,33 @@
 #include <iostream>
 #include "Game.h"
 #include "../../common/gamecore/MapBuilder.hpp"
+#include "../ui/ViewBuilder.hpp"
 
 using std::move;
 using std::make_unique;
 
 Game::Game(MapBuilder&& mapInitializer) :
         player1{make_unique<Player>(Color::Red, "Player 1")}, player2{make_unique<Player>(Color::Magenta, "Player 2")},
-        map{mapInitializer.BuildMap(*this->player1->GetShip(), *this->player2->GetShip())},
+        map{},
         gameEnd{false}, turnEnd{false},
         gameWindow{map.GetWidth(),map.GetHeight()}
 {
+    ViewBuilder viewBuilder{gameWindow};
+    mapInitializer.Attach(&viewBuilder);
+    mapInitializer.BuildMap(map, *this->player1->GetShip(), *this->player2->GetShip());
     CreateAttachments();
     currentPlayer = this->player1.get();
 }
 
 Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilder&& mapInitializer):
         player1{move(player1)}, player2{move(player2)},
-        map{mapInitializer.BuildMap()},
+        map{},
         gameEnd{false}, turnEnd{false},
         gameWindow{map.GetWidth(),map.GetHeight()}
 {
+    ViewBuilder viewBuilder{gameWindow};
+    mapInitializer.Attach(&viewBuilder);
+    mapInitializer.BuildMap(map);
     CreateAttachments();
 }
 

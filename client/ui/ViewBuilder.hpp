@@ -5,7 +5,7 @@
 #ifndef LORD_OF_THE_SEAS_VIEWBUILDER_HPP
 #define LORD_OF_THE_SEAS_VIEWBUILDER_HPP
 
-#import <memory>
+#include <memory>
 #include "../../common/gamecore/IMapBuilderObserver.hpp"
 
 using std::unique_ptr;

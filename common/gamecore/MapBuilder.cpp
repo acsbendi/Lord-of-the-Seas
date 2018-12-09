@@ -19,7 +19,7 @@ using std::make_unique;
 MapBuilder::MapBuilder(int width, int height,
                                vector<Position> lands,
                                vector<Position> treasures) : width{width}, height{height},
-                        lands{move(lands)}, treasures{move(treasures)}, {
+                        lands{move(lands)}, treasures{move(treasures)} {
     topLeftPosition = {
             .xCoordinate = 0,
             .yCoordinate = 0
@@ -30,21 +30,17 @@ MapBuilder::MapBuilder(int width, int height,
     };
 }
 
-Map MapBuilder::BuildMap(Ship& topLeftShip, Ship& bottomRightShip){
+void MapBuilder::BuildMap(Map& map, Ship& topLeftShip, Ship& bottomRightShip){
     InitializeGrid();
-    SetShipPositions(topLeftShip,bottomRightShip);
+    SetShipPositions(map, topLeftShip,bottomRightShip);
 
-    Map map;
     InjectMapMembers(map);
-    return map;
 }
 
-Map MapBuilder::BuildMap(){
+void MapBuilder::BuildMap(Map& map){
     InitializeGrid();
 
-    Map map;
     InjectMapMembers(map);
-    return map;
 }
 
 void MapBuilder::InjectMapMembers(Map& map) {
@@ -54,18 +50,10 @@ void MapBuilder::InjectMapMembers(Map& map) {
     map.gridPoints = move(gridPoints);
 }
 
-void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip) {
-    SetShipPositions(topLeftShip,bottomRightShip,
-            *gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate],
-            *gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]);
-    NotifyOnShipPositionsSet(topLeftShip, bottomRightShip);
-}
-
 void MapBuilder::SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const{
     SetShipPositions(topLeftShip,bottomRightShip,
                      *map.gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate],
                      *map.gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]);
-    NotifyOnShipPositionsSet(topLeftShip, bottomRightShip);
 }
 
 void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip,
@@ -74,6 +62,7 @@ void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip,
     topLeftShip.SetCurrentLocation(&topLeftGridPoint);
     bottomRightGridPoint.SetMovable(&bottomRightShip);
     bottomRightShip.SetCurrentLocation(&bottomRightGridPoint);
+    NotifyOnShipPositionsSet(topLeftShip, bottomRightShip);
 }
 
 void MapBuilder::InitializeGrid()

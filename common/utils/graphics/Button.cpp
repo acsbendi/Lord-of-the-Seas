@@ -53,7 +53,7 @@ void Button::SetTextProperties() {
     text.setCharacterSize(19);
     text.setPosition({static_cast<float >(rect.left + 29), static_cast<float >(rect.top + 13)});
     text.setStyle(Text::Bold);
-    text.setFillColor(Color::Black);
+    text.setColor(Color::Black);
 }
 
 void Button::SetBackgroundProperties(Sprite& background) const {
