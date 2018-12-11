@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "Player.h"
 
 using std::make_unique;

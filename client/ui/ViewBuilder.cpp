@@ -5,16 +5,13 @@
 #include <memory>
 #include "ViewBuilder.hpp"
 #include "views/ShipView.hpp"
-#include "../../common/gamecore/Ship.h"
+#include "views/ArmyView.hpp"
 #include "views/GridSquareView.hpp"
 #include "GameWindow.h"
 #include "../../common/gamecore/GridSquare.h"
-#include "../../common/gamecore/Land.h"
 #include "views/LandView.hpp"
 #include "views/TreasureView.hpp"
-#include "../../common/gamecore/Treasure.h"
 #include "views/WaterView.hpp"
-#include "../../common/gamecore/Water.h"
 #include "views/PlayerView.hpp"
 
 using std::unique_ptr;
@@ -29,7 +26,7 @@ void ViewBuilder::OnShipPositionSet(Ship& ship, Position position) {
     shipViews.emplace(owner, newShipView.get());
     playerView->RegisterPlayer(owner);
 
-    ship.Attach(newShipView.get());
+    ship.Attach(newShipView.get(), true);
     gameWindow.AddMovableView(move(newShipView));
 }
 
@@ -57,7 +54,9 @@ unique_ptr<GridSquareView> ViewBuilder::CreateGridSquareView(GridSquare* gridSqu
 }
 
 void ViewBuilder::OnLanding(LandingEvent event) {
-    gameWindow.AddMovableView(shipViews.at(event.owner)->CreateLandedArmyView(event.direction));
+    unique_ptr<ArmyView> newArmyView = shipViews.at(event.owner)->CreateLandedArmyView(event.direction);
+    event.army.Attach(newArmyView.get(), true);
+    gameWindow.AddMovableView(move(newArmyView));
 }
 
 void ViewBuilder::OnTurnEnd() {

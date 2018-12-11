@@ -20,7 +20,7 @@ public:
     PlayerProxy getOwner() const;
     void SetCurrentLocation(GridPoint*);
     void SetEdgeOwners(Direction);
-    void Attach(IMovableObserver* observer);
+    void Attach(IMovableObserver* observer, bool front = false);
     void Detach(IMovableObserver* observer);
     virtual void Move(Direction) = 0;
 

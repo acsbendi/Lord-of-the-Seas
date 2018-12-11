@@ -44,6 +44,6 @@ Color MovableView::GetColor() const {
     return playerView->GetColorFor(owner);
 }
 
-unique_ptr<MovableView> MovableView::CreateLandedArmyView(Direction direction) const {
+unique_ptr<ArmyView> MovableView::CreateLandedArmyView(Direction direction) const {
     return make_unique<ArmyView>(currentPosition.NeighborPosition(direction), playerView, owner);
 }

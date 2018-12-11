@@ -19,6 +19,7 @@ class GridSquareView;
 class GridSquare;
 class PlayerView;
 class ShipView;
+class ArmyView;
 
 class ViewBuilder : public IMapBuilderObserver, public IPlayerObserver{
 public:

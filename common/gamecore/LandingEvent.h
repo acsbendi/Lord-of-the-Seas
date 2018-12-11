@@ -12,7 +12,7 @@
 
 
 struct LandingEvent{
-    const Army& army;
+    Army& army;
     const Ship& ship;
     const PlayerProxy owner;
     Direction direction;

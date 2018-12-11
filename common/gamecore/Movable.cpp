@@ -48,8 +48,11 @@ void Movable::SetOwnerInNeighborIfExists(IntermediateDirection directionOfNeighb
         currentLocation->GetSquareNeighbor(directionOfNeighbor)->SetEdgeOwner(directionOfEdge, &owner);
 }
 
-void Movable::Attach(IMovableObserver* observer){
-    observers.push_back(observer);
+void Movable::Attach(IMovableObserver* observer, bool front){
+    if(front)
+        observers.insert(observers.begin(), observer);
+    else
+        observers.push_back(observer);
 }
 
 void Movable::Detach(IMovableObserver* observer){

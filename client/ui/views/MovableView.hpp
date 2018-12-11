@@ -19,10 +19,11 @@ using sf::Vector2i;
 using sf::Color;
 
 class PlayerView;
+class ArmyView;
 
 class MovableView : public Drawable, public IMovableObserver{
 public:
-    unique_ptr<MovableView> CreateLandedArmyView(Direction direction) const;
+    unique_ptr<ArmyView> CreateLandedArmyView(Direction direction) const;
 
 protected:
     explicit MovableView(Position initialPosition, shared_ptr<PlayerView> playerView, PlayerProxy owner);
