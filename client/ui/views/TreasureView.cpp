@@ -7,7 +7,7 @@
 #include "TreasureView.hpp"
 
 
-const Texture TreasureView::texture = Graphics::CreateTexture("water.png");
+const Texture TreasureView::texture = Graphics::CreateTexture("treasure.png");
 
 TreasureView::TreasureView(Position position, shared_ptr<PlayerView> playerView) :
 GridSquareView{position, move(playerView)} { }
