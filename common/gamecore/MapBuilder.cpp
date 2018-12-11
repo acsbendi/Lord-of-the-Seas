@@ -51,7 +51,7 @@ void MapBuilder::InjectMapMembers(Map& map) {
 
 void MapBuilder::SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const{
     SetShipPositions(topLeftShip, bottomRightShip,
-                     *(map.gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate]),
+                     *(map.gridPoints[topLeftPosition.yCoordinate][topLeftPosition.xCoordinate]),
                      *(map.gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]));
 }
 
