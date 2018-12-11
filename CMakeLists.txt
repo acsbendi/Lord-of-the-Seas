@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
+cmake_policy(SET CMP0074 NEW)
+
 add_executable(Lord_of_the_Seas
         common/gamecore/Army.h
         common/utils/Enums.h
