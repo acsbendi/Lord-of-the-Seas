@@ -50,8 +50,6 @@ public:
      * @param observer The observer to detach.
      */
     void Detach(IMapObserver *observer);
-    int GetWidth() const;
-    int GetHeight() const;
     void OnLanding(LandingEvent event) override;
 
 private:

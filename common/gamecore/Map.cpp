@@ -69,14 +69,6 @@ void Map::Detach(IMapObserver *observer) {
                                 observers.end(),observer),observers.end());
 }
 
-int Map::GetHeight() const {
-    return height;
-}
-
-int Map::GetWidth() const {
-    return width;
-}
-
 void Map::OnLanding(LandingEvent) {
     Notify();
 }

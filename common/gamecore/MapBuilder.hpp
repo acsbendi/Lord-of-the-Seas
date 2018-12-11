@@ -30,6 +30,8 @@ public:
     void SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const;
     void Attach(IMapBuilderObserver* observer);
     void Detach(IMapBuilderObserver* observer);
+    int GetWidth() const;
+    int GetHeight() const;
 
 private:
     Position bottomRightPosition;
@@ -51,7 +53,6 @@ private:
     void CreateGridPoints();
     void SetNeighbors();
     void InitializeGrid();
-    void SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip);
     void SetConnectionsBetweenPoints(const Position& positionOfGridPoint);
     void SetConnectionsBetweenPointsAndSquares(const Position& positionOfGridPoint);
     void SetConnectionsBetweenSquares(const Position& positionOfGridSquare);

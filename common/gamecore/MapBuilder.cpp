@@ -32,9 +32,8 @@ MapBuilder::MapBuilder(int width, int height,
 
 void MapBuilder::BuildMap(Map& map, Ship& topLeftShip, Ship& bottomRightShip){
     InitializeGrid();
-    SetShipPositions(map, topLeftShip,bottomRightShip);
-
     InjectMapMembers(map);
+    SetShipPositions(map, topLeftShip, bottomRightShip);
 }
 
 void MapBuilder::BuildMap(Map& map){
@@ -51,9 +50,9 @@ void MapBuilder::InjectMapMembers(Map& map) {
 }
 
 void MapBuilder::SetShipPositions(Map& map, Ship& topLeftShip, Ship& bottomRightShip) const{
-    SetShipPositions(topLeftShip,bottomRightShip,
-                     *map.gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate],
-                     *map.gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]);
+    SetShipPositions(topLeftShip, bottomRightShip,
+                     *(map.gridPoints[topLeftPosition.yCoordinate][bottomRightPosition.xCoordinate]),
+                     *(map.gridPoints[bottomRightPosition.yCoordinate][bottomRightPosition.xCoordinate]));
 }
 
 void MapBuilder::SetShipPositions(Ship& topLeftShip, Ship& bottomRightShip,
@@ -202,6 +201,14 @@ void MapBuilder::NotifyOnGridSquarePositionSet(GridSquare& gridSquare, Position 
 void MapBuilder::NotifyOnShipPositionSet(Ship& ship, Position position) const {
     for(IMapBuilderObserver* observer : observers)
         observer->OnShipPositionSet(ship, position);
+}
+
+int MapBuilder::GetWidth() const {
+    return width;
+}
+
+int MapBuilder::GetHeight() const {
+    return height;
 }
 
 

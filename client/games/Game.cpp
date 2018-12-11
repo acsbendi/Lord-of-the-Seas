@@ -9,7 +9,7 @@ Game::Game(MapBuilder&& mapInitializer) :
         player1{make_unique<Player>("Player 1")}, player2{make_unique<Player>("Player 2")},
         map{},
         gameEnd{false}, turnEnd{false},
-        gameWindow{map.GetWidth(),map.GetHeight()},
+        gameWindow{mapInitializer.GetWidth(),mapInitializer.GetHeight()},
         viewBuilder{gameWindow}
 {
     mapInitializer.Attach(&viewBuilder);
@@ -22,7 +22,7 @@ Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilde
         player1{move(player1)}, player2{move(player2)},
         map{},
         gameEnd{false}, turnEnd{false},
-        gameWindow{map.GetWidth(),map.GetHeight()},
+        gameWindow{mapInitializer.GetWidth(),mapInitializer.GetHeight()},
         viewBuilder{gameWindow}
 {
     mapInitializer.Attach(&viewBuilder);
