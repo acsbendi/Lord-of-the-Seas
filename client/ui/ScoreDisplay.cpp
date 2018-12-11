@@ -101,8 +101,8 @@ void ScoreDisplay::SetTextPosition() {
 void ScoreDisplay::SetTextStyleAndColor() {
     text1.setStyle(Text::Bold);
     text2.setStyle(Text::Bold);
-    text1.setColor(Color::Black);
-    text2.setColor(Color::Black);
+    text1.setFillColor(Color::Black);
+    text2.setFillColor(Color::Black);
 }
 
 void ScoreDisplay::Exit() {

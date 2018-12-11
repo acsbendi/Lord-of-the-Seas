@@ -5,8 +5,6 @@
 #include "Button.h"
 #include "Graphics.h"
 
-#include <iostream>
-
 using std::move;
 using sf::Color;
 
@@ -53,7 +51,7 @@ void Button::SetTextProperties() {
     text.setCharacterSize(19);
     text.setPosition({static_cast<float >(rect.left + 29), static_cast<float >(rect.top + 13)});
     text.setStyle(Text::Bold);
-    text.setColor(Color::Black);
+    text.setFillColor(Color::Black);
 }
 
 void Button::SetBackgroundProperties(Sprite& background) const {
