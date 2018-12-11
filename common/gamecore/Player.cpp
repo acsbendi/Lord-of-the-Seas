@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include "Player.h"
 
 using std::make_unique;
@@ -11,6 +10,8 @@ Player::Player(const string& name) :
     ship = make_unique<Ship>(*this);
     army = make_unique<Army>(*this);
     ship->SetArmyOnBoard(army.get());
+    ship->Attach(this);
+    army->Attach(this);
 }
 
 Ship* Player::GetShip() const
