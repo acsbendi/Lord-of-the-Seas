@@ -69,8 +69,6 @@ add_executable(Lord_of_the_Seas
 
 add_executable(Lord_of_the_Seas_server server/Server.cpp server/Server.h server/server_main.cpp)
 
-set(SFML_ROOT "C:/Program Files/SFML-2.4.2")
-
 find_package(SFML 2 REQUIRED graphics network audio window system)
 
 if(SFML_FOUND)
