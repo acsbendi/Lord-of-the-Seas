@@ -13,6 +13,9 @@
 #include "views/TreasureView.hpp"
 #include "views/WaterView.hpp"
 #include "views/PlayerView.hpp"
+#include "../../common/gamecore/Treasure.h"
+#include "../../common/gamecore/Water.h"
+#include "../../common/gamecore/Land.h"
 
 using std::unique_ptr;
 using std::make_unique;

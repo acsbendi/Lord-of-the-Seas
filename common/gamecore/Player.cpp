@@ -175,7 +175,7 @@ void Player::OnMove(Direction moveDirection) {
             successfulMoves = 0;
         }
 
-        NotifyOnMove(moveDirection);
         NotifyOnLanding(moveDirection);
+        NotifyOnMove(moveDirection);
     }
 }
