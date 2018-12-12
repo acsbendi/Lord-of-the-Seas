@@ -14,7 +14,7 @@ void Ship::SetArmyOnBoard(const Army *army)
 
 void Ship::Move(Direction direction) {
     GridPoint* destination = currentLocation->GetPointNeighbor(direction);
-    if(destination && destination->Enter(this)){
+    if(destination && destination->Enter(this, direction)){
         SetEdgeOwners(direction);
         currentLocation->Exit(this);
         currentLocation = destination;

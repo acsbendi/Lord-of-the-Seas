@@ -2,7 +2,6 @@
 #include "GridSquare.h"
 #include "Army.h"
 #include "Ship.h"
-#include <iostream>
 
 using std::pair;
 
@@ -39,14 +38,15 @@ bool GridPoint::Enter(Army* coming) {
     return true;
 }
 
-bool GridPoint::Enter(Ship* coming) {
+bool GridPoint::Enter(Ship* coming, Direction moveDirection) {
     if(movable) return false; //this point is occupied
 
-    if(!isSeaBool)
-        return false; //ships can only move on sea
+    bool isSeaInMoveDirection = IsSeaInMoveDirection(moveDirection); //ships can only move on sea
 
-    movable = coming;
-    return true;
+    if(isSeaInMoveDirection)
+        movable = coming;
+
+    return isSeaInMoveDirection;
 }
 
 void GridPoint::Exit(Movable* leaving) {
@@ -66,11 +66,24 @@ void GridPoint::FinishInitialization() {
     isLandBool =(squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsLand()) ||
                 (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsLand()) ||
                 (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsLand()) ||
-                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsLand());
-    isSeaBool = (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsSea()) ||
-                (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsSea()) ||
-                (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsSea()) ||
-                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
+                (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsLand()); //TODO direction-dependent?
+}
+
+bool GridPoint::IsSeaInMoveDirection(Direction moveDirection){
+    switch (moveDirection){
+        case right:
+            return  (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsSea()) ||
+                    (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
+        case left:
+            return  (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsSea()) ||
+                    (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsSea());
+        case up:
+            return  (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsSea()) ||
+                    (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsSea());
+        case down:
+            return  (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsSea()) ||
+                    (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsSea());
+    }
 }
 
 bool GridPoint::IsLand() const{

@@ -23,7 +23,7 @@ public:
     void SetPointNeighbor(Direction, GridPoint*);
     void SetSquareNeighbor(IntermediateDirection, GridSquare*);
     bool Enter(Army*);
-    bool Enter(Ship*);
+    bool Enter(Ship* ship, Direction moveDirection);
     void Exit(Movable*);
     void FinishInitialization();
     bool IsLand() const;
@@ -33,7 +33,8 @@ private:
     map<Direction, GridPoint* const> pointNeighbors;
     map<IntermediateDirection, GridSquare* const> squareNeighbors;
     bool isLandBool;
-    bool isSeaBool;
+
+    bool IsSeaInMoveDirection(Direction moveDirection);
 };
 
 #endif // GRIDPOINT_H
