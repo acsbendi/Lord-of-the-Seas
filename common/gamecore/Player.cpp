@@ -87,7 +87,7 @@ void Player::SuccessfulArmyMove(Direction direction){
 }
 
 void Player::LandArmy(Direction direction) {
-    army->Move(direction);
+    army->Land(direction);
 }
 
 void Player::LandingAccepted(){

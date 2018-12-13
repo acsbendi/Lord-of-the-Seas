@@ -22,7 +22,7 @@ class IMapBuilderObserver;
 class MapBuilder {
 public:
     explicit MapBuilder(int width = 40, int height = 30,
-                    vector<Position> lands = {{19,20},{21,20},{20,21},{20,22},{20,19},{19,19},{19,18},{5,9},{6,8},{7,8},{6,9},{7,9},{5,7},{4,10},{4,9}},
+                    vector<Position> lands = {{19,20},{21,20},{20,21},{20,22},{20,19},{19,19},{19,18},{5,9},{6,8},{7,8},{6,9},{7,9},{5,7},{4,10},{4,9},{26,3},{27,3},{28,3},{26,4},{28,4}},
                     vector<Position> treasures = {{20,20},{5,8}});
 
     void BuildMap(Map& map, Ship& topLeftShip, Ship& bottomRightShip);

@@ -1,4 +1,4 @@
-#include <SFML/Graphics/RectangleShape.hpp>
+
 #include "Army.h"
 #include "Player.h"
 
@@ -12,10 +12,21 @@ Army::Army(Player& player) : Movable(player)
 
 void Army::Move(Direction direction) {
     GridPoint* destination = currentLocation->GetPointNeighbor(direction);
-    if(destination && destination->Enter(this)){
-        SetEdgeOwners(direction);
-        currentLocation->Exit(this);
-        currentLocation = destination;
-        NotifyOnSuccessfulMove(direction);
+    if(destination && destination->Enter(this, direction)){
+        OnSuccessfulMove(direction, destination);
     }
+}
+
+void Army::Land(Direction direction){
+    GridPoint* destination = currentLocation->GetPointNeighbor(direction);
+    if(destination && destination->Land(this)){
+        OnSuccessfulMove(direction, destination);
+    }
+}
+
+void Army::OnSuccessfulMove(Direction moveDirection, GridPoint* destination) {
+    SetEdgeOwners(moveDirection);
+    currentLocation->Exit(this);
+    currentLocation = destination;
+    NotifyOnSuccessfulMove(moveDirection);
 }

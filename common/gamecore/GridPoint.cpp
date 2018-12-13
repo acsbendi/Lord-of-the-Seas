@@ -28,14 +28,15 @@ GridSquare* GridPoint::GetSquareNeighbor(IntermediateDirection intermediateDirec
     return squareNeighbors.at(intermediateDirection);
 }
 
-bool GridPoint::Enter(Army* coming) {
+bool GridPoint::Enter(Army* coming, Direction moveDirection) {
     if(movable) return false; //this point is occupied
 
-    if(!isLandBool)
-        return false; //armies can only move on land
+    bool isLandInMoveDirection = IsLandInMoveDirection(moveDirection); //ships can only move on sea
 
-    movable = coming;
-    return true;
+    if(isLandInMoveDirection)
+        movable = coming;
+
+    return isLandInMoveDirection;
 }
 
 bool GridPoint::Enter(Ship* coming, Direction moveDirection) {
@@ -47,6 +48,13 @@ bool GridPoint::Enter(Ship* coming, Direction moveDirection) {
         movable = coming;
 
     return isSeaInMoveDirection;
+}
+
+bool GridPoint::Land(Army* landingArmy){
+    if(movable || !isLandBool) return false;
+
+    movable = landingArmy;
+    return true;
 }
 
 void GridPoint::Exit(Movable* leaving) {
@@ -86,6 +94,22 @@ bool GridPoint::IsSeaInMoveDirection(Direction moveDirection){
     }
 }
 
+bool GridPoint::IsLandInMoveDirection(Direction moveDirection){
+    switch (moveDirection){
+        case right:
+            return  (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsLand()) ||
+                    (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsLand());
+        case left:
+            return  (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsLand()) ||
+                    (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsLand());
+        case up:
+            return  (squareNeighbors.at(southeast) && squareNeighbors.at(southeast)->IsLand()) ||
+                    (squareNeighbors.at(southwest) && squareNeighbors.at(southwest)->IsLand());
+        case down:
+            return  (squareNeighbors.at(northeast) && squareNeighbors.at(northeast)->IsLand()) ||
+                    (squareNeighbors.at(northwest) && squareNeighbors.at(northwest)->IsLand());
+    }
+}
 bool GridPoint::IsLand() const{
     return isLandBool;
 }

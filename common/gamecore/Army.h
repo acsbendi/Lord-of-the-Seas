@@ -12,8 +12,11 @@ class Army : public Movable {
 public:
     explicit Army(Player&);
     void Move(Direction) override ;
+    void Land(Direction direction);
 
 private:
+    void OnSuccessfulMove(Direction moveDirection, GridPoint* destination);
+
     friend class ArmyView;
 };
 
