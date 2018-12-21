@@ -1,9 +1,5 @@
-
 #include "Army.h"
 #include "Player.h"
-
-using sf::RectangleShape;
-using sf::Vector2f;
 
 Army::Army(Player& player) : Movable(player)
 {
