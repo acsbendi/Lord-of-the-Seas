@@ -6,7 +6,7 @@ using std::make_unique;
 using std::remove;
 
 Player::Player(const string& name) :
-    name{name}, state{waitingForTurn}, score{0}, successfulMoves{0}
+    name{name}, score{0}, successfulMoves{0}, state{waitingForTurn}
 {
     ship = make_unique<Ship>(*this);
     army = make_unique<Army>(*this);

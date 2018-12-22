@@ -8,8 +8,9 @@ using std::make_unique;
 Game::Game(MapBuilder&& mapInitializer) :
         player1{make_unique<Player>("Player 1")}, player2{make_unique<Player>("Player 2")},
         map{},
-        gameEnd{false}, turnEnd{false},
         gameWindow{mapInitializer.GetWidth(),mapInitializer.GetHeight()},
+        gameEnd{false},
+        turnEnd{false},
         viewBuilder{gameWindow}
 {
     mapInitializer.Attach(&viewBuilder);
@@ -21,8 +22,8 @@ Game::Game(MapBuilder&& mapInitializer) :
 Game::Game(unique_ptr<Player>&& player1, unique_ptr<Player>&& player2, MapBuilder&& mapInitializer):
         player1{move(player1)}, player2{move(player2)},
         map{},
+        gameWindow{mapInitializer.GetWidth(), mapInitializer.GetHeight()},
         gameEnd{false}, turnEnd{false},
-        gameWindow{mapInitializer.GetWidth(),mapInitializer.GetHeight()},
         viewBuilder{gameWindow}
 {
     mapInitializer.Attach(&viewBuilder);

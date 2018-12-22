@@ -20,9 +20,9 @@ int GameWindow::GRID_SIDE = 15;
 int GameWindow::MARGIN = 15;
 
 GameWindow::GameWindow(const int width, const int height) :
-        width{width}, height{height}, active{true},
         RenderWindow{VideoMode(static_cast<unsigned>(GRID_SIDE*(width - 1) + 2*MARGIN),
-                         static_cast<unsigned>(GRID_SIDE*(height - 1) + 2*MARGIN)),"Lord of the Seas"}{
+                         static_cast<unsigned>(GRID_SIDE*(height - 1) + 2*MARGIN)),"Lord of the Seas"},
+        width{width}, height{height}, active{true} {
 
 }
 

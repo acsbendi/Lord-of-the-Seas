@@ -31,7 +31,7 @@ void Button::OnClick(int, int) const {
 }
 
 Button::Button(int x, int y, int width, int height, const string& text, function<void()> action)
-        : rect{x,y,width,height}, text{text,font}, action{move(action)}, selected{false} {
+        : action{move(action)}, rect{x,y,width,height}, selected{false}, text{text,font} {
     SetTextProperties();
 }
 

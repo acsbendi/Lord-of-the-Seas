@@ -21,7 +21,8 @@ using sf::Sprite;
 
 const Texture Application::background = Graphics::CreateTexture("menu-background.png");
 
-Application::Application() : window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}, end{false} {
+Application::Application() :
+        end{false}, window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}{
     buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){ this->StartNewLocalGame();});
     buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){ this->StartNewOnlineGame();});
     buttons.emplace_back(100,200,200,50,"          EXIT",[&](){ this->Exit();});

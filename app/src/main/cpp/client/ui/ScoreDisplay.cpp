@@ -16,10 +16,12 @@ using sf::VideoMode;
 const Font ScoreDisplay::font = Graphics::CreateFont("Treamd.ttf");
 const Texture ScoreDisplay::background = Graphics::CreateTexture("score-background2.png");
 
-ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) : okButton(100,300,200,50,"           OK",[&](){ this->Exit();}),
-                                                                     window{VideoMode(WIDTH,HEIGHT),"Congratulations"}, end{false},
-text1{"First player's score: " + to_string(scoreOfPlayer1),font,20}, text2{"Second player's score: " + to_string(scoreOfPlayer2),font,20},
-                                                                     scoreOfPlayer1{scoreOfPlayer1}, scoreOfPlayer2{scoreOfPlayer2}
+ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) :
+        end{false}, okButton(100,300,200,50,"           OK",[&](){ this->Exit();}),
+        window{VideoMode(WIDTH,HEIGHT),"Congratulations"},
+        text1{"First player's score: " + to_string(scoreOfPlayer1),font,20},
+        text2{"Second player's score: " + to_string(scoreOfPlayer2),font,20},
+        scoreOfPlayer1{scoreOfPlayer1}, scoreOfPlayer2{scoreOfPlayer2}
 {
     Refresh();
 }

@@ -20,7 +20,7 @@ private:
     const Player* representedPlayer;
 
     friend class Player;
-    friend class std::hash<PlayerProxy>;
+    friend struct std::hash<PlayerProxy>;
 };
 
 namespace std {
