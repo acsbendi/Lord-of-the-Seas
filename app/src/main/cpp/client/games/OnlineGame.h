@@ -25,6 +25,7 @@ public:
     void OnMove(Direction direction) override;
     void OnTurnEnd() override;
     void OnConfirmation(bool confirmed) override;
+    using Game::OnMove;
 
 private:
     TcpSocket socket;
