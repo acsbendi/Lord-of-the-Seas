@@ -22,7 +22,7 @@ int GameWindow::MARGIN = 15;
 GameWindow::GameWindow(const int width, const int height) :
         RenderWindow{VideoMode(static_cast<unsigned>(GRID_SIDE*(width - 1) + 2*MARGIN),
                          static_cast<unsigned>(GRID_SIDE*(height - 1) + 2*MARGIN)),"Lord of the Seas"},
-        width{width}, height{height}, active{true} {
+        active{true} {
 
 }
 

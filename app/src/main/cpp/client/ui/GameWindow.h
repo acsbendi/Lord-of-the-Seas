@@ -76,8 +76,6 @@ public:
     void AddMovableView(unique_ptr<MovableView>&& movableView);
 
 private:
-    const int width;
-    const int height;
     vector<IUserEventObserver*> userEventObservers; ///< Vector storing the attached user event observers.
     vector<IWindowEventObserver*> windowEventObservers; ///< Vector storing the attached window event observers.
     vector<unique_ptr<GridSquareView>> gridSquareViews;
