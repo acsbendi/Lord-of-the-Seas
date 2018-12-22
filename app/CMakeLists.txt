@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.4.1)
+project(Lord_of_the_Seas)
 
 # Export ANativeActivity_onCreate(),
 # Refer to: https://github.com/android-ndk/ndk/issues/381.
@@ -12,18 +13,90 @@ find_package(SFML COMPONENTS ${REQUIRED_SFML_LIBRARIES} REQUIRED)
 
 set(${CMAKE_C_FLAGS}, "${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-set(CMAKE_CXX_STANDARD 11)
-add_library(sfml-test SHARED src/main/cpp/main.cpp)
+set(CMAKE_CXX_STANDARD 17)
+
+add_library(Lord_of_the_Seas SHARED
+        common/gamecore/Army.h
+        common/utils/Enums.h
+        client/games/Game.h
+        common/gamecore/GridPoint.h
+        common/gamecore/Map.h
+        common/gamecore/Movable.h
+        common/gamecore/Player.h
+        common/gamecore/Ship.h
+        common/gamecore/Army.cpp
+        client/games/Game.cpp
+        common/gamecore/GridPoint.cpp
+        common/gamecore/Map.cpp
+        common/gamecore/Movable.cpp
+        common/gamecore/Player.cpp
+        common/gamecore/Ship.cpp
+        client/main.cpp
+        common/gamecore/IPlayerObserver.h
+        common/gamecore/GridSquare.cpp
+        common/gamecore/GridSquare.h
+        common/gamecore/IUserEventObserver.h
+        client/ui/IWindowEventObserver.h
+        common/gamecore/Land.cpp
+        common/gamecore/Land.h
+        common/gamecore/Treasure.cpp
+        common/gamecore/Treasure.h
+        common/gamecore/Water.cpp
+        common/gamecore/Water.h
+        client/application/Application.cpp
+        client/application/Application.h
+        common/utils/graphics/Button.cpp
+        common/utils/graphics/Button.h
+        client/ui/ScoreDisplay.cpp
+        client/ui/ScoreDisplay.h
+        common/utils/graphics/Graphics.h
+        client/games/OnlineGame.cpp
+        client/games/OnlineGame.h
+        common/gamecore/LocalPlayer.cpp
+        common/gamecore/LocalPlayer.h
+        common/gamecore/ILocalPlayerObserver.h
+        client/ui/GameWindow.cpp
+        client/ui/GameWindow.h
+        common/gamecore/IMapObserver.hpp
+        client/ui/Edge.hpp
+        common/gamecore/MapBuilder.cpp
+        common/gamecore/MapBuilder.hpp
+        client/ui/views/GridSquareView.cpp
+        client/ui/views/GridSquareView.hpp
+        client/ui/views/WaterView.cpp
+        client/ui/views/WaterView.hpp
+        client/ui/views/LandView.cpp
+        client/ui/views/LandView.hpp
+        client/ui/views/TreasureView.cpp
+        client/ui/views/TreasureView.hpp
+        client/ui/views/ShipView.cpp
+        client/ui/views/ShipView.hpp
+        client/ui/views/ArmyView.cpp
+        client/ui/views/ArmyView.hpp
+        client/ui/views/MovableView.hpp
+        common/gamecore/IMovableObserver.hpp
+        client/ui/views/MovableView.cpp
+        common/gamecore/LandingEvent.h
+        common/gamecore/PlayerProxy.cpp
+        common/gamecore/PlayerProxy.h
+        common/gamecore/EdgeOwnerChangedEvent.hpp
+        common/gamecore/IGridSquareObserver.hpp
+        common/gamecore/IMapBuilderObserver.hpp
+        common/gamecore/Position.hpp
+        client/ui/ViewBuilder.cpp
+        client/ui/ViewBuilder.hpp
+        client/ui/views/PlayerView.cpp
+        client/ui/views/PlayerView.hpp)
 
 if(SFML_FOUND)
     foreach(SFML_LIBRARY ${REQUIRED_SFML_LIBRARIES})
         set(SFML_LIBRARY_FULL_NAME "sfml-${SFML_LIBRARY}")
-        target_link_libraries(sfml-test ${SFML_LIBRARY_FULL_NAME})
+        target_link_libraries(Lord_of_the_Seas ${SFML_LIBRARY_FULL_NAME})
     endforeach(SFML_LIBRARY)
 endif()
 
 # add lib dependencies
-target_link_libraries(sfml-test
+target_link_libraries(Lord_of_the_Seas
     android
     EGL
     GLESv1_CM
