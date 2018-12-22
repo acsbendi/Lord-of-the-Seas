@@ -13,80 +13,82 @@ find_package(SFML COMPONENTS ${REQUIRED_SFML_LIBRARIES} REQUIRED)
 
 set(${CMAKE_C_FLAGS}, "${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
+
+set(CPP_SOURCES_PREFIX src/main/cpp)
 
 add_library(Lord_of_the_Seas SHARED
-        common/gamecore/Army.h
-        common/utils/Enums.h
-        client/games/Game.h
-        common/gamecore/GridPoint.h
-        common/gamecore/Map.h
-        common/gamecore/Movable.h
-        common/gamecore/Player.h
-        common/gamecore/Ship.h
-        common/gamecore/Army.cpp
-        client/games/Game.cpp
-        common/gamecore/GridPoint.cpp
-        common/gamecore/Map.cpp
-        common/gamecore/Movable.cpp
-        common/gamecore/Player.cpp
-        common/gamecore/Ship.cpp
-        client/main.cpp
-        common/gamecore/IPlayerObserver.h
-        common/gamecore/GridSquare.cpp
-        common/gamecore/GridSquare.h
-        common/gamecore/IUserEventObserver.h
-        client/ui/IWindowEventObserver.h
-        common/gamecore/Land.cpp
-        common/gamecore/Land.h
-        common/gamecore/Treasure.cpp
-        common/gamecore/Treasure.h
-        common/gamecore/Water.cpp
-        common/gamecore/Water.h
-        client/application/Application.cpp
-        client/application/Application.h
-        common/utils/graphics/Button.cpp
-        common/utils/graphics/Button.h
-        client/ui/ScoreDisplay.cpp
-        client/ui/ScoreDisplay.h
-        common/utils/graphics/Graphics.h
-        client/games/OnlineGame.cpp
-        client/games/OnlineGame.h
-        common/gamecore/LocalPlayer.cpp
-        common/gamecore/LocalPlayer.h
-        common/gamecore/ILocalPlayerObserver.h
-        client/ui/GameWindow.cpp
-        client/ui/GameWindow.h
-        common/gamecore/IMapObserver.hpp
-        client/ui/Edge.hpp
-        common/gamecore/MapBuilder.cpp
-        common/gamecore/MapBuilder.hpp
-        client/ui/views/GridSquareView.cpp
-        client/ui/views/GridSquareView.hpp
-        client/ui/views/WaterView.cpp
-        client/ui/views/WaterView.hpp
-        client/ui/views/LandView.cpp
-        client/ui/views/LandView.hpp
-        client/ui/views/TreasureView.cpp
-        client/ui/views/TreasureView.hpp
-        client/ui/views/ShipView.cpp
-        client/ui/views/ShipView.hpp
-        client/ui/views/ArmyView.cpp
-        client/ui/views/ArmyView.hpp
-        client/ui/views/MovableView.hpp
-        common/gamecore/IMovableObserver.hpp
-        client/ui/views/MovableView.cpp
-        common/gamecore/LandingEvent.h
-        common/gamecore/PlayerProxy.cpp
-        common/gamecore/PlayerProxy.h
-        common/gamecore/EdgeOwnerChangedEvent.hpp
-        common/gamecore/IGridSquareObserver.hpp
-        common/gamecore/IMapBuilderObserver.hpp
-        common/gamecore/Position.hpp
-        client/ui/ViewBuilder.cpp
-        client/ui/ViewBuilder.hpp
-        client/ui/views/PlayerView.cpp
-        client/ui/views/PlayerView.hpp)
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Army.h
+        ${CPP_SOURCES_PREFIX}/common/utils/Enums.h
+        ${CPP_SOURCES_PREFIX}/client/games/Game.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/GridPoint.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Map.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Movable.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Player.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Ship.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Army.cpp
+        ${CPP_SOURCES_PREFIX}/client/games/Game.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/GridPoint.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Map.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Movable.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Player.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Ship.cpp
+        ${CPP_SOURCES_PREFIX}/client/main.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/IPlayerObserver.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/GridSquare.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/GridSquare.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/IUserEventObserver.h
+        ${CPP_SOURCES_PREFIX}/client/ui/IWindowEventObserver.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Land.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Land.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Treasure.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Treasure.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Water.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Water.h
+        ${CPP_SOURCES_PREFIX}/client/application/Application.cpp
+        ${CPP_SOURCES_PREFIX}/client/application/Application.h
+        ${CPP_SOURCES_PREFIX}/common/utils/graphics/Button.cpp
+        ${CPP_SOURCES_PREFIX}/common/utils/graphics/Button.h
+        ${CPP_SOURCES_PREFIX}/client/ui/ScoreDisplay.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/ScoreDisplay.h
+        ${CPP_SOURCES_PREFIX}/common/utils/graphics/Graphics.h
+        ${CPP_SOURCES_PREFIX}/client/games/OnlineGame.cpp
+        ${CPP_SOURCES_PREFIX}/client/games/OnlineGame.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/LocalPlayer.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/LocalPlayer.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/ILocalPlayerObserver.h
+        ${CPP_SOURCES_PREFIX}/client/ui/GameWindow.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/GameWindow.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/IMapObserver.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/Edge.hpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/MapBuilder.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/MapBuilder.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/GridSquareView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/GridSquareView.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/WaterView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/WaterView.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/LandView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/LandView.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/TreasureView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/TreasureView.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/ShipView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/ShipView.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/ArmyView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/ArmyView.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/MovableView.hpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/IMovableObserver.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/MovableView.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/LandingEvent.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/PlayerProxy.cpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/PlayerProxy.h
+        ${CPP_SOURCES_PREFIX}/common/gamecore/EdgeOwnerChangedEvent.hpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/IGridSquareObserver.hpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/IMapBuilderObserver.hpp
+        ${CPP_SOURCES_PREFIX}/common/gamecore/Position.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/ViewBuilder.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/ViewBuilder.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/PlayerView.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/views/PlayerView.hpp)
 
 if(SFML_FOUND)
     foreach(SFML_LIBRARY ${REQUIRED_SFML_LIBRARIES})
@@ -104,7 +106,7 @@ target_link_libraries(Lord_of_the_Seas
 
 set(SFML_EXT_DIR "${ANDROID_NDK}/sources/third_party/sfml/extlibs/lib/${ANDROID_ABI}")
 
-add_custom_command(TARGET sfml-test POST_BUILD
+add_custom_command(TARGET Lord_of_the_Seas POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${SFML_EXT_DIR}
     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
@@ -113,7 +115,7 @@ add_custom_command(TARGET sfml-test POST_BUILD
 foreach(SFML_LIBRARY ${REQUIRED_SFML_LIBRARIES})
     if(NOT ${SFML_LIBRARY} MATCHES "main")
         set(SFML_LIBRARY_FILE_NAME "libsfml-${SFML_LIBRARY}-d.so")
-        add_custom_command(TARGET sfml-test POST_BUILD
+        add_custom_command(TARGET Lord_of_the_Seas POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_DIR}/../../${SFML_LIBRARY_FILE_NAME}
             ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
