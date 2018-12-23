@@ -23,13 +23,14 @@ using sf::Sprite;
 int Application::backgroundTextureToken = -1;
 
 Application::Application() :
-        end{false}, window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}{
+        end{false}, active{true}, window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}{
     if(backgroundTextureToken == -1){
         backgroundTextureToken = Graphics::CreateTexture("menu-background.png");
     }
     buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){ this->StartNewLocalGame();});
     buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){ this->StartNewOnlineGame();});
     buttons.emplace_back(100,200,200,50,"          EXIT",[&](){ this->Exit();});
+    window.setFramerateLimit(30);
     Refresh();
 }
 
@@ -64,9 +65,12 @@ void Application::ShowScores(int scoreOfPlayer1, int scoreOfPlayer2){
 void Application::Start() {
     Event event{};
     while(!end) {
-        while (window.pollEvent(event)) {
+        while (active ? window.pollEvent(event) : window.waitEvent(event)) {
             HandleEvent(event);
         }
+
+        if(active)
+            Refresh();
     }
 }
 
@@ -84,6 +88,16 @@ void Application::HandleEvent(const Event& event) {
             break;
         case Event::Closed:
             HandleClosedEvent(event);
+            break;
+        case Event::MouseLeft:
+            active = false;
+            window.setActive(false);
+            break;
+        case Event::MouseEntered:
+            active = true;
+            break;
+        case Event::LostFocus:
+            window.setActive(false);
             break;
         default:
             break;
