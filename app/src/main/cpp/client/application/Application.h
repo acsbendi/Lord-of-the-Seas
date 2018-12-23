@@ -24,7 +24,7 @@ public:
 private:
     static const int WIDTH = 400;
     static const int HEIGHT = 400;
-    static const Texture background;
+    static const int backgroundTextureToken;
     bool end;
     RenderWindow window;
     vector<Button> buttons;

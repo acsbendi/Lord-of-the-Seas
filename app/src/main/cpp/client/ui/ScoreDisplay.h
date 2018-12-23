@@ -29,7 +29,7 @@ private:
     Button okButton;
     RenderWindow window;
     static const Font font;
-    static const Texture background;
+    static const int backgroundTextureToken;
     Text text1;
     Text text2;
     const int scoreOfPlayer1;

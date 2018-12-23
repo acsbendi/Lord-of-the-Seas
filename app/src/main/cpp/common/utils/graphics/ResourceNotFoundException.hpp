@@ -13,8 +13,8 @@ using std::string;
 
 class ResourceNotFoundException : public exception{
 public:
-    ResourceNotFoundException(string resourceFileName);
-    const char* what() const override;
+    explicit ResourceNotFoundException(string resourceFileName);
+    const char* what() const noexcept override;
 
 private:
     string message;

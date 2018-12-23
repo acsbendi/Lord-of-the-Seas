@@ -9,6 +9,6 @@ ResourceNotFoundException::ResourceNotFoundException(string resourceFileName) :
 
 }
 
-const char* ResourceNotFoundException::what() const {
+const char* ResourceNotFoundException::what() const noexcept {
     return message.c_str();
 }

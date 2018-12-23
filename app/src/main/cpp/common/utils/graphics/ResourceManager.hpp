@@ -18,9 +18,9 @@ class ResourceManager {
 public:
     ResourceManager(const ResourceManager&) = delete;
     void operator=(const ResourceManager&) = delete;
-    ResourceManager& GetInstance();
+    static ResourceManager& GetInstance();
     Texture& GetTexture(int token);
-    int CreateNewTexture(string fileName);
+    int CreateNewTexture(const string& fileName);
 
 private:
     ResourceManager();

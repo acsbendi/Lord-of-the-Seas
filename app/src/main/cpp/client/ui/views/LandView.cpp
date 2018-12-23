@@ -4,13 +4,14 @@
 
 #include "LandView.hpp"
 #include "../../../common/utils/graphics/Graphics.h"
+#include "../../../common/utils/graphics/ResourceManager.hpp"
 
 
-const Texture LandView::texture = Graphics::CreateTexture("land.png");
+const int LandView::textureToken = Graphics::CreateTexture("land.png");
 
 LandView::LandView(Position position, shared_ptr<PlayerView> playerView) :
 GridSquareView{position, move(playerView)} { }
 
 const Texture& LandView::GetTexture() const {
-    return texture;
+    return ResourceManager::GetInstance().GetTexture(textureToken);
 }

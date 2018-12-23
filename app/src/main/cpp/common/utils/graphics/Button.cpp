@@ -4,12 +4,13 @@
 
 #include "Button.h"
 #include "Graphics.h"
+#include "ResourceManager.hpp"
 
 using std::move;
 using sf::Color;
 
 const Font Button::font = Graphics::CreateFont("Garamond Classico SC.ttf");
-const Texture Button::texture = Graphics::CreateTexture("button2.png");
+const int Button::textureToken = Graphics::CreateTexture("button2.png");
 
 void Button::draw(RenderTarget &target, RenderStates) const {
     ShowTexture(target);
@@ -55,6 +56,7 @@ void Button::SetTextProperties() {
 }
 
 void Button::SetBackgroundProperties(Sprite& background) const {
+    Texture& texture = ResourceManager::GetInstance().GetTexture(textureToken);
     background.setTexture(texture);
     background.setPosition({static_cast<float >(rect.left), static_cast<float >(rect.top)});
     if(selected)

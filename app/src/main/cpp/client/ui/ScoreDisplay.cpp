@@ -4,6 +4,7 @@
 
 #include "ScoreDisplay.h"
 #include "../../common/utils/graphics/Graphics.h"
+#include "../../common/utils/graphics/ResourceManager.hpp"
 
 using std::to_string;
 using sf::Event;
@@ -14,7 +15,7 @@ using sf::Color;
 using sf::VideoMode;
 
 const Font ScoreDisplay::font = Graphics::CreateFont("Treamd.ttf");
-const Texture ScoreDisplay::background = Graphics::CreateTexture("score-background2.png");
+const int ScoreDisplay::backgroundTextureToken = Graphics::CreateTexture("score-background2.png");
 
 ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) :
         end{false}, okButton(100,300,200,50,"           OK",[&](){ this->Exit();}),
@@ -77,6 +78,7 @@ void ScoreDisplay::Refresh(){
 
 void ScoreDisplay::ShowBackgroundAndOkButton() {
     Sprite sprite;
+    Texture& background = ResourceManager::GetInstance().GetTexture(backgroundTextureToken);
     sprite.setTexture(background);
     window.draw(sprite);
     window.draw(okButton);

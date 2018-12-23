@@ -18,7 +18,7 @@ Texture& ResourceManager::GetTexture(int token) {
     return textures.at(token);
 }
 
-int ResourceManager::CreateNewTexture(string fileName) {
+int ResourceManager::CreateNewTexture(const string& fileName) {
     Texture texture{};
     bool result = texture.loadFromFile(fileName);
     if(!result)

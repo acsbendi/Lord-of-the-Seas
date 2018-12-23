@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "../games/Game.h"
 #include "../../common/utils/graphics/Graphics.h"
+#include "../../common/utils/graphics/ResourceManager.hpp"
 #include "../ui/ScoreDisplay.h"
 #include "../games/OnlineGame.h"
 #include "../../common/gamecore/MapBuilder.hpp"
@@ -19,7 +20,7 @@ using sf::Keyboard;
 using sf::Mouse;
 using sf::Sprite;
 
-const Texture Application::background = Graphics::CreateTexture("menu-background.png");
+const int Application::backgroundTextureToken = Graphics::CreateTexture("menu-background.png");
 
 Application::Application() :
         end{false}, window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}{
@@ -138,6 +139,7 @@ void Application::DrawElements() {
 
 void Application::DrawBackground() {
     Sprite sprite;
+    Texture background = ResourceManager::GetInstance().GetTexture(backgroundTextureToken);
     sprite.setTexture(background);
     window.draw(sprite);
 }
