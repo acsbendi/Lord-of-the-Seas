@@ -142,7 +142,7 @@ void Application::DrawElements() {
 
 void Application::DrawBackground() {
     Sprite sprite;
-    Texture background = ResourceManager::GetInstance().GetTexture(backgroundTextureToken);
+    Texture& background = ResourceManager::GetInstance().GetTexture(backgroundTextureToken);
     sprite.setTexture(background);
     window.draw(sprite);
 }
