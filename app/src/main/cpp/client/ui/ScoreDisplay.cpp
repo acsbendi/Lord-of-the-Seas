@@ -14,20 +14,30 @@ using sf::Sprite;
 using sf::Color;
 using sf::VideoMode;
 
-const Font ScoreDisplay::font = Graphics::CreateFont("Treamd.ttf");
+int ScoreDisplay::fontToken = -1;
 int ScoreDisplay::backgroundTextureToken = -1;
 
 ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) :
         end{false}, okButton(100,300,200,50,"           OK",[&](){ this->Exit();}),
         window{VideoMode(WIDTH,HEIGHT),"Congratulations"},
-        text1{"First player's score: " + to_string(scoreOfPlayer1),font,20},
-        text2{"Second player's score: " + to_string(scoreOfPlayer2),font,20},
-        scoreOfPlayer1{scoreOfPlayer1}, scoreOfPlayer2{scoreOfPlayer2}
+        text1{}, text2{}, scoreOfPlayer1{scoreOfPlayer1}, scoreOfPlayer2{scoreOfPlayer2}
 {
     if(backgroundTextureToken == -1){
         backgroundTextureToken = Graphics::CreateTexture("score-background2.png");
     }
+    if(fontToken == -1){
+        fontToken = Graphics::CreateFont("Treamd.ttf");
+    }
+    Font& font = ResourceManager::GetInstance().GetFont(fontToken);
+    InitializeText(text1, "First player's score: " + to_string(scoreOfPlayer1), font);
+    InitializeText(text2, "Second player's score: " + to_string(scoreOfPlayer2), font);
     Refresh();
+}
+
+void ScoreDisplay::InitializeText(Text& text, const string& string, const Font& font) {
+    text.setString(string);
+    text.setFont(font);
+    text.setCharacterSize(TEXT_SIZE);
 }
 
 void ScoreDisplay::Show(){

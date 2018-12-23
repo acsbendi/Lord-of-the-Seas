@@ -24,17 +24,19 @@ private:
     static constexpr int WIDTH = 400;
     static constexpr int HEIGHT = 400;
     static constexpr int TEXT_X = 165;
+    static constexpr int TEXT_SIZE = 20;
 
     bool end;
     Button okButton;
     RenderWindow window;
-    static const Font font;
+    static int fontToken;
     static int backgroundTextureToken;
     Text text1;
     Text text2;
     const int scoreOfPlayer1;
     const int scoreOfPlayer2;
 
+    void InitializeText(Text& text, const string& string, const Font& font);
     void Exit();
     void HandleEvent(const Event&);
     void HandleKeyPress(const Event&);

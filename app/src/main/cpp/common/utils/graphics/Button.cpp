@@ -9,7 +9,7 @@
 using std::move;
 using sf::Color;
 
-const Font Button::font = Graphics::CreateFont("Garamond Classico SC.ttf");
+int Button::fontToken = -1;
 int Button::textureToken = -1;
 
 void Button::draw(RenderTarget &target, RenderStates) const {
@@ -32,11 +32,15 @@ void Button::OnClick(int, int) const {
 }
 
 Button::Button(int x, int y, int width, int height, const string& text, function<void()> action)
-        : action{move(action)}, rect{x,y,width,height}, selected{false}, text{text,font} {
+        : action{move(action)}, rect{x,y,width,height}, selected{false}, text{} {
     if(textureToken == -1){
         textureToken = Graphics::CreateTexture("button2.png");
     }
-    SetTextProperties();
+    if(fontToken == -1){
+        fontToken = Graphics::CreateFont("Garamond Classico SC.ttf");
+    }
+    Font& font = ResourceManager::GetInstance().GetFont(fontToken);
+    SetTextProperties(text, font);
 }
 
 bool Button::OnMouseMove(int x, int y) {
@@ -51,7 +55,9 @@ void Button::TransformIntoLocalCoordinates(int& x, int& y) const{
     y = y - rect.top;
 }
 
-void Button::SetTextProperties() {
+void Button::SetTextProperties(const string& string,const Font& font) {
+    text.setString(string);
+    text.setFont(font);
     text.setCharacterSize(19);
     text.setPosition({static_cast<float >(rect.left + 29), static_cast<float >(rect.top + 13)});
     text.setStyle(Text::Bold);

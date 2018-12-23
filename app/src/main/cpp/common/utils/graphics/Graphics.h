@@ -6,12 +6,9 @@
 #define LORD_OF_THE_SEAS_GRAPHICS_H
 
 #include <string>
-#include <SFML/Graphics.hpp>
 #include "ResourceManager.hpp"
 
 using std::string;
-using sf::Texture;
-using sf::Font;
 
 namespace Graphics{
     inline int CreateTexture(const string& fileName)
@@ -19,10 +16,8 @@ namespace Graphics{
         return ResourceManager::GetInstance().CreateNewTexture(fileName);
     }
 
-    inline const Font CreateFont(const string& fileName){
-        Font font;
-        font.loadFromFile(fileName);
-        return font;
+    inline int CreateFont(const string& fileName){
+        return ResourceManager::GetInstance().CreateNewFont(fileName);
     }
 }
 

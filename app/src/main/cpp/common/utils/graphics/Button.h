@@ -30,7 +30,7 @@ public:
 private:
     const function<void()> action;
     const IntRect rect; ///< The coordinates and dimensions of the button's rectangle's top-left corner.
-    static const Font font;
+    static int fontToken;
     static int textureToken;
     bool selected;
     Text text;
@@ -38,7 +38,7 @@ private:
     void ShowText(RenderTarget&) const;
     void ShowTexture(RenderTarget&) const;
     void TransformIntoLocalCoordinates(int&,int&) const;
-    void SetTextProperties();
+    void SetTextProperties(const string& string,const Font& font);
     void SetBackgroundProperties(Sprite&) const;
     void DoActionIfSelected() const;
 };

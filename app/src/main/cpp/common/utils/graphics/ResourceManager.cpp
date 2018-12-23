@@ -10,8 +10,9 @@ ResourceManager& ResourceManager::GetInstance() {
 }
 
 ResourceManager::ResourceManager() :
-        textures{} {
-    currentToken = 0;
+        textures{}, fonts{} {
+    currentTextureToken = 0;
+    currentFontToken = 0;
 }
 
 Texture& ResourceManager::GetTexture(int token) {
@@ -24,7 +25,20 @@ int ResourceManager::CreateNewTexture(const string& fileName) {
     if(!result)
         throw ResourceNotFoundException{fileName};
 
-    textures.emplace(currentToken, texture);
-    return currentToken++;
+    textures.emplace(currentTextureToken, texture);
+    return currentTextureToken++;
 }
 
+Font& ResourceManager::GetFont(int token) {
+    return fonts.at(token);
+}
+
+int ResourceManager::CreateNewFont(const string& fileName) {
+    Font font{};
+    bool result = font.loadFromFile(fileName);
+    if(!result)
+        throw ResourceNotFoundException{fileName};
+
+    fonts.emplace(currentFontToken, font);
+    return currentFontToken++;
+}
