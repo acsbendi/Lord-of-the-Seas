@@ -51,6 +51,10 @@ add_library(Lord_of_the_Seas SHARED
         ${CPP_SOURCES_PREFIX}/common/utils/graphics/Button.h
         ${CPP_SOURCES_PREFIX}/client/ui/ScoreDisplay.cpp
         ${CPP_SOURCES_PREFIX}/client/ui/ScoreDisplay.h
+        ${CPP_SOURCES_PREFIX}/client/ui/ResourceManager.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/ResourceManager.hpp
+        ${CPP_SOURCES_PREFIX}/client/ui/ResourceNotFoundException.cpp
+        ${CPP_SOURCES_PREFIX}/client/ui/ResourceNotFoundException.hpp
         ${CPP_SOURCES_PREFIX}/common/utils/graphics/Graphics.h
         ${CPP_SOURCES_PREFIX}/client/games/OnlineGame.cpp
         ${CPP_SOURCES_PREFIX}/client/games/OnlineGame.h

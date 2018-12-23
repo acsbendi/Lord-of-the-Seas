@@ -17,7 +17,7 @@ public:
     const char* what() const override;
 
 private:
-    string resourceFileName;
+    string message;
 };
 
 

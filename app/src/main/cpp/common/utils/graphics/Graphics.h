@@ -13,12 +13,6 @@ using sf::Texture;
 using sf::Font;
 
 namespace Graphics{
-    inline Texture CreateTexture(const string& fileName)
-    {
-        Texture texture;
-        texture.loadFromFile(fileName);
-        return texture;
-    }
 
     inline const Font CreateFont(const string& fileName){
         Font font;
