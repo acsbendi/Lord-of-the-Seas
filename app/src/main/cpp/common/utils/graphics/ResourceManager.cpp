@@ -20,12 +20,11 @@ Texture& ResourceManager::GetTexture(int token) {
 }
 
 int ResourceManager::CreateNewTexture(const string& fileName) {
-    Texture texture{};
-    bool result = texture.loadFromFile(fileName);
+    textures.emplace(currentTextureToken, Texture{});
+    bool result = textures.at(currentFontToken).loadFromFile(fileName);
     if(!result)
         throw ResourceNotFoundException{fileName};
 
-    textures.emplace(currentTextureToken, texture);
     return currentTextureToken++;
 }
 
@@ -34,11 +33,10 @@ Font& ResourceManager::GetFont(int token) {
 }
 
 int ResourceManager::CreateNewFont(const string& fileName) {
-    Font font{};
-    bool result = font.loadFromFile(fileName);
+    fonts.emplace(currentFontToken, Font{});
+    bool result = fonts.at(currentFontToken).loadFromFile(fileName);
     if(!result)
         throw ResourceNotFoundException{fileName};
 
-    fonts.emplace(currentFontToken, font);
     return currentFontToken++;
 }

@@ -17,7 +17,7 @@ void Button::draw(RenderTarget &target, RenderStates) const {
     ShowText(target);
 }
 
-void Button::ShowTexture(RenderTarget &target) const {
+void Button::ShowTexture(RenderTarget& target) const {
     Sprite background;
     SetBackgroundProperties(background);
     target.draw(background);
@@ -55,7 +55,7 @@ void Button::TransformIntoLocalCoordinates(int& x, int& y) const{
     y = y - rect.top;
 }
 
-void Button::SetTextProperties(const string& string,const Font& font) {
+void Button::SetTextProperties(const string& string, const Font& font) {
     text.setString(string);
     text.setFont(font);
     text.setCharacterSize(19);
