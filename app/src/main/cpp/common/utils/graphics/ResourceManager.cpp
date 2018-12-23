@@ -24,7 +24,7 @@ int ResourceManager::CreateNewTexture(const string& fileName) {
     if(!result)
         throw ResourceNotFoundException{fileName};
 
-    textures.emplace(currentToken++, texture);
-    return currentToken;
+    textures.emplace(currentToken, texture);
+    return currentToken++;
 }
 
