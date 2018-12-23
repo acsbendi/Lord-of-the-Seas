@@ -31,7 +31,7 @@ private:
     const function<void()> action;
     const IntRect rect; ///< The coordinates and dimensions of the button's rectangle's top-left corner.
     static const Font font;
-    static const int textureToken;
+    static int textureToken;
     bool selected;
     Text text;
 

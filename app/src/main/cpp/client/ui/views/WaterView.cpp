@@ -7,10 +7,14 @@
 #include "../../../common/utils/graphics/ResourceManager.hpp"
 
 
-const int WaterView::textureToken = Graphics::CreateTexture("water.png");
+int WaterView::textureToken = -1;
 
 WaterView::WaterView(Position position, shared_ptr<PlayerView> playerView) :
-GridSquareView{position, move(playerView)} { }
+GridSquareView{position, move(playerView)} {
+    if(textureToken == -1){
+        textureToken = Graphics::CreateTexture("water.png");
+    }
+}
 
 const Texture& WaterView::GetTexture() const {
     return ResourceManager::GetInstance().GetTexture(textureToken);

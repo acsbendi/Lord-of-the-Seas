@@ -15,7 +15,7 @@ using sf::Color;
 using sf::VideoMode;
 
 const Font ScoreDisplay::font = Graphics::CreateFont("Treamd.ttf");
-const int ScoreDisplay::backgroundTextureToken = Graphics::CreateTexture("score-background2.png");
+int ScoreDisplay::backgroundTextureToken = -1;
 
 ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) :
         end{false}, okButton(100,300,200,50,"           OK",[&](){ this->Exit();}),
@@ -24,6 +24,9 @@ ScoreDisplay::ScoreDisplay(int scoreOfPlayer1, int scoreOfPlayer2) :
         text2{"Second player's score: " + to_string(scoreOfPlayer2),font,20},
         scoreOfPlayer1{scoreOfPlayer1}, scoreOfPlayer2{scoreOfPlayer2}
 {
+    if(backgroundTextureToken == -1){
+        backgroundTextureToken = Graphics::CreateTexture("score-background2.png");
+    }
     Refresh();
 }
 

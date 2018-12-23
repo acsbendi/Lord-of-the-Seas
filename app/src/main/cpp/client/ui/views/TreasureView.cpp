@@ -7,10 +7,14 @@
 #include "../../../common/utils/graphics/Graphics.h"
 
 
-const int TreasureView::textureToken = Graphics::CreateTexture("treasure.png");
+int TreasureView::textureToken = -1;
 
 TreasureView::TreasureView(Position position, shared_ptr<PlayerView> playerView) :
-GridSquareView{position, move(playerView)} { }
+GridSquareView{position, move(playerView)} {
+    if(textureToken == -1){
+        textureToken = Graphics::CreateTexture("treasure.png");
+    }
+}
 
 const Texture& TreasureView::GetTexture() const {
     return ResourceManager::GetInstance().GetTexture(textureToken);

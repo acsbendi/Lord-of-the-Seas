@@ -10,7 +10,7 @@ using std::move;
 using sf::Color;
 
 const Font Button::font = Graphics::CreateFont("Garamond Classico SC.ttf");
-const int Button::textureToken = Graphics::CreateTexture("button2.png");
+int Button::textureToken = -1;
 
 void Button::draw(RenderTarget &target, RenderStates) const {
     ShowTexture(target);
@@ -33,6 +33,9 @@ void Button::OnClick(int, int) const {
 
 Button::Button(int x, int y, int width, int height, const string& text, function<void()> action)
         : action{move(action)}, rect{x,y,width,height}, selected{false}, text{text,font} {
+    if(textureToken == -1){
+        textureToken = Graphics::CreateTexture("button2.png");
+    }
     SetTextProperties();
 }
 

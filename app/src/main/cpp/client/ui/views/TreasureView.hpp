@@ -15,7 +15,7 @@ public:
     const Texture& GetTexture() const override;
 
 private:
-    static const int textureToken;
+    static int textureToken;
 };
 
 #endif //LORD_OF_THE_SEAS_TREASUREVIEW_HPP

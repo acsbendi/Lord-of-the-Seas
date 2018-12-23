@@ -7,10 +7,14 @@
 #include "../../../common/utils/graphics/ResourceManager.hpp"
 
 
-const int LandView::textureToken = Graphics::CreateTexture("land.png");
+int LandView::textureToken = -1;
 
 LandView::LandView(Position position, shared_ptr<PlayerView> playerView) :
-GridSquareView{position, move(playerView)} { }
+GridSquareView{position, move(playerView)} {
+    if(textureToken == -1){
+        textureToken = Graphics::CreateTexture("land.png");
+    }
+}
 
 const Texture& LandView::GetTexture() const {
     return ResourceManager::GetInstance().GetTexture(textureToken);

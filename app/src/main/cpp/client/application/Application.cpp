@@ -20,10 +20,13 @@ using sf::Keyboard;
 using sf::Mouse;
 using sf::Sprite;
 
-const int Application::backgroundTextureToken = Graphics::CreateTexture("menu-background.png");
+int Application::backgroundTextureToken = -1;
 
 Application::Application() :
         end{false}, window{VideoMode(WIDTH,HEIGHT),"Lord of the Seas"}{
+    if(backgroundTextureToken == -1){
+        backgroundTextureToken = Graphics::CreateTexture("menu-background.png");
+    }
     buttons.emplace_back(100,50,200,50," LOCAL GAME",[&](){ this->StartNewLocalGame();});
     buttons.emplace_back(100,125,200,50,"ONLINE GAME",[&](){ this->StartNewOnlineGame();});
     buttons.emplace_back(100,200,200,50,"          EXIT",[&](){ this->Exit();});
