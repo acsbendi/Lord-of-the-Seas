@@ -21,7 +21,7 @@ Texture& ResourceManager::GetTexture(int token) {
 
 int ResourceManager::CreateNewTexture(const string& fileName) {
     textures.emplace(currentTextureToken, Texture{});
-    bool result = textures.at(currentFontToken).loadFromFile(fileName);
+    bool result = textures.at(currentTextureToken).loadFromFile(fileName);
     if(!result)
         throw ResourceNotFoundException{fileName};
 
